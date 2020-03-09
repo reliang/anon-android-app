@@ -1,4 +1,2 @@
-# 350S20-76
+# CIS 350 Project Anon
 
-
-This is a test
