@@ -1,4 +1,4 @@
-package upenn.edu.cis350.anon.ui.genre;
+package upenn.edu.cis350.anon.ui.dashboard;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,14 +14,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import upenn.edu.cis350.anon.R;
 
-public class GenreFragment extends Fragment {
+public class DashboardFragment extends Fragment {
 
-    private GenreViewModel dashboardViewModel;
+    private DashboardViewModel dashboardViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         dashboardViewModel =
-                ViewModelProviders.of(this).get(GenreViewModel.class);
+                ViewModelProviders.of(this).get(DashboardViewModel.class);
         View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
         final TextView textView = root.findViewById(R.id.text_dashboard);
         dashboardViewModel.getText().observe(this, new Observer<String>() {
