@@ -1,3 +1,7 @@
+package upenn.edu.cis350.anon;
+
+import java.util.Set;
+
 public class User {
     String alias;
     int userId;
@@ -6,8 +10,8 @@ public class User {
     int status; // 0 = user, 1 = admin, 2 = head admin
     int contribution;
     // implement using LinkedHashSet
-    Set<int> generesFollowed; // genere ids
-    Set<int> postsFollowed; // post ids
-    Set<int> postsWritten; // post ids
-    Set<int> followers; // user ids
+    Set<Integer> generesFollowed; // genere ids
+    Set<Integer> postsFollowed; // post ids
+    Set<Integer> postsWritten; // post ids
+    Set<Integer> followers; // user ids
 }

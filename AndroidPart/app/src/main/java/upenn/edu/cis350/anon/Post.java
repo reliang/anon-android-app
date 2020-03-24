@@ -1,3 +1,7 @@
+package upenn.edu.cis350.anon;
+
+import java.util.ArrayList;
+
 public class Post {
     int userId;
     int postId;
