@@ -34,4 +34,9 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(i, 0);
     }
 
+    public void onMakePostButtonClick(View v) {
+        Intent i = new Intent(this, MakePostActivity.class);
+        startActivityForResult(i, 1);
+    }
+
 }
