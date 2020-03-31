@@ -9,4 +9,19 @@ public class Post {
     ArrayList<Reply> replies;
     int genreId;
     int time; // replace with Java Time class
+
+    String name;
+
+    public Post(String n, String c){
+        name = n;
+        content = c;
+    }
+
+
+    public String getContent(){
+        return content;
+    }
+    public String getUserName(){
+        return name;
+    }
 }

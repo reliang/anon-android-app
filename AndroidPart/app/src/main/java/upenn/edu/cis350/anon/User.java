@@ -14,4 +14,5 @@ public class User {
     Set<Integer> postsFollowed; // post ids
     Set<Integer> postsWritten; // post ids
     Set<Integer> followers; // user ids
+
 }
