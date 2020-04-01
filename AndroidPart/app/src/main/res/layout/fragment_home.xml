@@ -6,29 +6,14 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/text_home"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
         android:id="@+id/genres_text"
         android:layout_width="217dp"
         android:layout_height="60dp"
         android:text="Genres you fallow"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home"/>
+        tools:layout_editor_absoluteY="35dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyler_posts"
