@@ -34,13 +34,15 @@ public class RemoteDataSource {
 
                 title = postJ.getString("title");
                 date = postJ.getString("date");
+                // need to populate "userId" field first!
                 userName = postJ.getJSONObject("user").getString("name");
+                // need to populate "genreId" field first
                 genre = postJ.getJSONObject("genre").getString("name");
                 content = postJ.getString("content");
 
-                Post post = new Post(title, date, userName, genre, content);
+                //Post post = new Post(title, date, userName, genre, content);
 
-                posts[i] = post;
+                //posts[i] = post;
             }
 
 
@@ -66,7 +68,7 @@ public class RemoteDataSource {
 
         Post [] posts = new Post[5];
         for (int i = 0; i < 5; i++) {
-            posts[i] = new Post("Genre","a","b","c","d");
+            //posts[i] = new Post("Genre","a","b","c","d");
         }
 
         return posts;
@@ -81,11 +83,40 @@ public class RemoteDataSource {
     public static Post[] getPostsbyUserFallowed(User user) {
         Post [] posts = new Post[5];
         for (int i = 0; i < 5; i++) {
-            posts[i] = new Post("Fallowed","a","b","c","d");
+            //posts[i] = new Post("Fallowed","a","b","c","d");
         }
 
         //Log.v("", "fallowed fill");
         return posts;
 
+    }
+
+    public static String addPostbyObject( Post post) {
+        String userId, genreId, title, content;
+
+        title = post.getTitle();
+        userId = post.getUserId();
+        genreId = post.getGenreId();
+        content = post.getContent();
+
+        URL url;
+        try{
+            url = new URL("http://10.0.2.2:3000/addPost?"
+                    + "userId=" + userId
+                    + "&name=" + title
+                    + "&content=" + content
+                    + "&genreId=" + genreId);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            return status;
+        } catch (Exception e) {
+            return "Error adding post";
+        }
     }
 }
