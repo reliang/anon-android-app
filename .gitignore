@@ -1,2 +1,4 @@
 MongoData/
 **/node_modules
+WebPart/.DS_Store
+.DS_Store

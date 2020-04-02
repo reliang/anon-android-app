@@ -1,10 +1,10 @@
 package upenn.edu.cis350.anon;
 
-import androidx.appcompat.app.AppCompatActivity;
+        import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+        import android.os.Bundle;
+        import android.widget.ArrayAdapter;
+        import android.widget.Spinner;
 
 public class MakePostActivity extends AppCompatActivity {
 

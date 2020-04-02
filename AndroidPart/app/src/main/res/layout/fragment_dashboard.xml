@@ -16,6 +16,7 @@
         tools:layout_editor_absoluteY="55dp" />
 
     <Button
+        android:id="@+id/button_makePost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Make Post"
@@ -24,5 +25,27 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_post"
         android:onClick="onMakePostButtonClick"/>
+
+    <Button
+        android:id="@+id/button_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_makePost"
+        android:onClick="onLoginButtonClick"/>
+
+    <Button
+        android:id="@+id/button_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Signup"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_login"
+        android:onClick="onSignupButtonClick"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
