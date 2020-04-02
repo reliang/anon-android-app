@@ -1,4 +1,5 @@
 package upenn.edu.cis350.anon.ui.home;
+import upenn.edu.cis350.anon.datamanagement.*;
 
 import android.os.Bundle;
 
@@ -6,11 +7,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.RemoteCallbackList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -21,21 +24,28 @@ import androidx.lifecycle.ViewModelProviders;
 
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.R;
-
-
-
+import upenn.edu.cis350.anon.User;
 
 
 public class HomeFragment extends Fragment {
 
+    public enum ViewOption{
+        GENRE,
+        FALLOWED
+    }
+
+    static User user;
+
+    static ViewOption viewOp = ViewOption.GENRE;
+
 
     private HomeViewModel homeViewModel;
 
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private static RecyclerView recyclerView;
+    private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    Post[] myDataset ;
+    static Post[] posts ;
 
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
@@ -59,7 +69,7 @@ public class HomeFragment extends Fragment {
 
         // Initialize dataset, this data would usually come from a local content provider or
         // remote server.
-        initDataset();
+
     }
 
 
@@ -98,10 +108,12 @@ public class HomeFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
+        fillPost(ViewOption.GENRE);
 
-        mAdapter = new PostAdapter(myDataset);
+
+        //mAdapter = new PostAdapter(posts);
         // Set CustomAdapter as the adapter for RecyclerView.
-        recyclerView.setAdapter(mAdapter);
+        //recyclerView.setAdapter(mAdapter);
         // END_INCLUDE(initializeRecyclerView)
 
 
@@ -122,41 +134,31 @@ public class HomeFragment extends Fragment {
             }
         });*/
 
-
         return rootView;
     }
 
-    public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
-        int scrollPosition = 0;
 
-        // If a layout manager has already been set, get current scroll position.
-        if (recyclerView.getLayoutManager() != null) {
-            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
-                    .findFirstCompletelyVisibleItemPosition();
+
+
+    public static void fillPost(ViewOption option) {
+        switch(option) {
+            case GENRE:
+                posts = RemoteDataSource.getPostsbyUserGenre(user);
+                break;
+            case FALLOWED:
+                posts = RemoteDataSource.getPostsbyUserFallowed(user);
+                break;
         }
 
-        switch (layoutManagerType) {
-            case GRID_LAYOUT_MANAGER:
-                mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
-                mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
-                break;
-            case LINEAR_LAYOUT_MANAGER:
-                mLayoutManager = new LinearLayoutManager(getActivity());
-                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
-                break;
-            default:
-                mLayoutManager = new LinearLayoutManager(getActivity());
-                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
-        }
-
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.scrollToPosition(scrollPosition);
+        mAdapter = new PostAdapter(posts);
+        // Set CustomAdapter as the adapter for RecyclerView.
+        recyclerView.setAdapter(mAdapter);
     }
 
-    private void initDataset() {
-        myDataset = new Post[5];
+    private void test() {
+        posts = new Post[5];
         for (int i = 0; i < 5; i++) {
-            myDataset[i] = new Post("ANNE","content");
+            posts[i] = new Post("ANNE","content");
         }
     }
 

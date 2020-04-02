@@ -12,6 +12,8 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import upenn.edu.cis350.anon.ui.home.HomeFragment;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -37,6 +39,16 @@ public class MainActivity extends AppCompatActivity {
     public void onMakePostButtonClick(View v) {
         Intent i = new Intent(this, MakePostActivity.class);
         startActivityForResult(i, 1);
+    }
+
+    public void onViewGenreButtonClick(View v) {
+        HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
+        HomeFragment.fillPost(opt);
+    }
+
+    public void onViewFallowButtonClick(View v) {
+        HomeFragment.ViewOption opt = HomeFragment.ViewOption.FALLOWED;
+        HomeFragment.fillPost(opt);
     }
 
 }

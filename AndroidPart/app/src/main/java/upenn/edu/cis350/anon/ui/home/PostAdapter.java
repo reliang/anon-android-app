@@ -71,10 +71,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         Post post = mDataset[position];
 
         //holder.user is a view
+        holder.title.setText(post.getTitle());
+        holder.date.setText(post.getDate());
         holder.user.setText(post.getUserName());
+        holder.genre.setText(post.getGenre());
         holder.content.setText(post.getContent());
-
-
 
     }
 
