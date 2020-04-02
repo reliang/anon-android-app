@@ -1,16 +1,20 @@
 package upenn.edu.cis350.anon;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import upenn.edu.cis350.anon.ui.chat.ChatFragment;
+import upenn.edu.cis350.anon.ui.dashboard.DashBoardFragment;
+import upenn.edu.cis350.anon.ui.genre.GenreFragment;
+import upenn.edu.cis350.anon.ui.notifications.NotificationsFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,15 +22,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-        NavigationUI.setupWithNavController(navView, navController);
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
     public void onPostButtonClick(View v) {
@@ -39,4 +36,28 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(i, 1);
     }
 
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    Fragment selectedFragment = null;
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_dashboard:
+                            selectedFragment = new DashBoardFragment();
+                            break;
+                        case R.id.nav_chat:
+                            selectedFragment = new ChatFragment();
+                            break;
+                        case R.id.nav_genre:
+                            selectedFragment = new GenreFragment();
+                            break;
+                        case R.id.nav_notifications:
+                            selectedFragment = new NotificationsFragment();
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+                    return true;
+                }
+            };
 }
