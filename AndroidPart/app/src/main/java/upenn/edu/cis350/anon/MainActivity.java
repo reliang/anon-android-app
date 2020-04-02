@@ -38,6 +38,16 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(i, 1);
     }
 
+    public void onLoginButtonClick(View v) {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivityForResult(i, 2);
+    }
+
+    public void onSignupButtonClick(View v) {
+        Intent i = new Intent(this, SignupActivity.class);
+        startActivityForResult(i, 3);
+    }
+
     public void onViewGenreButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
         HomeFragment.fillPost(opt);
