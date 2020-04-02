@@ -54,10 +54,11 @@
                 android:textSize="20sp" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/post_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Post" />
+                android:text="Post"
+                android:onClick="onPostButtonClick"/>
         </LinearLayout>
     </ScrollView>
 

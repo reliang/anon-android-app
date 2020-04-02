@@ -36,14 +36,11 @@ app.use('/addUser', (req, res) => {
 	// save to the database
 	newUser.save((err) => {
 		if (err) {
-			res.type('html').status(200);
-			res.write('uh oh: ' + err);
-			console.log(err);
-			res.end();
+			res.json({status: 'Failed to add to database'});
 		}
 		else {
 			// display the "successfull created" page using EJS
-			res.json({status: 'success', user: newUser});
+			res.json({ status: 'Success', user: newUser });
 		}
 	});
 }
@@ -79,14 +76,11 @@ app.use('/addGenre', (req, res) => {
 	// save to the database
 	newGenre.save((err) => {
 		if (err) {
-			res.type('html').status(200);
-			res.write('uh oh: ' + err);
-			console.log(err);
-			res.end();
+			res.json({status: 'Failed to add to database'});
 		}
 		else {
 			// display the "successfull created" page using EJS
-			res.json({status: 'success', genre: newGenre});
+			res.json({ status: 'Success', genre: newGenre });
 		}
 	});
 }
@@ -107,19 +101,59 @@ app.use('/addPost', (req, res) => {
 	// save to the database
 	newPost.save((err) => {
 		if (err) {
-			res.type('html').status(200);
-			res.write('uh oh: ' + err);
-			console.log(err);
-			res.end();
+			res.json({status: 'Failed to add to database'});
 		}
 		else {
 			// display the "successfull created" page using EJS
-			res.json({status: 'success', post: newPost});
+			res.json({ status: 'Success', post: newPost });
 		}
 	});
 }
 );
 
+app.use('/getGenreByName', (req, res) => {
+	var searchName = req.query.name;
+	if (searchName) {
+		Genre.findOne({name: searchName}, (err, genre) => {
+			if (err) {
+				res.json({});
+			}
+			else if (!genre) {
+				// no objects found, so send back empty json
+				res.json({});
+			}
+			else {;
+				// send back a single JSON object
+				res.json(genre);
+			}
+		});
+	} else {
+
+	}
+}
+);
+
+app.use('/getUserByName', (req, res) => {
+	var searchName = req.query.name;
+	if (searchName) {
+		User.findOne({alias: searchName}, (err, user) => {
+			if (err) {
+				res.json({});
+			}
+			else if (!user) {
+				// no objects found, so send back empty json
+				res.json({});
+			}
+			else {;
+				// send back a single JSON object
+				res.json(user);
+			}
+		});
+	} else {
+
+	}
+}
+);
 
 // route for creating a new person
 // this is the action of the "create new person" form
