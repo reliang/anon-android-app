@@ -37,8 +37,8 @@ public class MakePostActivity extends AppCompatActivity {
 
     public void onPostButtonClick(View v) {
         String title, content;
-        title  = ((EditText) findViewById(R.id.post_title)).getText().toString();
-        content = ((EditText) findViewById(R.id.post_content)).getText().toString();
+        title  = ((EditText) findViewById(R.id.make_post_title)).getText().toString();
+        content = ((EditText) findViewById(R.id.make_post_content)).getText().toString();
         if (title.isEmpty()) {
             Toast.makeText(this, "Make a title!", Toast.LENGTH_LONG).show();
             return;
@@ -56,6 +56,7 @@ public class MakePostActivity extends AppCompatActivity {
         String status = RemoteDataSource.addPostbyObject(newPost);
         if (status.equals("Success")) {
             Intent i = new Intent(this, PostActivity.class);
+            i.putExtra("post", newPost);
             startActivity(i);
         } else {
             Toast.makeText(this, status, Toast.LENGTH_LONG).show();
