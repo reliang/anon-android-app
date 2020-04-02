@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notifications">
+        <item>Post replies</item>
+        <item>Comment replies</item>
+        <item>Username Mentions</item>
+    </string-array>
+</resources>

@@ -1,4 +1,4 @@
-package upenn.edu.cis350.anon.ui.notifications;
+package upenn.edu.cis350.anon.ui.chat;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment;
 
 import upenn.edu.cis350.anon.R;
 
-public class NotificationsFragment extends Fragment {
+public class ChatFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_notifications, container, false);
+        return inflater.inflate(R.layout.fragment_chat, container, false);
     }
 }

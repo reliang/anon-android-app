@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     static ViewOption viewOp = ViewOption.GENRE;
 
 
-    private HomeViewModel homeViewModel;
+   // private HomeViewModel homeViewModel;
 
     private static RecyclerView recyclerView;
     private static RecyclerView.Adapter mAdapter;
@@ -79,8 +79,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        homeViewModel =
-                ViewModelProviders.of(this).get(HomeViewModel.class);
+       // homeViewModel =
+               // ViewModelProviders.of(this).get(HomeViewModel.class);
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
 
