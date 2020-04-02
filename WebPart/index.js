@@ -49,6 +49,26 @@ app.use('/addUser', (req, res) => {
 }
 );
 
+// route for getting a user
+app.use('/getUser', (req, res) => {
+	// construct the Post from the input data
+
+	var username = req.query.alias
+
+	User.findOne({alias: username}, (err, user) => {
+		if (err) {
+			res.json({status: err});
+		}
+		else if (!user) {
+			res.json({status: 'no user'})
+		}
+		else {
+			res.json({status: 'success', user: user, })
+		}
+	});
+}
+);
+
 // route for creating a new genre
 app.use('/addGenre', (req, res) => {
 	// construct the Post from the input data
