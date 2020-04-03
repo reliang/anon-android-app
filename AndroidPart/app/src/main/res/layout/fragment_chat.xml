@@ -11,20 +11,7 @@
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sort Notifications:">
-
-            </TextView>
-            <Spinner
-                android:id="@+id/notifications_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-            </Spinner>
-        </LinearLayout>
+            android:layout_height="match_parent"/>
     </LinearLayout>
     <RelativeLayout
         android:id="@+id/relativeLayout"
