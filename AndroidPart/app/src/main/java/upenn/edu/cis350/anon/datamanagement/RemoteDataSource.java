@@ -119,4 +119,54 @@ public class RemoteDataSource {
             return "Error adding post";
         }
     }
+
+    public static String addUserByObject(User user) {
+        String alias = user.getAlias();
+        String password = user.getPassword();
+
+        try{
+            URL url = new URL("http://10.0.2.2:3000/addUser?"
+                    + "alias=" + alias
+                    + "&password=" + password);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            return status;
+        } catch (Exception e) {
+            return "Error adding post";
+        }
+    }
+
+    public static String getUserByObject(User user) {
+        String alias = user.getAlias();
+        String password = user.getPassword();
+
+        try{
+            URL url = new URL("http://10.0.2.2:3000/getUser?"
+                    + "alias=" + alias);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            if (status.equals("success")) {
+                if (jo.getJSONObject("user").getString("password").equals(password)) {
+                    return "success";
+                } else {
+                    return "wrong username or password";
+                }
+            }
+            return status;
+        } catch (Exception e) {
+            return "Error adding post";
+        }
+    }
 }

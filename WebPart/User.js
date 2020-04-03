@@ -9,7 +9,7 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     // userId is its own ObjectId
     alias: {type: String, required: true, unique: true},
-    password: {type: String, required: true, unique: true},
+    password: {type: String, required: true},
     iconLink: String,
     status: {type: Number, min: 0, max: 2,  required: true},
     contribution: Number,
