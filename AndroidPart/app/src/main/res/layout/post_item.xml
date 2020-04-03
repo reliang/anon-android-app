@@ -24,7 +24,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="387dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="25dp">
 
@@ -59,7 +59,7 @@
         <TextView
             android:id="@+id/post_content2"
             android:layout_width="wrap_content"
-            android:layout_height="259dp"
+            android:layout_height="wrap_content"
             android:text="@string/lorem_ipsum_long"
             android:textSize="20sp" />
     </LinearLayout>

@@ -36,4 +36,33 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(i, 3);
     }
 
+
+
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                    Fragment selectedFragment = null;
+                    switch (menuItem.getItemId()) {
+                        case R.id.nav_dashboard:
+                            selectedFragment = new DashBoardFragment();
+                            break;
+                        case R.id.nav_chat:
+                            selectedFragment = new ChatFragment();
+                            break;
+                        case R.id.nav_genre:
+                            selectedFragment = new GenreFragment();
+                            break;
+                        case R.id.nav_notifications:
+                            selectedFragment = new NotificationsFragment();
+                            break;
+                    }
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+                    return true;
+                }
+            };
+
+
 }

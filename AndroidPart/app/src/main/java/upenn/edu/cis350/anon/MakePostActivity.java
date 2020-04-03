@@ -40,9 +40,14 @@ public class MakePostActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClick(View v) {
-        String title, content;
+        String userId, genreId, title, content, username, genre;
+        userId = "5e854df97d58922d34b950cb"; // CHANGE TO CURRENT USER'S
+        genreId = "5e863b135595fb1a089ef03e"; // CHANGE TO CURRENT GENRE'S
+        username = "abc"; // CHANGE TO CURRENT USER'S
+        genre = "Hazing"; // CHANGE TO CURRENT GENRE'S
         title  = ((EditText) findViewById(R.id.make_post_title)).getText().toString();
         content = ((EditText) findViewById(R.id.make_post_content)).getText().toString();
+
         if (title.isEmpty()) {
             Toast.makeText(this, "Make a title!", Toast.LENGTH_LONG).show();
             return;
@@ -50,12 +55,13 @@ public class MakePostActivity extends AppCompatActivity {
             Toast.makeText(this, "Write something!", Toast.LENGTH_LONG).show();
             return;
         }
-        Post newPost = new Post("5e854df97d58922d34b950cb", // CHANGE TO GET USERID
-                "5e863b135595fb1a089ef03e",
+        Post newPost = new Post(
+                userId,
+                genreId,
                 title,
                 new GregorianCalendar(),
-                "abc",
-                "Hazing",
+                username,
+                genre,
                 content
                 );
         String status = RemoteDataSource.addPostbyObject(newPost);
@@ -66,13 +72,6 @@ public class MakePostActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, status, Toast.LENGTH_LONG).show();
         }
-        /*
-        if (status) {
-            Toast.makeText(this, "Post created", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Failed to make post", Toast.LENGTH_LONG).show();
-        }
-        */
     }
 
 
