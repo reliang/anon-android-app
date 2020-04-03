@@ -1,36 +1,45 @@
 package upenn.edu.cis350.anon;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class Post {
+public class Post implements Serializable {
 
-    //int userId;
-    int postId;
+    String userId, genreId;
 
-    String title,date,user,genre,content;
+    String title,date,username,genre,content;
 
     ArrayList<Reply> replies;
-   // int time; // replace with Java Time class
 
-
-    public Post(){
-
+    public Post(String userId, String genreId,
+                String title, String date, String username, String genre, String content)  {
+        this.userId = userId;
+        this.genreId = genreId;
+        this.title = title;
+        this.date = date;
+        this.username = username;
+        this.genre = genre;
+        this.content = content;
     }
 
-    public Post(String t, String d, String u, String g, String c)  {
-        title = t;
-        date = d;
-        user = u;
-        genre = g;
-        content = c;
+    public Post(String userId, String genreId,
+                String title, String username, String genre, String content){
+        this(userId, genreId, title, "", username, genre, content);
     }
 
-    public Post(String n, String c){
-        user = n;
-        content = c;
+    public Post (String username, String content) {
+        this.username = username;
+        this.content = content;
     }
 
 
+    public String getUserId(){
+        return userId;
+    }
+    public String getGenreId(){
+        return genreId;
+    }
 
     public String getTitle(){
         return title;
@@ -41,7 +50,7 @@ public class Post {
     }
 
     public String getUserName(){
-        return user;
+        return username;
     }
 
     public String getGenre(){
@@ -52,5 +61,9 @@ public class Post {
         return content;
     }
 
+    public void setDate(Date date) {
+        this.date = date.getMonth() + "/" + date.getDay() + "/" + date.getYear()
+                + " " + date.getHours() + ":" + date.getMinutes();
+    }
 
 }

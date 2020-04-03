@@ -28,14 +28,24 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
-    public void onPostButtonClick(View v) {
+    public void onPostDemoClick(View v) {
         Intent i = new Intent(this, PostActivity.class);
         startActivityForResult(i, 0);
     }
 
-    public void onMakePostButtonClick(View v) {
+    public void onMakePostDemoClick(View v) {
         Intent i = new Intent(this, MakePostActivity.class);
         startActivityForResult(i, 1);
+    }
+
+    public void onLoginButtonClick(View v) {
+        Intent i = new Intent(this, LoginActivity.class);
+        startActivityForResult(i, 2);
+    }
+
+    public void onSignupButtonClick(View v) {
+        Intent i = new Intent(this, SignupActivity.class);
+        startActivityForResult(i, 3);
     }
 
     public void onViewGenreButtonClick(View v) {
