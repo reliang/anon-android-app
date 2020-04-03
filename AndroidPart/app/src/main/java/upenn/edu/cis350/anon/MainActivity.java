@@ -58,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
         HomeFragment.fillPost(opt);
     }
 
+    public void showPostClicked(View v) {
+        Fragment selectedFragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
+    }
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.v("a", "oncreate view");
 
        // homeViewModel =
                // ViewModelProviders.of(this).get(HomeViewModel.class);
@@ -141,6 +142,7 @@ public class HomeFragment extends Fragment {
 
 
     public static void fillPost(ViewOption option) {
+        Log.v("fill","fillpost");
         switch(option) {
             case GENRE:
                 posts = RemoteDataSource.getPostsbyUserGenre(user);

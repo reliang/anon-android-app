@@ -211,20 +211,17 @@ app.use('/all', (req, res) => {
 app.use('/getUserGenre', (req, res) => {
 	var id = req.query.id; 
 	var o_id = new ObjectID(id);
-	var user;
 
-	User.findOne( {"_id":o_id}, (err, person) => 
+	User.findOne( {"_id":o_id}, (err, user) => 
 		{ 
 		if (err) {
 			res.json( { 'status' : err } ); 
 		} 
-		else if (!person) { 
+		else if (!user) { 
 			res.json( { 'status' : 'no person' } ); 
 		} 
 		else {
 			//res.json( { 'person' : person } ); 
-			
-			user = person;
 
 			res.json( { 'genres' : user.genresFollowed } );
 
@@ -242,12 +239,12 @@ app.use('/getUserGenre', (req, res) => {
 	
 });
 
-app.use('/getPostsByGenre', (req, res) => {
+app.use('/getPostsByGenre', async(req, res) => {
 
 	var genre = req.query.genre; 
 
 	Post.find({'genre':ObjectID(genre)}, (err, posts) => {
-		console.log(posts);
+		//console.log(posts);
 		if (err) {
 			console.log('uh oh' + err);
 			res.json({});
@@ -257,9 +254,62 @@ app.use('/getPostsByGenre', (req, res) => {
 			res.json({});
 		}
 		else {
-			res.json({'posts':posts});
+
+
+/*
+			posts.forEach((post) => {
+				await post.populate('userId').execPopulate();;
+				await post.populate('genre').execPopulate();;
+				console.log(post.genre);
+
+			});*/
+		
+		res.json({'posts':posts});
 		}
 
+	});
+});
+
+
+app.use('/getUsernameById', async(req, res) => {
+
+	var id = req.query.id; 
+	var o_id = new ObjectID(id);
+
+	User.findOne( {"_id":o_id}, (err, user) => 
+		{ 
+		if (err) {
+			res.json( { 'status' : err } ); 
+		} 
+		else if (!user) { 
+			res.json( { 'status' : 'no person' } ); 
+		} 
+		else {
+			//res.json( { 'person' : person } ); 
+
+			res.send(user.alias);
+		}
+	});
+});
+
+app.use('/getGenreNameById', async(req, res) => {
+
+	var id = req.query.id; 
+	var o_id = new ObjectID(id);
+
+	Genre.findOne( {"_id":o_id}, (err, g) => 
+		{ 
+		if (err) {
+			res.json( { 'status' : err } ); 
+		} 
+		else if (!g) { 
+			res.json( { 'status' : 'no person' } ); 
+		} 
+		else {
+			//res.json( { 'person' : person } ); 
+
+			res.send(g.name);
+		}
 	});
 });
 
