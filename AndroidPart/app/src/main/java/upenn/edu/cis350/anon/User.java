@@ -1,8 +1,9 @@
 package upenn.edu.cis350.anon;
 
+import java.io.Serializable;
 import java.util.Set;
 
-public class User {
+public class User implements Serializable {
     String alias;
     int userId;
     String password;
@@ -15,4 +16,16 @@ public class User {
     Set<Integer> postsWritten; // post ids
     Set<Integer> followers; // user ids
 
+    public User(String alias, String password) {
+        this.alias = alias;
+        this.password = password;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

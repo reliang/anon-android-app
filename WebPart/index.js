@@ -29,7 +29,7 @@ app.use('/addUser', (req, res) => {
 		alias: req.query.alias,
 		password: req.query.password,
 		iconLink: req.query.iconLink,
-		status: 0, // 0 = user, 1 = admin, 2 = head admin
+		status: 0, // 0 = us er, 1 = admin, 2 = head admin
 		contribution: 0,
 		genresFollowed: [],
 		postsFollowed: [],
@@ -40,11 +40,11 @@ app.use('/addUser', (req, res) => {
 	// save to the database
 	newUser.save((err) => {
 		if (err) {
-			res.json({status: 'Failed to add to database'});
+			res.json({status: err});
 		}
 		else {
 			// display the "successfull created" page using EJS
-			res.json({ status: 'Success', user: newUser });
+			res.json({ status: 'success', user: newUser});
 		}
 	});
 }
@@ -64,7 +64,7 @@ app.use('/getUser', (req, res) => {
 			res.json({status: 'no user'})
 		}
 		else {
-			res.json({status: 'success', user: user, })
+			res.json({status: 'success', user: user})
 		}
 	});
 }
@@ -99,7 +99,7 @@ app.use('/addPost', (req, res) => {
 		content: req.query.content,
 		replies: [],
 		genre: req.query.genreId,
-		time: new Date()
+		time: new Date((Number) (req.query.date)) // turns milliseconds into date format
 	});
 
 	// save to the database
@@ -239,6 +239,37 @@ app.use('/getUserGenre', (req, res) => {
 	
 });
 
+app.use('/getUserFallowedPost', (req, res) => {
+	var id = req.query.id; 
+	var o_id = new ObjectID(id);
+
+	User.findOne( {"_id":o_id}, (err, user) => 
+		{ 
+		if (err) {
+			res.json( { 'status' : err } ); 
+		} 
+		else if (!user) { 
+			res.json( { 'status' : 'no person' } ); 
+		} 
+		else {
+			//res.json( { 'person' : person } ); 
+
+			res.json( { 'followed' : user.postsFollowed } );
+
+
+/*
+			(user.genresFollowed).forEach((g) => {
+				genres.push(g);
+			});*/
+
+			//res.json( { 'genres' : user.genresFollowed } ); 
+		    //genres.concat(user.genresFollowed);
+
+		}
+	});
+	
+});
+
 app.use('/getPostsByGenre', async(req, res) => {
 
 	var genre = req.query.genre; 
@@ -309,6 +340,29 @@ app.use('/getGenreNameById', async(req, res) => {
 			//res.json( { 'person' : person } ); 
 
 			res.send(g.name);
+		}
+	});
+});
+
+app.use('/getPostById', async(req, res) => {
+
+	var id = req.query.id; 
+	var o_id = new ObjectID(id);
+
+	Post.findOne( {"_id":o_id}, (err, p) => 
+		{ 
+		if (err) {
+			res.json( { 'status' : err } ); 
+		} 
+		else if (!p) { 
+			res.json( { 'status' : 'no person' } ); 
+		} 
+		else {
+			var ans = [];
+			ans.push(p);
+			res.json( { 'posts' : ans } ); 
+
+			
 		}
 	});
 });

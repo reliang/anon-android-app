@@ -36,7 +36,7 @@
             android:textSize="30dp" />
 
         <EditText
-            android:id="@+id/album_description_view"
+            android:id="@+id/password_view"
             android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:inputType="text" />

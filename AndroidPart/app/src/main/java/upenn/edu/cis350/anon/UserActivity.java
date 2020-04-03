@@ -18,26 +18,46 @@ import upenn.edu.cis350.anon.ui.notifications.NotificationsFragment;
 
 import upenn.edu.cis350.anon.ui.home.HomeFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_user);
+        BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
-    public void onLoginButtonClick(View v) {
-        Intent i = new Intent(this, LoginActivity.class);
-        startActivityForResult(i, 2);
+    public void onPostDemoClick(View v) {
+        Intent i = new Intent(this, PostActivity.class);
+        startActivityForResult(i, 0);
     }
 
-    public void onSignupButtonClick(View v) {
-        Intent i = new Intent(this, SignupActivity.class);
-        startActivityForResult(i, 3);
+    public void onMakePostDemoClick(View v) {
+        Intent i = new Intent(this, MakePostActivity.class);
+        startActivityForResult(i, 1);
     }
 
+    public void onLogoutButtonClick(View v) {
+        Intent i = new Intent(this, MainActivity.class);
+        startActivityForResult(i, 1);
+    }
 
+    public void onViewGenreButtonClick(View v) {
+        HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
+        HomeFragment.fillPost(opt);
+    }
 
+    public void onViewFallowButtonClick(View v) {
+        HomeFragment.ViewOption opt = HomeFragment.ViewOption.FALLOWED;
+        HomeFragment.fillPost(opt);
+    }
+
+    public void showPostClicked(View v) {
+        Fragment selectedFragment = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
+    }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -63,6 +83,5 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
-
 
 }
