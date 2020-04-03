@@ -11,6 +11,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/post_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="25dp"
@@ -68,10 +69,11 @@
                 android:inputType="textMultiLine" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/reply_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Post" />
+                android:text="Post"
+                android:onClick="onReplyButtonClick"/>
 
             <TextView
                 android:layout_width="match_parent"

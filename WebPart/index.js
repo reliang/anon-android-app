@@ -115,6 +115,41 @@ app.use('/addPost', (req, res) => {
 }
 );
 
+// route for creating a new reply
+app.use('/addReply', (req, res) => {
+	// construct the Post from the input data
+	var postId = req.query.postId;
+
+	var newReply = new Reply({
+		userId: req.query.userId,
+		content: req.query.content,
+		time: new Date((Number) (req.query.date)) // turns milliseconds into date format
+	});
+
+	newReply.save((err, reply) => {
+		if (err) {
+			res.json({status: 'Failed to add to database'});
+		}
+		else {
+			// add replyId to post
+			Post.update(
+				{_id: postId},
+				{
+					$push: {replies: reply._id}
+				},
+				(err, result) => {
+					if (err) {
+						res.json({status: 'Error updating post'});
+						return;
+					}
+				}
+			);
+			res.json({ status: 'Success', reply: newReply });
+		}
+	});
+}
+);
+
 app.use('/getGenreByName', (req, res) => {
 	var searchName = req.query.name;
 	if (searchName) {

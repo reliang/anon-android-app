@@ -4,11 +4,10 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 public class Post implements Serializable {
 
-    String userId, genreId;
+    String userId, genreId, postId;
     String title,username,genre,content;
     Calendar date;
 
@@ -38,6 +37,10 @@ public class Post implements Serializable {
         return genreId;
     }
 
+    public String getPostId(){
+        return postId;
+    }
+
     public String getTitle(){
         return title;
     }
@@ -64,4 +67,7 @@ public class Post implements Serializable {
         return content;
     }
 
+    public void setPostId(String id){
+        this.postId = id;
+    }
 }
