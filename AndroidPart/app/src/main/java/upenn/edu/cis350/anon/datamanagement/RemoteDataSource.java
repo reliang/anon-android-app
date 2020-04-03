@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Date;
 
 import upenn.edu.cis350.anon.Post;
+import upenn.edu.cis350.anon.Reply;
 import upenn.edu.cis350.anon.User;
 
 public class RemoteDataSource {
@@ -92,7 +93,7 @@ public class RemoteDataSource {
 
     }
 
-    public static String addPostbyObject( Post post) {
+    public static String addPostbyObject(Post post) {
         String userId, genreId, title, content;
         Long date;
 
@@ -118,9 +119,43 @@ public class RemoteDataSource {
             }
             JSONObject jo = new JSONObject(str);
             String status = jo.getString("status");
+            // give post its id
+            if (status.equals("Success")) {
+                post.setPostId(jo.getJSONObject("post").getString("_id"));
+            }
             return status;
         } catch (Exception e) {
             return "Error adding post";
+        }
+    }
+
+    public static String addReplybyObject(Reply reply) {
+        String postId, userId, content;
+        Long date;
+
+        postId = reply.getPostId();
+        userId = reply.getUserId();
+        content = reply.getContent();
+        date = reply.getDate().getTimeInMillis(); // gets date in millisecond format
+
+        URL url;
+        try{
+            url = new URL("http://10.0.2.2:3000/addReply?"
+                    + "userId=" + userId
+                    + "&postId=" + postId
+                    + "&content=" + content
+                    + "&date=" + date );
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            return status;
+        } catch (Exception e) {
+            return "Error adding reply";
         }
     }
 }
