@@ -99,7 +99,7 @@ app.use('/addPost', (req, res) => {
 		content: req.query.content,
 		replies: [],
 		genre: req.query.genreId,
-		time: new Date()
+		time: new Date((Number) (req.query.date)) // turns milliseconds into date format
 	});
 
 	// save to the database

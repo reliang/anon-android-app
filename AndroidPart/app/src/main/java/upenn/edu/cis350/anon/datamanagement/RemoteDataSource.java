@@ -6,6 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.Date;
 
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.User;
@@ -93,11 +94,13 @@ public class RemoteDataSource {
 
     public static String addPostbyObject( Post post) {
         String userId, genreId, title, content;
+        Long date;
 
         title = post.getTitle();
         userId = post.getUserId();
         genreId = post.getGenreId();
         content = post.getContent();
+        date = post.getDate().getTimeInMillis(); // gets date in millisecond format
 
         URL url;
         try{
@@ -105,7 +108,8 @@ public class RemoteDataSource {
                     + "userId=" + userId
                     + "&name=" + title
                     + "&content=" + content
-                    + "&genreId=" + genreId);
+                    + "&genreId=" + genreId
+                    + "&date=" + date );
             AccessWebTask task = new AccessWebTask();
             task.execute(url);
             String str = task.get();

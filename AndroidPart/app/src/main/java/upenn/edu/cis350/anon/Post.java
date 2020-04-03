@@ -2,18 +2,19 @@ package upenn.edu.cis350.anon;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Post implements Serializable {
 
     String userId, genreId;
-
-    String title,date,username,genre,content;
+    String title,username,genre,content;
+    Calendar date;
 
     ArrayList<Reply> replies;
 
     public Post(String userId, String genreId,
-                String title, String date, String username, String genre, String content)  {
+                String title, Calendar date, String username, String genre, String content)  {
         this.userId = userId;
         this.genreId = genreId;
         this.title = title;
@@ -21,11 +22,6 @@ public class Post implements Serializable {
         this.username = username;
         this.genre = genre;
         this.content = content;
-    }
-
-    public Post(String userId, String genreId,
-                String title, String username, String genre, String content){
-        this(userId, genreId, title, "", username, genre, content);
     }
 
     public Post (String username, String content) {
@@ -45,7 +41,7 @@ public class Post implements Serializable {
         return title;
     }
 
-    public String getDate(){
+    public Calendar getDate(){
         return date;
     }
 
@@ -59,11 +55,6 @@ public class Post implements Serializable {
 
     public String getContent(){
         return content;
-    }
-
-    public void setDate(Date date) {
-        this.date = date.getMonth() + "/" + date.getDay() + "/" + date.getYear()
-                + " " + date.getHours() + ":" + date.getMinutes();
     }
 
 }
