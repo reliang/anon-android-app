@@ -9,6 +9,10 @@ app.set('view engine', 'ejs');
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 
+var ObjectID = require('mongodb').ObjectID
+
+
+
 // import the Person class from Person.js
 var Person = require('./Person.js');
 var Post = require('./Post.js');
@@ -130,7 +134,7 @@ app.use('/create', (req, res) => {
 app.use('/all', (req, res) => {
 
 	// find all the Person objects in the database
-	Person.find({}, (err, persons) => {
+	User.find((err, persons) => {
 		if (err) {
 			res.type('html').status(200);
 			console.log('uh oh' + err);
@@ -144,10 +148,65 @@ app.use('/all', (req, res) => {
 				return;
 			}
 			// use EJS to show all the people
-			res.render('all', { persons: persons });
+			res.json({ persons: persons });
 
 		}
-	}).sort({ 'age': 'asc' }); // this sorts them BEFORE rendering the results
+	}) // this sorts them BEFORE rendering the results
+});
+
+app.use('/getUserGenre', (req, res) => {
+	var id = req.query.id; 
+	var o_id = new ObjectID(id);
+	var user;
+
+	User.findOne( {"_id":o_id}, (err, person) => 
+		{ 
+		if (err) {
+			res.json( { 'status' : err } ); 
+		} 
+		else if (!person) { 
+			res.json( { 'status' : 'no person' } ); 
+		} 
+		else {
+			//res.json( { 'person' : person } ); 
+			
+			user = person;
+
+			res.json( { 'genres' : user.genresFollowed } );
+
+
+/*
+			(user.genresFollowed).forEach((g) => {
+				genres.push(g);
+			});*/
+
+			//res.json( { 'genres' : user.genresFollowed } ); 
+		    //genres.concat(user.genresFollowed);
+
+		}
+	});
+	
+});
+
+app.use('/getPostsByGenre', (req, res) => {
+
+	var genre = req.query.genre; 
+
+	Post.find({'genre':ObjectID(genre)}, (err, posts) => {
+		console.log(posts);
+		if (err) {
+			console.log('uh oh' + err);
+			res.json({});
+		}
+		else if (posts.length == 0) {
+			// no objects found, so send back empty json
+			res.json({});
+		}
+		else {
+			res.json({'posts':posts});
+		}
+
+	});
 });
 
 // route for accessing data via the web api
@@ -191,6 +250,13 @@ app.use('/api', (req, res) => {
 	});
 });
 
+
+app.use('/test', (req, res) => {
+    // create a JSON object
+    var data = { 'message' : 'It works!!' };
+    // send it back
+    res.json(data);
+});
 
 
 
