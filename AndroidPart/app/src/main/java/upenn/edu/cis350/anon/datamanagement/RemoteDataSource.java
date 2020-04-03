@@ -262,7 +262,7 @@ public class RemoteDataSource {
         }
     }
 
-    public static String addReplybyObject(Reply reply) {
+    public static String addReplybyObject(Reply reply)  {
         String postId, userId, content;
         Long date;
 
@@ -291,7 +291,7 @@ public class RemoteDataSource {
             return "Error adding reply";
         }
     }
-}
+
 
     public static String addUserByObject(User user) {
         String alias = user.getAlias();
