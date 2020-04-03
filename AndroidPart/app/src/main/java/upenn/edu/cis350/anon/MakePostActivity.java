@@ -10,6 +10,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 
 public class MakePostActivity extends AppCompatActivity {
@@ -49,6 +53,7 @@ public class MakePostActivity extends AppCompatActivity {
         Post newPost = new Post("5e854df97d58922d34b950cb", // CHANGE TO GET USERID
                 "5e863b135595fb1a089ef03e",
                 title,
+                new GregorianCalendar(),
                 "abc",
                 "Hazing",
                 content

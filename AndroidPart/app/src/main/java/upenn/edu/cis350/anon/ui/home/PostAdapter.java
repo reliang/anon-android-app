@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.R;
 import upenn.edu.cis350.anon.User;
@@ -72,7 +75,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
 
         //holder.user is a view
         holder.title.setText(post.getTitle());
-        holder.date.setText(post.getDate());
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        holder.date.setText(dateFormat.format(post.getDate().getTime()));
         holder.user.setText(post.getUserName());
         holder.genre.setText(post.getGenre());
         holder.content.setText(post.getContent());
