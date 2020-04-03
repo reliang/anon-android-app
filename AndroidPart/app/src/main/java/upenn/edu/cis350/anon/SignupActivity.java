@@ -1,10 +1,16 @@
 package upenn.edu.cis350.anon;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 
 public class SignupActivity extends AppCompatActivity {
     @Override
@@ -20,6 +26,28 @@ public class SignupActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+    }
 
+
+    public void onSignupButtonClick(View v) {
+        String username = ((EditText) findViewById(R.id.username_view)).getText().toString();
+        String password = ((EditText) findViewById(R.id.password_view)).getText().toString();
+
+        if (username.isEmpty()) {
+            Toast.makeText(this, "Username Missing!", Toast.LENGTH_LONG).show();
+            return;
+        } else if (password.isEmpty()) {
+            Toast.makeText(this, "Password Missing!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        User newUser = new User(username, password);
+        String status = RemoteDataSource.addUserByObject(newUser);
+        if (status.equals("success")) {
+            Intent i = new Intent(this, UserActivity.class);
+            startActivity(i);
+        } else {
+            Toast.makeText(this, "existing username", Toast.LENGTH_LONG).show();
+        }
     }
 }

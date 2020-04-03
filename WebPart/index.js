@@ -29,7 +29,7 @@ app.use('/addUser', (req, res) => {
 		alias: req.query.alias,
 		password: req.query.password,
 		iconLink: req.query.iconLink,
-		status: 0, // 0 = user, 1 = admin, 2 = head admin
+		status: 0, // 0 = us er, 1 = admin, 2 = head admin
 		contribution: 0,
 		genresFollowed: [],
 		postsFollowed: [],
@@ -40,11 +40,11 @@ app.use('/addUser', (req, res) => {
 	// save to the database
 	newUser.save((err) => {
 		if (err) {
-			res.json({status: 'Failed to add to database'});
+			res.json({status: err});
 		}
 		else {
 			// display the "successfull created" page using EJS
-			res.json({ status: 'Success', user: newUser });
+			res.json({ status: 'success', user: newUser});
 		}
 	});
 }
@@ -64,7 +64,7 @@ app.use('/getUser', (req, res) => {
 			res.json({status: 'no user'})
 		}
 		else {
-			res.json({status: 'success', user: user, })
+			res.json({status: 'success', user: user})
 		}
 	});
 }
