@@ -96,7 +96,7 @@ public class RemoteDataSource {
 
 
         } catch (Exception e) {
-            return null;
+            return new Post[0];
         }
 
         return posts;
@@ -116,7 +116,25 @@ public class RemoteDataSource {
         }
     }
 
+    public static Post[] getPostsbyGenreId(String genre){
+        URL url;
+        ArrayList<Post> posts = new ArrayList<Post>();
 
+        try {
+
+                url = new URL("http://10.0.2.2:3000/getPostsByGenre?genre=" + genre);
+                String str = getStrByUrl(url);
+                Post[] temp = getPostsInJason(str);
+                Collections.addAll(posts, temp);
+
+        } catch (Exception e) {
+            Log.v("error",e.getMessage());
+
+
+        }
+        Post[] ans = posts.toArray(new Post[posts.size()]);
+        return ans;
+    }
     public static Post[] getPostsbyUserGenre(User user){
         URL url;
         //String userId = user.getId();
@@ -126,9 +144,6 @@ public class RemoteDataSource {
         try {
             url = new URL("http://10.0.2.2:3000/getUserGenre?id=" + userId);
             String str = getStrByUrl(url);
-
-            Log.v("genres",str);
-
             JSONObject jo = new JSONObject(str);
             JSONArray genres = jo.getJSONArray("genres");
 
@@ -137,11 +152,7 @@ public class RemoteDataSource {
                 String genre = genres.getString(i);
 
                 url = new URL("http://10.0.2.2:3000/getPostsByGenre?genre=" + genre);
-
-                Log.v("genreid",genre);
                 str = getStrByUrl(url);
-
-                Log.v("posts",str);
                 Post[] temp = getPostsInJason(str);
 
                 Collections.addAll(posts, temp);

@@ -1,3 +1,5 @@
+
+
 // set up Express
 var express = require('express');
 var app = express();
@@ -305,7 +307,7 @@ app.use('/getUserFallowedPost', (req, res) => {
 	
 });
 
-app.use('/getPostsByGenre', async(req, res) => {
+app.use('/getPostsByGenre', (req, res) => {
 
 	var genre = req.query.genre; 
 
@@ -337,7 +339,7 @@ app.use('/getPostsByGenre', async(req, res) => {
 });
 
 
-app.use('/getUsernameById', async(req, res) => {
+app.use('/getUsernameById', (req, res) => {
 
 	var id = req.query.id; 
 	var o_id = new ObjectID(id);
@@ -358,7 +360,7 @@ app.use('/getUsernameById', async(req, res) => {
 	});
 });
 
-app.use('/getGenreNameById', async(req, res) => {
+app.use('/getGenreNameById', (req, res) => {
 
 	var id = req.query.id; 
 	var o_id = new ObjectID(id);
@@ -379,7 +381,7 @@ app.use('/getGenreNameById', async(req, res) => {
 	});
 });
 
-app.use('/getPostById', async(req, res) => {
+app.use('/getPostById', (req, res) => {
 
 	var id = req.query.id; 
 	var o_id = new ObjectID(id);

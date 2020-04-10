@@ -24,7 +24,9 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="112dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:alignmentMode="alignMargins"
             android:columnCount="2"
             android:columnOrderPreserved="false"
@@ -35,6 +37,7 @@
 
             <!-- 1 -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_violence"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
@@ -42,13 +45,16 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:onClick="genreClicked"
+
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Interpersonal"
+                    android:text="Violence"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
@@ -61,10 +67,13 @@
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
+
+
             </com.google.android.material.card.MaterialCardView>
 
             <!-- 2 -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_greeklife"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
@@ -72,8 +81,11 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:onClick="genreClicked"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="8dp">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,6 +107,7 @@
 
             <!-- 3 -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_hazing"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
@@ -103,11 +116,14 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                android:clickable="true"
+                android:onClick="genreClicked">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Family"
+                    android:text="Hazing"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
@@ -124,6 +140,7 @@
 
             <!-- 4 -->
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_sexualassult"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_rowWeight="1"
@@ -132,11 +149,14 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                android:clickable="true"
+                android:onClick="genreClicked">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Memes"
+                    android:text="Sexual Assault"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
@@ -161,7 +181,10 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                android:clickable="true"
+                android:onClick="genreClicked">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -190,7 +213,10 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="8dp">
+                app:cardElevation="8dp"
+                android:clickable="true"
+                android:onClick="genreClicked">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -208,6 +234,7 @@
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
             </com.google.android.material.card.MaterialCardView>
+
         </GridLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
