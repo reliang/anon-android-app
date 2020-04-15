@@ -1,11 +1,12 @@
 package upenn.edu.cis350.anon;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 public class User implements Serializable {
     String alias;
-    int userId;
+    String userId;
     String password;
     String iconLink; // base64 string or link?
     int status; // 0 = user, 1 = admin, 2 = head admin
@@ -19,6 +20,10 @@ public class User implements Serializable {
     public User(String alias, String password) {
         this.alias = alias;
         this.password = password;
+        this.generesFollowed = new HashSet<>();
+        this.postsFollowed = new HashSet<>();
+        this.postsWritten = new HashSet<>();
+        this.followers = new HashSet<>();
     }
 
     public String getAlias() {
@@ -28,4 +33,6 @@ public class User implements Serializable {
     public String getPassword() {
         return password;
     }
+
+    public void setUserId(String id) { userId = id; }
 }
