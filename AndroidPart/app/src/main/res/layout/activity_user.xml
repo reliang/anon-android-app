@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:paddingTop="5dp">
 
-    <!--
+
     <androidx.drawerlayout.widget.DrawerLayout
         android:id="@+id/side_drawer"
         android:layout_width="match_parent"
@@ -22,14 +22,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/side_nav" />
     </androidx.drawerlayout.widget.DrawerLayout>
-    -->
+
 
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_above="@id/bottom_nav"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
