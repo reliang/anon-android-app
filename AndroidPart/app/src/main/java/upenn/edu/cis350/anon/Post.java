@@ -24,6 +24,7 @@ public class Post implements Serializable {
         this.content = content;
     }
 
+
     public Post (String username, String content) {
         this.username = username;
         this.content = content;
