@@ -12,6 +12,7 @@ var userSchema = new Schema({
     password: {type: String, required: true},
     iconLink: String,
     status: {type: Number, min: 0, max: 2,  required: true},
+    banned: {type: Boolean, default: false},
     contribution: Number,
     genresFollowed: [{type: Schema.Types.ObjectId, ref: 'Genre'}],
     postsFollowed: [{type: Schema.Types.ObjectId, ref: 'Post'}],

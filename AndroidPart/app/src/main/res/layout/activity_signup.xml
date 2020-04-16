@@ -47,7 +47,7 @@
                 android:id="@+id/password_view"
                 android:layout_width="230dp"
                 android:layout_height="wrap_content"
-                android:inputType="text" />
+                android:inputType="numberPassword" />
 
             <View
                 android:layout_width="fill_parent"

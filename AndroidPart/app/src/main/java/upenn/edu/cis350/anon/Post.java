@@ -24,6 +24,7 @@ public class Post implements Serializable {
         this.content = content;
     }
 
+
     public Post (String username, String content) {
         this.username = username;
         this.content = content;
@@ -54,6 +55,8 @@ public class Post implements Serializable {
         return dateFormat.format(date.getTime());
 
     }
+
+    public ArrayList<Reply> getReplies() {return replies;}
 
     public String getUserName(){
         return username;
