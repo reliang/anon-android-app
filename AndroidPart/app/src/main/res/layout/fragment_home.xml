@@ -9,7 +9,7 @@
         android:id="@+id/genres_text"
         android:layout_width="249dp"
         android:layout_height="30dp"
-        android:text="Genres you fallow"
+        android:text="Genres you follow"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.262"
@@ -30,7 +30,7 @@
 
     <Button
         android:id="@+id/trending_button"
-        android:layout_width="94dp"
+        android:layout_width="100dp"
         android:layout_height="35dp"
         android:text="Trending"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -44,9 +44,9 @@
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="94dp"
+        android:layout_width="100dp"
         android:layout_height="35dp"
-        android:text="Fallowed"
+        android:text="Followed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.596"

@@ -48,6 +48,10 @@ public class ChatFragment extends Fragment {
                     default:
                 }
             }
+            TextView following = (TextView) view.findViewById(R.id.profile_following);
+            TextView followers = (TextView) view.findViewById(R.id.profile_followers);
+            following.setText(Integer.toString(user.getNumFollowing()));
+            followers.setText(Integer.toString(user.getNumFollowers()));
         }
 
         return view;

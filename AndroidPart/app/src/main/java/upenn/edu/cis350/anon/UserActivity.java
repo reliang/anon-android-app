@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 
+import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 import upenn.edu.cis350.anon.ui.chat.ChatFragment;
 import upenn.edu.cis350.anon.ui.dashboard.DashBoardFragment;
 import upenn.edu.cis350.anon.ui.genre.GenreFragment;
@@ -53,6 +54,7 @@ public class UserActivity extends AppCompatActivity {
          */
 
         user = (User) getIntent().getSerializableExtra("user");
+        RemoteDataSource.populateUserProfile(user);
     }
 
     /*

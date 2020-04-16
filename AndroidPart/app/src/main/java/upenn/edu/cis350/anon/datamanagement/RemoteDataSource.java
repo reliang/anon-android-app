@@ -376,4 +376,92 @@ public class RemoteDataSource {
             return "Error adding post";
         }
     }
+
+    // gets following/followers/posts written
+    public static String populateUserProfile(User user) {
+        String alias = user.getAlias();
+
+        try{
+            URL url = new URL("http://10.0.2.2:3000/getUserFullProfile?"
+                    + "alias=" + alias);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            if (status.equals("success")) {
+                JSONObject userJSON = jo.getJSONObject("user");
+                JSONArray postsJSON = userJSON.getJSONArray("postsWritten");
+                JSONArray followingJSON = userJSON.getJSONArray("following");
+                JSONArray followersJSON = userJSON.getJSONArray("followers");
+                // turn json array into posts
+                for (int i = 0; i < postsJSON.length(); i++) {
+                    JSONObject postJ = postsJSON.getJSONObject(i);
+                    Post post = getPostFromJSON(postJ);
+                    user.addPostWritten(post);
+                }
+                for (int i = 0; i < followingJSON.length(); i++) {
+                    JSONObject followingJ = followingJSON.getJSONObject(i);
+                    User following = getUserFromJSON(followingJ);
+                    user.addFollowing(following);
+                }
+                for (int i = 0; i < followersJSON.length(); i++) {
+                    JSONObject followerJ = followersJSON.getJSONObject(i);
+                    User follower = getUserFromJSON(followerJ);
+                    user.addFollower(follower);
+                }
+                return "success";
+            }
+            return status;
+        } catch (Exception e) {
+            return "Error getting posts written";
+        }
+    }
+
+    // Helper Functions! -----------------------------------------------------------------------
+    public static Post getPostFromJSON(JSONObject postJ) {
+        try {
+            URL url;
+            String title, date, userName, genre, content;
+
+            title = postJ.getString("name");
+            date = postJ.getString("time");
+            // get user
+            String userid = postJ.getString("userId");
+            url = new URL("http://10.0.2.2:3000/getUsernameById?id=" + userid);
+            userName= getStrByUrl(url);
+            // need to populate "genreId" field first
+            String genreid = postJ.getString("genre");
+            url = new URL("http://10.0.2.2:3000/getGenreNameById?id=" + genreid);
+            genre= getStrByUrl(url);
+            content = postJ.getString("content");
+
+            Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
+            return post;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static User getUserFromJSON(JSONObject userJSON) {
+        try {
+            String alias = userJSON.getString("alias");
+            String id = userJSON.getString("_id");
+            String iconLink = userJSON.getString("iconLink");
+            int userStatus = userJSON.getInt("status");
+            int contribution = userJSON.getInt("contribution");
+
+            User user = new User(alias);
+            user.setUserId(id);
+            user.setIconLink(iconLink);
+            user.setUserStatus(userStatus);
+            user.setContribution(contribution);
+            return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
