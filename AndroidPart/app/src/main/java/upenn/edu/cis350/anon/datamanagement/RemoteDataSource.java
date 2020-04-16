@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Date;
 
 
+import upenn.edu.cis350.anon.Feedback;
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.Reply;
 import upenn.edu.cis350.anon.User;
@@ -334,7 +335,7 @@ public class RemoteDataSource {
         String alias = user.getAlias();
         String password = user.getPassword();
 
-        try{
+        try {
             URL url = new URL("http://10.0.2.2:3000/getUser?"
                     + "alias=" + alias);
             AccessWebTask task = new AccessWebTask();
@@ -358,28 +359,28 @@ public class RemoteDataSource {
         }
     }
 
-    public static User fillUserByObject(User user) {
-        String alias = user.getAlias();
-        String password = user.getPassword();
+    public static String addFeedbackbyObject(Feedback feedback) {
+        String content;
+        Long date;
 
+        content = feedback.getContent();
+        date = feedback.getDate().getTimeInMillis(); // gets date in millisecond format
+
+        URL url;
         try{
-            URL url = new URL("http://10.0.2.2:3000/getUser?"
-                    + "alias=" + alias);
+            url = new URL("http://10.0.2.2:3000/addFeedback?"
+                    + "content=" + content + "&date=" + date );
             AccessWebTask task = new AccessWebTask();
             task.execute(url);
             String str = task.get();
             if (str == null) {
-                return null;
+                return "Error accessing web";
             }
             JSONObject jo = new JSONObject(str);
             String status = jo.getString("status");
-            if (status.equals("success")) {
-                JSONObject userJSON = jo.getJSONObject("user");
-
-            }
-            return null;
+            return status;
         } catch (Exception e) {
-            return null;
+            return "Error adding feedback";
         }
     }
 }

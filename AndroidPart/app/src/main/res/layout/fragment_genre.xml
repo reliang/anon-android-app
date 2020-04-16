@@ -24,7 +24,7 @@
         <GridLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="112dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:alignmentMode="alignMargins"
@@ -115,10 +115,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
                 android:clickable="true"
-                android:onClick="genreClicked">
+                android:onClick="genreClicked"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -148,10 +148,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
                 android:clickable="true"
-                android:onClick="genreClicked">
+                android:onClick="genreClicked"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -180,10 +180,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
                 android:clickable="true"
-                android:onClick="genreClicked">
+                android:onClick="genreClicked"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -212,10 +212,10 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="8dp"
                 android:clickable="true"
-                android:onClick="genreClicked">
+                android:onClick="genreClicked"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp">
 
                 <TextView
                     android:layout_width="match_parent"

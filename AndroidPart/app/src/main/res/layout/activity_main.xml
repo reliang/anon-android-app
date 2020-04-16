@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:orientation="vertical"
@@ -11,29 +12,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/button_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Login"
             android:layout_marginTop="20dp"
+            android:onClick="onLoginButtonClick"
+            android:text="Login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="parent"
-            android:onClick="onLoginButtonClick"/>
+            app:layout_constraintTop_toBottomOf="parent" />
 
         <Button
             android:id="@+id/button_signup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Signup"
             android:layout_marginTop="20dp"
+            android:onClick="onSignupButtonClick"
+            android:text="Signup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_login"
-            android:onClick="onSignupButtonClick"/>
+            app:layout_constraintTop_toBottomOf="@+id/button_login" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

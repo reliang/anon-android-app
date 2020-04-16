@@ -10,6 +10,7 @@ public class User implements Serializable {
     String password;
     String iconLink; // base64 string or link?
     int status; // 0 = user, 1 = admin, 2 = head admin
+    boolean banned;
     int contribution;
     // implement using LinkedHashSet
     Set<Integer> generesFollowed; // genere ids
@@ -20,6 +21,7 @@ public class User implements Serializable {
     public User(String alias, String password) {
         this.alias = alias;
         this.password = password;
+        this.banned = false;
         this.generesFollowed = new HashSet<>();
         this.postsFollowed = new HashSet<>();
         this.postsWritten = new HashSet<>();
@@ -33,6 +35,8 @@ public class User implements Serializable {
     public String getPassword() {
         return password;
     }
+
+    public boolean isBanned() { return banned; }
 
     public void setUserId(String id) { userId = id; }
 }
