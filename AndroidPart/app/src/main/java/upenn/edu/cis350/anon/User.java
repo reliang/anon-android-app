@@ -59,6 +59,8 @@ public class User implements Serializable {
         return following.size();
     }
 
+    public List<Post> getPostsWritten() { return postsWritten; }
+
     public void setUserId(String id) { userId = id; }
 
     public void setIconLink(String link) { iconLink = link; }

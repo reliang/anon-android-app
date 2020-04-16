@@ -56,6 +56,8 @@ public class Post implements Serializable {
 
     }
 
+    public ArrayList<Reply> getReplies() {return replies;}
+
     public String getUserName(){
         return username;
     }
