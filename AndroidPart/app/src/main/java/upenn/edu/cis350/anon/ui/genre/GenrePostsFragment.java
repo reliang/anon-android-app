@@ -1,5 +1,6 @@
 package upenn.edu.cis350.anon.ui.genre;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.card.MaterialCardView;
 
 import upenn.edu.cis350.anon.Post;
+import upenn.edu.cis350.anon.PostActivity;
 import upenn.edu.cis350.anon.R;
 import upenn.edu.cis350.anon.User;
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
@@ -22,7 +24,7 @@ import upenn.edu.cis350.anon.ui.home.PostAdapter;
 
 
 
-public class GenrePostsFragment extends Fragment {
+public class GenrePostsFragment extends Fragment implements PostAdapter.OnPostListener{
 
 
 
@@ -66,7 +68,7 @@ public class GenrePostsFragment extends Fragment {
 
 
         posts = RemoteDataSource.getPostsbyGenreId("5e86301f1c9d440000945f37");
-        mAdapter = new PostAdapter(posts);
+        mAdapter = new PostAdapter(posts, (PostAdapter.OnPostListener) this);
         recyclerView.setAdapter(mAdapter);
 
         fillPost(cardView);
@@ -100,30 +102,11 @@ public class GenrePostsFragment extends Fragment {
         }
 
         posts = RemoteDataSource.getPostsbyGenreId(genreId);
-        mAdapter = new PostAdapter(posts);
+        //??
+        //mAdapter = new PostAdapter(posts);
         recyclerView.setAdapter(mAdapter);
     }
 
-
-/*
-    public static void fillPost(View v) {
-        Log.v("fill","fillpost in oist fragment");
-        String genreId = "";
-        //ROOT VIEW IS GENRE FRAGMENT
-        View genresRoot = v.getRootView();
-
-        MaterialCardView violence_card  = (MaterialCardView)genresRoot.findViewById(R.id.card_violence);
-
-        if(v == violence_card){
-            Log.v("card","violence card");
-
-            genreId = "5e86301f1c9d440000945f37";
-        }
-
-        posts = RemoteDataSource.getPostsbyGenreId(genreId);
-        mAdapter = new PostAdapter(posts);
-        recyclerView.setAdapter(mAdapter);
-    }*/
 
     private void test() {
         posts = new Post[5];
@@ -133,4 +116,11 @@ public class GenrePostsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onPostClick(int position) {
+        Log.v("a", "post clicked");
+        Intent i = new Intent(getActivity(), PostActivity.class);
+        i.putExtra("post", posts[position]);
+        startActivity(i);
+    }
 }

@@ -35,6 +35,7 @@ public class UserActivity extends AppCompatActivity {
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
     public User user;
+    HomeFragment fragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +44,11 @@ public class UserActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        /*
-        drawerLayout = (DrawerLayout)findViewById(R.id.side_drawer);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
-        actionBarDrawerToggle.syncState();
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        View hView =  navigationView.getHeaderView(0);
-         */
 
         user = (User) getIntent().getSerializableExtra("user");
         RemoteDataSource.populateUserProfile(user);
     }
 
-    /*
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-     */
 
     public void onPostDemoClick(View v) {
         Intent i = new Intent(this, PostActivity.class);
@@ -84,18 +67,18 @@ public class UserActivity extends AppCompatActivity {
 
     public void onViewGenreButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
-        HomeFragment.fillPost(opt);
+        fragment.fillPost(opt);
     }
 
     public void onViewFallowButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.FALLOWED;
-        HomeFragment.fillPost(opt);
+        fragment.fillPost(opt);
     }
 
     public void showPostClicked(View v) {
-        Fragment selectedFragment = new HomeFragment();
+        fragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                selectedFragment).commit();
+                fragment).commit();
     }
 
     public void genreClicked(View v) {

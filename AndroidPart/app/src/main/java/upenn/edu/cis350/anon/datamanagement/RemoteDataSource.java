@@ -138,8 +138,8 @@ public class RemoteDataSource {
     }
     public static Post[] getPostsbyUserGenre(User user){
         URL url;
-        //String userId = user.getId();
-        String userId = "5e854df97d58922d34b950cb";
+         String userId = user.getUserId();
+        //String userId = "5e854df97d58922d34b950cb";
         ArrayList<Post> posts = new ArrayList<Post>();
 
         try {
@@ -186,8 +186,7 @@ public class RemoteDataSource {
     public static Post[] getPostsbyUserFallowed(User user) {
 
         URL url;
-        //String userId = user.getId();
-        String userId = "5e854df97d58922d34b950cb";
+        String userId = user.getUserId();
         ArrayList<Post> posts = new ArrayList<Post>();
 
         try {
