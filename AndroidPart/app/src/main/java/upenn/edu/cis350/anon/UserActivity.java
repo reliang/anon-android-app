@@ -35,7 +35,7 @@ public class UserActivity extends AppCompatActivity {
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
     public User user;
-    HomeFragment fragment;
+    Fragment selectedFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,10 @@ public class UserActivity extends AppCompatActivity {
 
         user = (User) getIntent().getSerializableExtra("user");
         RemoteDataSource.populateUserProfile(user);
+
+        selectedFragment = new ChatFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
     }
 
 
@@ -67,18 +71,18 @@ public class UserActivity extends AppCompatActivity {
 
     public void onViewGenreButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
-        fragment.fillPost(opt);
+        ((HomeFragment)selectedFragment).fillPost(opt);
     }
 
     public void onViewFallowButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.FALLOWED;
-        fragment.fillPost(opt);
+        ((HomeFragment)selectedFragment).fillPost(opt);
     }
 
     public void showPostClicked(View v) {
-        fragment = new HomeFragment();
+        selectedFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                fragment).commit();
+                selectedFragment).commit();
     }
 
     public void genreClicked(View v) {
@@ -94,10 +98,10 @@ public class UserActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFragment = null;
+
                     switch (menuItem.getItemId()) {
                         case R.id.nav_dashboard:
-                            selectedFragment = new DashBoardFragment();
+                            selectedFragment= new HomeFragment();
                             break;
                         case R.id.nav_chat:
                             selectedFragment = new ChatFragment();
