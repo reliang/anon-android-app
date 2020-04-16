@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 var ObjectID = require('mongodb').ObjectID
 
-
+// import schema classes
 var Post = require('./Post.js');
 var Reply = require('./Reply.js');
 var User = require('./User.js');
@@ -35,6 +35,7 @@ app.use('/addUser', (req, res) => {
 		genresFollowed: [],
 		postsFollowed: [],
 		postsWritten: [],
+		following: [],
 		followers: []
 	});
 
@@ -68,6 +69,30 @@ app.use('/getUser', (req, res) => {
 			res.json({status: 'success', user: user})
 		}
 	});
+}
+);
+
+// route for getting a user along with following/followers/posts written array
+app.use('/getUserFullProfile', (req, res) => {
+	// construct the Post from the input data
+
+	var username = req.query.alias
+
+	User.findOne({alias: username})
+		.populate("postsWritten")
+		.populate("following")
+		.populate("followers")
+		.exec(function (err, user) {
+			if (err) {
+				res.json({status: err});
+			}
+			else if (!user) {
+				res.json({status: 'no user'})
+			}
+			else {
+				res.json({status: 'success', user: user})
+			}
+		});
 }
 );
 

@@ -17,6 +17,7 @@ var userSchema = new Schema({
     genresFollowed: [{type: Schema.Types.ObjectId, ref: 'Genre'}],
     postsFollowed: [{type: Schema.Types.ObjectId, ref: 'Post'}],
     postsWritten: [{type: Schema.Types.ObjectId, ref: 'Post'}],
+    following: [{type: Schema.Types.ObjectId, ref: 'User'}],
     followers: [{type: Schema.Types.ObjectId, ref: 'User'}]
     });
 
