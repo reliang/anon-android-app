@@ -21,31 +21,11 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_gravity="center"
-                    app:cardBackgroundColor="#ACACAC"
-                    app:cardCornerRadius="250dp"
-
-                    app:cardElevation="2dp">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="120dp"
-                        android:layout_height="120dp"
-                        android:layout_gravity="center"
-                        app:cardBackgroundColor="#00E1FF"
-                        app:cardCornerRadius="250dp">
-
-                        <ImageView
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_face_black_24dp" />
-
-                    </androidx.cardview.widget.CardView>
-
-                </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/profile_icon"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/ic_face_black_24dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -111,6 +91,8 @@
                 android:text="username"
                 android:textSize="30sp" />
 
+            <!-- uncomment to add description section -->
+            <!--
             <TextView
                 android:id="@+id/profile_content"
                 android:layout_width="match_parent"
@@ -118,7 +100,10 @@
                 android:layout_marginBottom="5dp"
                 android:text="@string/lorem_ipsum_short"
                 android:textSize="20sp" />
+                -->
 
+            <!-- uncomment to add edit profile button -->
+            <!--
             <Button
                 android:id="@+id/profile_edit_button"
                 android:layout_width="match_parent"
@@ -126,6 +111,7 @@
                 android:layout_marginBottom="30dp"
                 android:onClick="onEditProfileButtonClick"
                 android:text="Edit Profile" />
+                -->
 
             <View
                 android:layout_width="match_parent"

@@ -26,6 +26,10 @@ public class User implements Serializable {
         this.followers = new HashSet<>();
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
     public String getAlias() {
         return alias;
     }
@@ -34,5 +38,15 @@ public class User implements Serializable {
         return password;
     }
 
+    public String getIconLink() {
+        return iconLink;
+    }
+
     public void setUserId(String id) { userId = id; }
+
+    public void setIconLink(String link) { iconLink = link; }
+
+    public void setUserStatus(int stat) { status = stat; }
+
+    public void setContribution(int contrib) { contribution = contrib; }
 }

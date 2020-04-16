@@ -36,6 +36,7 @@ app.use('/addUser', (req, res) => {
 		genresFollowed: [],
 		postsFollowed: [],
 		postsWritten: [],
+		following: [],
 		followers: []
 	});
 

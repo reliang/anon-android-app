@@ -307,11 +307,20 @@ public class RemoteDataSource {
     public static String addUserByObject(User user) {
         String alias = user.getAlias();
         String password = user.getPassword();
+        String iconLink = user.getIconLink();
 
+        URL url;
         try{
-            URL url = new URL("http://10.0.2.2:3000/addUser?"
-                    + "alias=" + alias
-                    + "&password=" + password);
+            if (iconLink != null) {
+                url = new URL("http://10.0.2.2:3000/addUser?"
+                        + "alias=" + alias
+                        + "&password=" + password
+                        + "&iconLink=" + iconLink);
+            } else {
+                url = new URL("http://10.0.2.2:3000/addUser?"
+                        + "alias=" + alias
+                        + "&password=" + password);
+            }
             AccessWebTask task = new AccessWebTask();
             task.execute(url);
             String str = task.get();
@@ -347,6 +356,16 @@ public class RemoteDataSource {
             String status = jo.getString("status");
             if (status.equals("success")) {
                 if (jo.getJSONObject("user").getString("password").equals(password)) {
+                    // fill user with info
+                    JSONObject userJSON = jo.getJSONObject("user");
+                    String id = userJSON.getString("_id");
+                    String iconLink = userJSON.getString("iconLink");
+                    int userStatus = userJSON.getInt("status");
+                    int contribution = userJSON.getInt("contribution");
+                    user.setUserId(id);
+                    user.setIconLink(iconLink);
+                    user.setUserStatus(userStatus);
+                    user.setContribution(contribution);
                     return "success";
                 } else {
                     return "wrong username or password";
@@ -355,31 +374,6 @@ public class RemoteDataSource {
             return status;
         } catch (Exception e) {
             return "Error adding post";
-        }
-    }
-
-    public static User fillUserByObject(User user) {
-        String alias = user.getAlias();
-        String password = user.getPassword();
-
-        try{
-            URL url = new URL("http://10.0.2.2:3000/getUser?"
-                    + "alias=" + alias);
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return null;
-            }
-            JSONObject jo = new JSONObject(str);
-            String status = jo.getString("status");
-            if (status.equals("success")) {
-                JSONObject userJSON = jo.getJSONObject("user");
-
-            }
-            return null;
-        } catch (Exception e) {
-            return null;
         }
     }
 }
