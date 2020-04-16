@@ -18,21 +18,38 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    android:paddingLeft="20dp"
+    android:paddingTop="20dp"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:layout_marginBottom="20dp"
+    android:background="#DFDFDF">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="25dp">
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/post_genre2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Genre"
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/post_title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Post Title"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/post_username2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="username"
             android:textSize="20sp" />
 
         <TextView
@@ -43,23 +60,10 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/post_username2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="username"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/post_genre2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Genre"
-            android:textSize="20sp" />
-
-        <TextView
             android:id="@+id/post_content2"
             android:layout_width="wrap_content"
-            android:layout_height="176dp"
+            android:layout_height="wrap_content"
+            android:maxLines="5"
             android:text="@string/lorem_ipsum_long"
             android:textSize="20sp" />
     </LinearLayout>

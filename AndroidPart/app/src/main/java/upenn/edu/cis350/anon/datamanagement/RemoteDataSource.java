@@ -374,7 +374,7 @@ public class RemoteDataSource {
             }
             return status;
         } catch (Exception e) {
-            return "Error getting the user";
+            return "Error getting user";
         }
     }
 
@@ -419,7 +419,6 @@ public class RemoteDataSource {
             }
             JSONObject jo = new JSONObject(str);
             String status = jo.getString("status");
-
             if (status.equals("success")) {
                 JSONObject userJSON = jo.getJSONObject("user");
                 JSONArray postsJSON = userJSON.getJSONArray("postsWritten");
