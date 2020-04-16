@@ -17,7 +17,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="400dp"
+    android:layout_height="wrap_content"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     android:gravity="center_vertical">
@@ -59,7 +59,7 @@
         <TextView
             android:id="@+id/post_content2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="176dp"
             android:text="@string/lorem_ipsum_long"
             android:textSize="20sp" />
     </LinearLayout>

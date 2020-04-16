@@ -96,7 +96,7 @@ public class RemoteDataSource {
 
 
         } catch (Exception e) {
-            return null;
+            return new Post[0];
         }
 
         return posts;
@@ -116,7 +116,25 @@ public class RemoteDataSource {
         }
     }
 
+    public static Post[] getPostsbyGenreId(String genre){
+        URL url;
+        ArrayList<Post> posts = new ArrayList<Post>();
 
+        try {
+
+                url = new URL("http://10.0.2.2:3000/getPostsByGenre?genre=" + genre);
+                String str = getStrByUrl(url);
+                Post[] temp = getPostsInJason(str);
+                Collections.addAll(posts, temp);
+
+        } catch (Exception e) {
+            Log.v("error",e.getMessage());
+
+
+        }
+        Post[] ans = posts.toArray(new Post[posts.size()]);
+        return ans;
+    }
     public static Post[] getPostsbyUserGenre(User user){
         URL url;
         //String userId = user.getId();
@@ -126,9 +144,6 @@ public class RemoteDataSource {
         try {
             url = new URL("http://10.0.2.2:3000/getUserGenre?id=" + userId);
             String str = getStrByUrl(url);
-
-            Log.v("genres",str);
-
             JSONObject jo = new JSONObject(str);
             JSONArray genres = jo.getJSONArray("genres");
 
@@ -137,11 +152,7 @@ public class RemoteDataSource {
                 String genre = genres.getString(i);
 
                 url = new URL("http://10.0.2.2:3000/getPostsByGenre?genre=" + genre);
-
-                Log.v("genreid",genre);
                 str = getStrByUrl(url);
-
-                Log.v("posts",str);
                 Post[] temp = getPostsInJason(str);
 
                 Collections.addAll(posts, temp);
@@ -296,11 +307,20 @@ public class RemoteDataSource {
     public static String addUserByObject(User user) {
         String alias = user.getAlias();
         String password = user.getPassword();
+        String iconLink = user.getIconLink();
 
+        URL url;
         try{
-            URL url = new URL("http://10.0.2.2:3000/addUser?"
-                    + "alias=" + alias
-                    + "&password=" + password);
+            if (iconLink != null) {
+                url = new URL("http://10.0.2.2:3000/addUser?"
+                        + "alias=" + alias
+                        + "&password=" + password
+                        + "&iconLink=" + iconLink);
+            } else {
+                url = new URL("http://10.0.2.2:3000/addUser?"
+                        + "alias=" + alias
+                        + "&password=" + password);
+            }
             AccessWebTask task = new AccessWebTask();
             task.execute(url);
             String str = task.get();
@@ -309,6 +329,10 @@ public class RemoteDataSource {
             }
             JSONObject jo = new JSONObject(str);
             String status = jo.getString("status");
+            // give user its id
+            if (status.equals("success")) {
+                user.setUserId(jo.getJSONObject("user").getString("_id"));
+            }
             return status;
         } catch (Exception e) {
             return "Error adding post";
@@ -332,6 +356,16 @@ public class RemoteDataSource {
             String status = jo.getString("status");
             if (status.equals("success")) {
                 if (jo.getJSONObject("user").getString("password").equals(password)) {
+                    // fill user with info
+                    JSONObject userJSON = jo.getJSONObject("user");
+                    String id = userJSON.getString("_id");
+                    String iconLink = userJSON.getString("iconLink");
+                    int userStatus = userJSON.getInt("status");
+                    int contribution = userJSON.getInt("contribution");
+                    user.setUserId(id);
+                    user.setIconLink(iconLink);
+                    user.setUserStatus(userStatus);
+                    user.setContribution(contribution);
                     return "success";
                 } else {
                     return "wrong username or password";
@@ -340,6 +374,94 @@ public class RemoteDataSource {
             return status;
         } catch (Exception e) {
             return "Error adding post";
+        }
+    }
+
+    // gets following/followers/posts written
+    public static String populateUserProfile(User user) {
+        String alias = user.getAlias();
+
+        try{
+            URL url = new URL("http://10.0.2.2:3000/getUserFullProfile?"
+                    + "alias=" + alias);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            if (status.equals("success")) {
+                JSONObject userJSON = jo.getJSONObject("user");
+                JSONArray postsJSON = userJSON.getJSONArray("postsWritten");
+                JSONArray followingJSON = userJSON.getJSONArray("following");
+                JSONArray followersJSON = userJSON.getJSONArray("followers");
+                // turn json array into posts
+                for (int i = 0; i < postsJSON.length(); i++) {
+                    JSONObject postJ = postsJSON.getJSONObject(i);
+                    Post post = getPostFromJSON(postJ);
+                    user.addPostWritten(post);
+                }
+                for (int i = 0; i < followingJSON.length(); i++) {
+                    JSONObject followingJ = followingJSON.getJSONObject(i);
+                    User following = getUserFromJSON(followingJ);
+                    user.addFollowing(following);
+                }
+                for (int i = 0; i < followersJSON.length(); i++) {
+                    JSONObject followerJ = followersJSON.getJSONObject(i);
+                    User follower = getUserFromJSON(followerJ);
+                    user.addFollower(follower);
+                }
+                return "success";
+            }
+            return status;
+        } catch (Exception e) {
+            return "Error getting posts written";
+        }
+    }
+
+    // Helper Functions! -----------------------------------------------------------------------
+    public static Post getPostFromJSON(JSONObject postJ) {
+        try {
+            URL url;
+            String title, date, userName, genre, content;
+
+            title = postJ.getString("name");
+            date = postJ.getString("time");
+            // get user
+            String userid = postJ.getString("userId");
+            url = new URL("http://10.0.2.2:3000/getUsernameById?id=" + userid);
+            userName= getStrByUrl(url);
+            // need to populate "genreId" field first
+            String genreid = postJ.getString("genre");
+            url = new URL("http://10.0.2.2:3000/getGenreNameById?id=" + genreid);
+            genre= getStrByUrl(url);
+            content = postJ.getString("content");
+
+            Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
+            return post;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static User getUserFromJSON(JSONObject userJSON) {
+        try {
+            String alias = userJSON.getString("alias");
+            String id = userJSON.getString("_id");
+            String iconLink = userJSON.getString("iconLink");
+            int userStatus = userJSON.getInt("status");
+            int contribution = userJSON.getInt("contribution");
+
+            User user = new User(alias);
+            user.setUserId(id);
+            user.setIconLink(iconLink);
+            user.setUserStatus(userStatus);
+            user.setContribution(contribution);
+            return user;
+        } catch (Exception e) {
+            return null;
         }
     }
 }

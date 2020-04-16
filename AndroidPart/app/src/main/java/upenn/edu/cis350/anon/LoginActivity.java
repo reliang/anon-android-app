@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         String status = RemoteDataSource.getUserByObject(newUser);
         if (status.equals("success")) {
             Intent i = new Intent(this, UserActivity.class);
+            i.putExtra("user", newUser);
             startActivity(i);
         } else {
             Toast.makeText(this, status, Toast.LENGTH_LONG).show();
