@@ -336,7 +336,7 @@ public class RemoteDataSource {
             }
             return status;
         } catch (Exception e) {
-            return "Error adding post";
+            return "Error adding user";
         }
     }
 
@@ -374,7 +374,7 @@ public class RemoteDataSource {
             }
             return status;
         } catch (Exception e) {
-            return "Error adding post";
+            return "Error getting the user";
         }
     }
 
@@ -385,18 +385,22 @@ public class RemoteDataSource {
         content = feedback.getContent();
         date = feedback.getDate().getTimeInMillis(); // gets date in millisecond format
 
-        URL = new URL("http://10.0.2.2:3000/addFeedback?"
-                    + "content=" + content + "&date=" + date );
-        AccessWebTask task = new AccessWebTask();
-        task.execute(url);
-        String str = task.get();
-        if (str == null) {
-            return "Error accessing web";
-        }
-        JSONObject jo = new JSONObject(str);
-        String status = jo.getString("status");
+        try {
+            URL url = new URL("http://10.0.2.2:3000/addFeedback?"
+                    + "content=" + content + "&date=" + date);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
 
-        return status;
+            return status;
+        } catch (Exception e) {
+            return "Error adding feedback";
+        }
     }
 
         
@@ -414,6 +418,8 @@ public class RemoteDataSource {
                 return "Error accessing web";
             }
             JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+
             if (status.equals("success")) {
                 JSONObject userJSON = jo.getJSONObject("user");
                 JSONArray postsJSON = userJSON.getJSONArray("postsWritten");
@@ -483,7 +489,7 @@ public class RemoteDataSource {
             user.setContribution(contribution);
             return user;
         } catch (Exception e) {
-            return "Error adding feedback";
+            return null;
         }
     }
 }
