@@ -427,6 +427,29 @@ public class RemoteDataSource {
         }
     }
 
+    public static String addFollowerByObjects(User follower, User following) {
+        String followerId = follower.getUserId();
+        String followingId = following.getUserId();
+
+        URL url;
+        try{
+            url = new URL("http://10.0.2.2:3000/addFollower?"
+                    + "followerId=" + followerId
+                    + "&followingId=" + followingId);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            return status;
+        } catch (Exception e) {
+            return "Error adding user";
+        }
+    }
+
         
     // gets following/followers/posts written
     public static String populateUserProfile(User user) {
@@ -445,6 +468,16 @@ public class RemoteDataSource {
             String status = jo.getString("status");
             if (status.equals("success")) {
                 JSONObject userJSON = jo.getJSONObject("user");
+                // fill user with info
+                String id = userJSON.getString("_id");
+                String iconLink = userJSON.getString("iconLink");
+                int userStatus = userJSON.getInt("status");
+                int contribution = userJSON.getInt("contribution");
+                user.setUserId(id);
+                user.setIconLink(iconLink);
+                user.setUserStatus(userStatus);
+                user.setContribution(contribution);
+                // fill lists
                 JSONArray postsJSON = userJSON.getJSONArray("postsWritten");
                 JSONArray followingJSON = userJSON.getJSONArray("following");
                 JSONArray followersJSON = userJSON.getJSONArray("followers");

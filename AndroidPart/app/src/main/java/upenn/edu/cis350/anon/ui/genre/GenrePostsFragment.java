@@ -67,11 +67,12 @@ public class GenrePostsFragment extends Fragment implements PostAdapter.OnPostLi
         recyclerView.setLayoutManager(mLayoutManager);
 
 
-        posts = RemoteDataSource.getPostsbyGenreId("5e86301f1c9d440000945f37");
+        //posts = RemoteDataSource.getPostsbyGenreId("5e86301f1c9d440000945f37");
+        fillPost(cardView);
         mAdapter = new PostAdapter(posts, (PostAdapter.OnPostListener) this);
         recyclerView.setAdapter(mAdapter);
 
-        fillPost(cardView);
+
 
         return rootView;
     }
@@ -86,7 +87,6 @@ public class GenrePostsFragment extends Fragment implements PostAdapter.OnPostLi
         MaterialCardView violence  = (MaterialCardView)genresRoot.findViewById(R.id.card_violence);
         MaterialCardView greeklife  = (MaterialCardView)genresRoot.findViewById(R.id.card_greeklife);
         MaterialCardView hazing  = (MaterialCardView)genresRoot.findViewById(R.id.card_hazing);
-
         MaterialCardView sexualassult  = (MaterialCardView)genresRoot.findViewById(R.id.card_sexualassult);
 
 

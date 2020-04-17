@@ -50,11 +50,12 @@ public class PostActivity extends AppCompatActivity {
             return;
         }
 
+        User user = UserActivity.user;
         String postId, userId, username, content;
         Calendar date;
         postId = post.getPostId();
-        userId = "5e854df97d58922d34b950cb"; // CHANGE TO CURRENT USER'S
-        username = "abc"; // CHANGE TO CURRENT USER'S
+        userId = user.getUserId();
+        username = user.getAlias();
         content = ((TextView) findViewById(R.id.reply_content)).getText().toString();
         date = new GregorianCalendar();
 
@@ -96,5 +97,12 @@ public class PostActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, status, Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void onUsernameClick(View v) {
+        Intent i = new Intent(this, ProfileActivity.class);
+        User user = new User(post.getUserName());
+        i.putExtra("user", user);
+        startActivity(i);
     }
 }
