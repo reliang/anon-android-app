@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/notification_everything"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -30,7 +31,14 @@
 
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray" />
+
+
         <LinearLayout
+            android:id="@+id/followers_buffer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -40,45 +48,51 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Replies"
+                android:text="New Replies"
                 android:textSize="18sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
-
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:id="@+id/replies_buffer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/replier_alias"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="6dp"
-                    android:text="replier_alias1" />
-
-                <TextView
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="replied you" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/replier_alias"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:text="replier_alias1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="replied you" />
+
+                </LinearLayout>
+
+
+                <TextView
+                    android:id="@+id/reply_stuff"
+                    android:layout_width="match_parent"
+                    android:layout_height="70dp"
+                    android:padding="10dp"
+                    android:text="@string/lorem_ipsum_short" />
+
+                <Button
+                    android:id="@+id/see_post_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="See post" />
 
             </LinearLayout>
 
 
-            <TextView
-                android:id="@+id/reply_stuff"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:padding="10dp"
-                android:text="@string/lorem_ipsum_short" />
-
-            <Button
-                android:id="@+id/see_post_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="See post" />
 
             <View
                 android:layout_width="match_parent"
@@ -121,21 +135,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="See profile"/>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/darker_gray" />
 
         </LinearLayout>
 

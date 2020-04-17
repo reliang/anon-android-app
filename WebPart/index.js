@@ -31,6 +31,7 @@ app.use('/addUser', (req, res) => {
 		iconLink: req.query.iconLink,
 		status: 0, // 0 = us er, 1 = admin, 2 = head admin
 		banned: false,
+		readByNotifications: false,
 		contribution: 0,
 		genresFollowed: [],
 		postsFollowed: [],
@@ -208,6 +209,42 @@ app.use('/addReply', (req, res) => {
 			res.json({ status: 'Success', reply: newReply });
 		}
 	});
+}
+);
+
+// route for creating a new post
+app.use('/addFollower', (req, res) => {
+	var followerId = req.query.followerId;
+	var followingId = req.query.followingId;
+
+	// add followerId to following's followers
+	User.update(
+		{_id: followingId},
+		{
+			$push: {followers: followerId}
+		},
+		(err, result) => {
+			if (err) {
+				res.json({status: 'Error adding follower'});
+				return;
+			}
+		}
+	);
+	// add followingId to follower's following
+	User.update(
+		{_id: followerId},
+		{
+			$push: {following: followingId}
+		},
+		(err, result) => {
+			if (err) {
+				res.json({status: 'Error adding following'});
+				return;
+			}
+		}
+	);
+	// display the "successfull created" page using EJS
+	res.json({ status: 'Success' });
 }
 );
 

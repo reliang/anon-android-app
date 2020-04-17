@@ -1,7 +1,6 @@
 package upenn.edu.cis350.anon;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -14,9 +13,10 @@ public class User implements Serializable {
     String iconLink; // base64 string or link?
     int status; // 0 = user, 1 = admin, 2 = head admin
     boolean banned;
+    boolean readByNotifications;
     int contribution;
     // implement using LinkedHashSet
-    Set<Integer> generesFollowed; // genere ids
+    Set<Integer> genresFollowed; // genre ids
     Set<Integer> postsFollowed; // post ids
     List<Post> postsWritten; // post ids
     List<User> following; // user ids
@@ -30,11 +30,20 @@ public class User implements Serializable {
         this.alias = alias;
         this.password = password;
         this.banned = false;
-        this.generesFollowed = new HashSet<>();
+        this.genresFollowed = new HashSet<>();
         this.postsFollowed = new HashSet<>();
         this.postsWritten = new ArrayList<>();
         this.following = new ArrayList<>();
         this.followers = new ArrayList<>();
+        readByNotifications = false;
+    }
+
+    public void setRead() {
+        readByNotifications = true;
+    }
+
+    public boolean getIsReadOrNot() {
+        return readByNotifications;
     }
 
     public String getUserId() {
