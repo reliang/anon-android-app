@@ -1,6 +1,9 @@
 package upenn.edu.cis350.anon.ui.home;
+import upenn.edu.cis350.anon.PostActivity;
+import upenn.edu.cis350.anon.UserActivity;
 import upenn.edu.cis350.anon.datamanagement.*;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,12 +16,21 @@ import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 
+
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.R;
 import upenn.edu.cis350.anon.User;
 
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements PostAdapter.OnPostListener{
+
+    @Override
+    public void onPostClick(int position) {
+        Log.v("a", "post clicked");
+        Intent i = new Intent(getActivity(), PostActivity.class);
+        i.putExtra("post", posts[position]);
+        startActivity(i);
+    }
 
     public enum ViewOption{
         GENRE,
@@ -52,6 +64,7 @@ public class HomeFragment extends Fragment {
                // ViewModelProviders.of(this).get(HomeViewModel.class);
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        user = ((UserActivity)getActivity()).user;
 
         // BEGIN_INCLUDE(initializeRecyclerView)
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyler_posts);
@@ -66,7 +79,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    public static void fillPost(ViewOption option) {
+    public void fillPost(ViewOption option) {
         Log.v("fill","fillpost");
         switch(option) {
             case GENRE:
@@ -77,7 +90,7 @@ public class HomeFragment extends Fragment {
                 break;
         }
 
-        mAdapter = new PostAdapter(posts);
+        mAdapter = new PostAdapter(posts,this);
         recyclerView.setAdapter(mAdapter);
     }
 
