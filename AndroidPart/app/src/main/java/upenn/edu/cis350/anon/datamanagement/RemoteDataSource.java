@@ -238,6 +238,30 @@ public class RemoteDataSource {
 
     }
 
+    private static boolean isBanned(String userId) {
+        URL url;
+        try {
+            url = new URL("http://10.0.2.2:3000/getUser?"
+                    + "userId=" + userId);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return true;
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            // give post its id
+            if (status.equals("Success")) {
+                return true;
+                //return jo.getJSONObject("user").getBoolean("banned");
+            }
+        } catch (Exception e) {
+            return false;
+        }
+        return false;
+    }
+
     public static String addPostbyObject(Post post) {
         String userId, genreId, title, content;
         Long date;
@@ -247,6 +271,10 @@ public class RemoteDataSource {
         genreId = post.getGenreId();
         content = post.getContent();
         date = post.getDate().getTimeInMillis(); // gets date in millisecond format
+
+        if (isBanned(userId)) {
+            return "You are banned";
+        }
 
         URL url;
         try{
@@ -282,6 +310,10 @@ public class RemoteDataSource {
         userId = reply.getUserId();
         content = reply.getContent();
         date = reply.getDate().getTimeInMillis(); // gets date in millisecond format
+
+        if (isBanned(userId)) {
+            return "You are banned";
+        }
 
         URL url;
         try{
@@ -363,6 +395,7 @@ public class RemoteDataSource {
                     String iconLink = userJSON.getString("iconLink");
                     int userStatus = userJSON.getInt("status");
                     int contribution = userJSON.getInt("contribution");
+                    boolean isbanned = userJSON.getBoolean(("banned"));
                     user.setUserId(id);
                     user.setIconLink(iconLink);
                     user.setUserStatus(userStatus);

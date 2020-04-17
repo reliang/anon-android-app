@@ -43,15 +43,15 @@ public class UserActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        /*
-        drawerLayout = (DrawerLayout)findViewById(R.id.side_drawer);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.side_drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         View hView =  navigationView.getHeaderView(0);
-         */
+
 
         user = (User) getIntent().getSerializableExtra("user");
         RemoteDataSource.populateUserProfile(user);

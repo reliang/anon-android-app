@@ -40,6 +40,8 @@ public class MakePostActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClick(View v) {
+        User user = ((UserActivity) getActivity()).user;
+
         String userId, genreId, title, content, username, genre;
         userId = "5e854df97d58922d34b950cb"; // CHANGE TO CURRENT USER'S
         genreId = "5e863b135595fb1a089ef03e"; // CHANGE TO CURRENT GENRE'S
@@ -64,6 +66,8 @@ public class MakePostActivity extends AppCompatActivity {
                 genre,
                 content
                 );
+
+
         String status = RemoteDataSource.addPostbyObject(newPost);
         if (status.equals("Success")) {
             Intent i = new Intent(this, PostActivity.class);
