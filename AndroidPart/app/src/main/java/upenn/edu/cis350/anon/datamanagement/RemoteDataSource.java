@@ -438,9 +438,9 @@ public class RemoteDataSource {
         
     // gets following/followers/posts written
     public static String populateUserProfile(User user) {
-        String alias = user.getAlias();
 
         try {
+            String alias = user.getAlias();
             URL url = new URL("http://10.0.2.2:3000/getUserFullProfile?"
                     + "alias=" + alias);
             AccessWebTask task = new AccessWebTask();
