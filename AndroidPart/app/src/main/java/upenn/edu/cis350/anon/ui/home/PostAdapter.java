@@ -17,39 +17,38 @@ import upenn.edu.cis350.anon.User;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
     private Post[] mDataset;
+    private OnPostListener onPostListener;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView genre,date,user,content,title;
+        OnPostListener onPostListener;
 
-        public MyViewHolder(View v) {
+        public MyViewHolder(View v, OnPostListener onPostListener) {
             super(v);
-            // Define click listener for the ViewHolder's View.
-            /*
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
-                }
-            });*/
-
-
             title = (TextView) v.findViewById(R.id.post_title2);
             date = (TextView) v.findViewById(R.id.post_date2);
             user = (TextView) v.findViewById(R.id.post_username2 );
             genre = (TextView) v.findViewById(R.id.post_genre2);
-
             content = (TextView) v.findViewById(R.id.post_content2);
+            this.onPostListener = onPostListener;
+            v.setOnClickListener(this);
 
         }
 
+        @Override
+        public void onClick(View v) {
+            onPostListener.onPostClick(getAdapterPosition());
+        }
     }
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public PostAdapter(Post[] myDataset) {
+    public PostAdapter(Post[] myDataset, OnPostListener onPostListener) {
+
+        this.onPostListener = onPostListener;
         mDataset = myDataset;
     }
 
@@ -60,14 +59,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.post_item, parent, false);
-        MyViewHolder vh = new MyViewHolder(v);
+        MyViewHolder vh = new MyViewHolder(v, onPostListener);
         return vh;
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Log.v("a", "Element " + position + " set.");
+    public void onBindViewHolder(MyViewHolder holder, int position){
+
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
 
@@ -87,6 +86,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     @Override
     public int getItemCount() {
         return mDataset.length;
+    }
+
+    public interface OnPostListener{
+        void onPostClick(int position);
     }
 
 

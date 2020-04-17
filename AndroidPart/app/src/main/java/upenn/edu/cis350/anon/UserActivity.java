@@ -35,6 +35,7 @@ public class UserActivity extends AppCompatActivity {
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
     public static User user;
+    Fragment selectedFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,29 +44,23 @@ public class UserActivity extends AppCompatActivity {
         BottomNavigationView bottomNav = findViewById(R.id.bottom_nav);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-        /*
-        drawerLayout = (DrawerLayout)findViewById(R.id.side_drawer);
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
+
+        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.side_drawer);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
         View hView =  navigationView.getHeaderView(0);
-         */
 
         user = (User) getIntent().getSerializableExtra("user");
         RemoteDataSource.populateUserProfile(user);
+
+        selectedFragment = new ChatFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                selectedFragment).commit();
     }
 
-    /*
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-     */
 
     public void onPostDemoClick(View v) {
         Intent i = new Intent(this, PostActivity.class);
@@ -85,16 +80,16 @@ public class UserActivity extends AppCompatActivity {
 
     public void onViewGenreButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
-        HomeFragment.fillPost(opt);
+        ((HomeFragment)selectedFragment).fillPost(opt);
     }
 
     public void onViewFallowButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.FALLOWED;
-        HomeFragment.fillPost(opt);
+        ((HomeFragment)selectedFragment).fillPost(opt);
     }
 
     public void showPostClicked(View v) {
-        Fragment selectedFragment = new HomeFragment();
+        selectedFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
     }
@@ -126,10 +121,10 @@ public class UserActivity extends AppCompatActivity {
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                    Fragment selectedFragment = null;
+
                     switch (menuItem.getItemId()) {
                         case R.id.nav_dashboard:
-                            selectedFragment = new DashBoardFragment();
+                            selectedFragment= new HomeFragment();
                             break;
                         case R.id.nav_chat:
                             selectedFragment = new ChatFragment();

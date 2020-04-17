@@ -460,6 +460,26 @@ app.get("/users", (req, res) => {
 	});
 });
 
+	// find all the User objects in the database
+	User.find((err, users) => {
+		if (err) {
+			res.type('html').status(200);
+			console.log('uh oh' + err);
+			res.write(err);
+		}
+		else {
+			if (users.length == 0) {
+				res.type('html').status(200);
+				res.write('There are no users');
+				res.end();
+				return;
+			}
+			// use EJS to show all the users
+			res.render('banningSystem', {users: users});
+		}
+	});
+});
+
 // route for banning a user from posting
 app.use('/ban_user', (req, res) => {
 	var alias = req.query.alias;

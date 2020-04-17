@@ -8,8 +8,6 @@ import android.widget.ListView;
 import upenn.edu.cis350.anon.ui.chat.PostListAdapter;
 import upenn.edu.cis350.anon.ui.chat.UserListAdapter;
 
-import static upenn.edu.cis350.anon.UserActivity.user;
-
 public class UserListActivity extends AppCompatActivity {
 
     @Override

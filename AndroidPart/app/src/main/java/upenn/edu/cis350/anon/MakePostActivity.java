@@ -46,7 +46,6 @@ public class MakePostActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClick(View v) {
-
         String userId, genreId, title, content, username, genre;
         userId = user.getUserId();
         genreId = "5e863b135595fb1a089ef03e"; // CHANGE TO CURRENT GENRE'S
@@ -71,6 +70,7 @@ public class MakePostActivity extends AppCompatActivity {
                 genre,
                 content
                 );
+
         String status = RemoteDataSource.addPostbyObject(newPost);
         if (status.equals("Success")) {
             // add post to current user's post written
