@@ -122,7 +122,6 @@ public class RemoteDataSource {
         ArrayList<Post> posts = new ArrayList<Post>();
 
         try {
-
                 url = new URL("http://10.0.2.2:3000/getPostsByGenre?genre=" + genre);
                 String str = getStrByUrl(url);
                 Post[] temp = getPostsInJason(str);
@@ -130,8 +129,6 @@ public class RemoteDataSource {
 
         } catch (Exception e) {
             Log.v("error",e.getMessage());
-
-
         }
         Post[] ans = posts.toArray(new Post[posts.size()]);
         return ans;

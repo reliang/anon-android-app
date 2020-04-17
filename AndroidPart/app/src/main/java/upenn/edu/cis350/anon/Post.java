@@ -53,7 +53,6 @@ public class Post implements Serializable {
     public String getDateString(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         return dateFormat.format(date.getTime());
-
     }
 
     public ArrayList<Reply> getReplies() {return replies;}

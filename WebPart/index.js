@@ -31,6 +31,7 @@ app.use('/addUser', (req, res) => {
 		iconLink: req.query.iconLink,
 		status: 0, // 0 = us er, 1 = admin, 2 = head admin
 		banned: false,
+		readByNotifications: false,
 		contribution: 0,
 		genresFollowed: [],
 		postsFollowed: [],

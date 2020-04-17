@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 
 var replySchema = new Schema({
     userId: {type: Schema.Types.ObjectId, ref: 'User'},
+    readByNotifications: false,
     content: String,
     time: Date
     });
