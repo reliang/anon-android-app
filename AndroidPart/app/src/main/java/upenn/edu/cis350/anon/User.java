@@ -65,6 +65,14 @@ public class User implements Serializable {
         return following.size();
     }
 
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public List<User> getFollowing() {
+        return following;
+    }
+
     public List<Post> getPostsWritten() { return postsWritten; }
 
     public void setUserId(String id) { userId = id; }

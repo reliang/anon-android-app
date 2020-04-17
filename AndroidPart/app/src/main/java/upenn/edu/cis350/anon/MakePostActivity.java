@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -15,10 +17,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
+import upenn.edu.cis350.anon.ui.chat.ChatFragment;
+import upenn.edu.cis350.anon.ui.chat.PostListAdapter;
 
 public class MakePostActivity extends AppCompatActivity {
 
     private String genre;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,7 @@ public class MakePostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_make_post);
 
         genre = "Sexual Assault";
+        user = (User) getIntent().getSerializableExtra("user");
 
         Spinner spinner = (Spinner) findViewById(R.id.genre_spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
@@ -40,10 +46,11 @@ public class MakePostActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClick(View v) {
+
         String userId, genreId, title, content, username, genre;
-        userId = "5e854df97d58922d34b950cb"; // CHANGE TO CURRENT USER'S
+        userId = user.getUserId();
         genreId = "5e863b135595fb1a089ef03e"; // CHANGE TO CURRENT GENRE'S
-        username = "abc"; // CHANGE TO CURRENT USER'S
+        username = user.getAlias();
         genre = "Hazing"; // CHANGE TO CURRENT GENRE'S
         title  = ((EditText) findViewById(R.id.make_post_title)).getText().toString();
         content = ((EditText) findViewById(R.id.make_post_content)).getText().toString();
@@ -66,6 +73,16 @@ public class MakePostActivity extends AppCompatActivity {
                 );
         String status = RemoteDataSource.addPostbyObject(newPost);
         if (status.equals("Success")) {
+            // add post to current user's post written
+            user.addPostWritten(newPost);
+            // refresh user profile's post list (not working)
+            final PostListAdapter adapter = ChatFragment.adapter;
+            adapter.addPost(newPost);
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    adapter.notifyDataSetChanged();
+                }
+            });
             Intent i = new Intent(this, PostActivity.class);
             i.putExtra("post", newPost);
             startActivity(i);

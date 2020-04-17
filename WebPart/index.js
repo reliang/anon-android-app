@@ -118,9 +118,11 @@ app.use('/addGenre', (req, res) => {
 
 // route for creating a new post
 app.use('/addPost', (req, res) => {
+	var userId = req.query.userId;
+
 	// construct the Post from the input data
 	var newPost = new Post({
-		userId: req.query.userId,
+		userId: userId,
 		name: req.query.name, // title
 		content: req.query.content,
 		replies: [],
@@ -129,11 +131,24 @@ app.use('/addPost', (req, res) => {
 	});
 
 	// save to the database
-	newPost.save((err) => {
+	newPost.save((err, post) => {
 		if (err) {
 			res.json({status: 'Failed to add to database'});
 		}
 		else {
+			// add post to user's post written
+			User.update(
+				{_id: userId},
+				{
+					$push: {postsWritten: post._id}
+				},
+				(err, result) => {
+					if (err) {
+						res.json({status: 'Error adding to post written'});
+						return;
+					}
+				}
+			);
 			// display the "successfull created" page using EJS
 			res.json({ status: 'Success', post: newPost });
 		}
