@@ -43,11 +43,11 @@ app.use('/addUser', (req, res) => {
 	// save to the database
 	newUser.save((err) => {
 		if (err) {
-			res.json({status: err});
+			res.json({ status: err });
 		}
 		else {
 			// display the "successfull created" page using EJS
-			res.json({ status: 'success', user: newUser});
+			res.json({ status: 'success', user: newUser });
 		}
 	});
 }
@@ -59,15 +59,15 @@ app.use('/getUserByName', (req, res) => {
 
 	var username = req.query.alias
 
-	User.findOne({alias: username}, (err, user) => {
+	User.findOne({ alias: username }, (err, user) => {
 		if (err) {
-			res.json({status: err});
+			res.json({ status: err });
 		}
 		else if (!user) {
-			res.json({status: 'no user'})
+			res.json({ status: 'no user' })
 		}
 		else {
-			res.json({status: 'success', user: user})
+			res.json({ status: 'success', user: user })
 		}
 	});
 }
@@ -79,15 +79,15 @@ app.use('/getUserById', (req, res) => {
 
 	var id = req.query.id
 
-	User.findOne({"_id": id}, (err, user) => {
+	User.findOne({ "_id": id }, (err, user) => {
 		if (err) {
-			res.json({status: err});
+			res.json({ status: err });
 		}
 		else if (!user) {
-			res.json({status: 'no user'})
+			res.json({ status: 'no user' })
 		}
 		else {
-			res.json({status: 'success', user: user})
+			res.json({ status: 'success', user: user })
 		}
 	});
 }
@@ -99,19 +99,19 @@ app.use('/getUserFullProfile', (req, res) => {
 
 	var username = req.query.alias
 
-	User.findOne({alias: username})
+	User.findOne({ alias: username })
 		.populate("postsWritten")
 		.populate("following")
 		.populate("followers")
 		.exec(function (err, user) {
 			if (err) {
-				res.json({status: err});
+				res.json({ status: err });
 			}
 			else if (!user) {
-				res.json({status: 'no user'})
+				res.json({ status: 'no user' })
 			}
 			else {
-				res.json({status: 'success', user: user})
+				res.json({ status: 'success', user: user })
 			}
 		});
 }
@@ -127,7 +127,7 @@ app.use('/addGenre', (req, res) => {
 	// save to the database
 	newGenre.save((err) => {
 		if (err) {
-			res.json({status: 'Failed to add to database'});
+			res.json({ status: 'Failed to add to database' });
 		}
 		else {
 			// display the "successfull created" page using EJS
@@ -148,30 +148,30 @@ app.use('/addPost', (req, res) => {
 		content: req.query.content,
 		replies: [],
 		genre: req.query.genreId,
-		time: new Date((Number) (req.query.date)) // turns milliseconds into date format
+		time: new Date((Number)(req.query.date)) // turns milliseconds into date format
 	});
 
 	// save to the database
 	newPost.save((err, post) => {
 		if (err) {
-			res.json({status: 'Failed to add to database'});
+			res.json({ status: 'Failed to add to database' });
 		}
 		else {
 			// add post to user's post written
 			User.update(
-				{_id: userId},
+				{ _id: userId },
 				{
-					$push: {postsWritten: post._id}
+					$push: { postsWritten: post._id }
 				},
 				(err, result) => {
 					if (err) {
-						res.json({status: 'Error adding to post written'});
-						return;
+						res.json({ status: 'Error adding to post written' });
+					} else {
+						// display the "successfull created" page using EJS
+						res.json({ status: 'Success', post: newPost });
 					}
 				}
 			);
-			// display the "successfull created" page using EJS
-			res.json({ status: 'Success', post: newPost });
 		}
 	});
 }
@@ -185,28 +185,28 @@ app.use('/addReply', (req, res) => {
 	var newReply = new Reply({
 		userId: req.query.userId,
 		content: req.query.content,
-		time: new Date((Number) (req.query.date)) // turns milliseconds into date format
+		time: new Date((Number)(req.query.date)) // turns milliseconds into date format
 	});
 
 	newReply.save((err, reply) => {
 		if (err) {
-			res.json({status: 'Failed to add to database'});
+			res.json({ status: 'Failed to add to database' });
 		}
 		else {
 			// add replyId to post
 			Post.update(
-				{_id: postId},
+				{ _id: postId },
 				{
-					$push: {replies: reply._id}
+					$push: { replies: reply._id }
 				},
 				(err, result) => {
 					if (err) {
-						res.json({status: 'Error updating post'});
-						return;
+						res.json({ status: 'Error updating post' });
+					} else {
+						res.json({ status: 'Success', reply: newReply });
 					}
 				}
 			);
-			res.json({ status: 'Success', reply: newReply });
 		}
 	});
 }
@@ -219,39 +219,42 @@ app.use('/addFollower', (req, res) => {
 
 	// add followerId to following's followers
 	User.update(
-		{_id: followingId},
+		{ _id: followingId },
 		{
-			$push: {followers: followerId}
+			$push: { followers: followerId }
 		},
 		(err, result) => {
 			if (err) {
-				res.json({status: 'Error adding follower'});
-				return;
+				res.json({ status: 'Error adding follower' });
+			} else {
+				// add followingId to follower's following
+				User.update(
+					{ _id: followerId },
+					{
+						$push: { following: followingId }
+					},
+					(err, result) => {
+						if (err) {
+							res.json({ status: 'Error adding following' });
+							return;
+						} else {
+							// display the "successfull created" page using EJS
+							res.json({ status: 'Success' });
+						}
+					}
+				);
 			}
 		}
 	);
-	// add followingId to follower's following
-	User.update(
-		{_id: followerId},
-		{
-			$push: {following: followingId}
-		},
-		(err, result) => {
-			if (err) {
-				res.json({status: 'Error adding following'});
-				return;
-			}
-		}
-	);
-	// display the "successfull created" page using EJS
-	res.json({ status: 'Success' });
+
+
 }
 );
 
 app.use('/getGenreByName', (req, res) => {
 	var searchName = req.query.name;
 	if (searchName) {
-		Genre.findOne({name: searchName}, (err, genre) => {
+		Genre.findOne({ name: searchName }, (err, genre) => {
 			if (err) {
 				res.json({});
 			}
@@ -259,7 +262,8 @@ app.use('/getGenreByName', (req, res) => {
 				// no objects found, so send back empty json
 				res.json({});
 			}
-			else {;
+			else {
+				;
 				// send back a single JSON object
 				res.json(genre);
 			}
@@ -273,7 +277,7 @@ app.use('/getGenreByName', (req, res) => {
 app.use('/getUserByName', (req, res) => {
 	var searchName = req.query.name;
 	if (searchName) {
-		User.findOne({alias: searchName}, (err, user) => {
+		User.findOne({ alias: searchName }, (err, user) => {
 			if (err) {
 				res.json({});
 			}
@@ -281,7 +285,8 @@ app.use('/getUserByName', (req, res) => {
 				// no objects found, so send back empty json
 				res.json({});
 			}
-			else {;
+			else {
+				;
 				// send back a single JSON object
 				res.json(user);
 			}
@@ -293,72 +298,70 @@ app.use('/getUserByName', (req, res) => {
 );
 
 app.use('/getUserGenre', (req, res) => {
-	var id = req.query.id; 
+	var id = req.query.id;
 	var o_id = new ObjectID(id);
 
-	User.findOne( {"_id":o_id}, (err, user) => 
-		{ 
+	User.findOne({ "_id": o_id }, (err, user) => {
 		if (err) {
-			res.json( { 'status' : err } ); 
-		} 
-		else if (!user) { 
-			res.json( { 'status' : 'no person' } ); 
-		} 
+			res.json({ 'status': err });
+		}
+		else if (!user) {
+			res.json({ 'status': 'no person' });
+		}
 		else {
 			//res.json( { 'person' : person } ); 
 
-			res.json( { 'genres' : user.genresFollowed } );
+			res.json({ 'genres': user.genresFollowed });
 
 
-/*
-			(user.genresFollowed).forEach((g) => {
-				genres.push(g);
-			});*/
+			/*
+						(user.genresFollowed).forEach((g) => {
+							genres.push(g);
+						});*/
 
 			//res.json( { 'genres' : user.genresFollowed } ); 
-		    //genres.concat(user.genresFollowed);
+			//genres.concat(user.genresFollowed);
 
 		}
 	});
-	
+
 });
 
 app.use('/getUserFallowedPost', (req, res) => {
-	var id = req.query.id; 
+	var id = req.query.id;
 	var o_id = new ObjectID(id);
 
-	User.findOne( {"_id":o_id}, (err, user) => 
-		{ 
+	User.findOne({ "_id": o_id }, (err, user) => {
 		if (err) {
-			res.json( { 'status' : err } ); 
-		} 
-		else if (!user) { 
-			res.json( { 'status' : 'no person' } ); 
-		} 
+			res.json({ 'status': err });
+		}
+		else if (!user) {
+			res.json({ 'status': 'no person' });
+		}
 		else {
 			//res.json( { 'person' : person } ); 
 
-			res.json( { 'followed' : user.postsFollowed } );
+			res.json({ 'followed': user.postsFollowed });
 
 
-/*
-			(user.genresFollowed).forEach((g) => {
-				genres.push(g);
-			});*/
+			/*
+						(user.genresFollowed).forEach((g) => {
+							genres.push(g);
+						});*/
 
 			//res.json( { 'genres' : user.genresFollowed } ); 
-		    //genres.concat(user.genresFollowed);
+			//genres.concat(user.genresFollowed);
 
 		}
 	});
-	
+
 });
 
 app.use('/getPostsByGenre', (req, res) => {
 
-	var genre = req.query.genre; 
+	var genre = req.query.genre;
 
-	Post.find({'genre':ObjectID(genre)}, (err, posts) => {
+	Post.find({ 'genre': ObjectID(genre) }, (err, posts) => {
 		//console.log(posts);
 		if (err) {
 			console.log('uh oh' + err);
@@ -371,15 +374,15 @@ app.use('/getPostsByGenre', (req, res) => {
 		else {
 
 
-/*
-			posts.forEach((post) => {
-				await post.populate('userId').execPopulate();;
-				await post.populate('genre').execPopulate();;
-				console.log(post.genre);
+			/*
+						posts.forEach((post) => {
+							await post.populate('userId').execPopulate();;
+							await post.populate('genre').execPopulate();;
+							console.log(post.genre);
+			
+						});*/
 
-			});*/
-		
-		res.json({'posts':posts});
+			res.json({ 'posts': posts });
 		}
 
 	});
@@ -388,17 +391,16 @@ app.use('/getPostsByGenre', (req, res) => {
 
 app.use('/getUsernameById', (req, res) => {
 
-	var id = req.query.id; 
+	var id = req.query.id;
 	var o_id = new ObjectID(id);
 
-	User.findOne( {"_id":o_id}, (err, user) => 
-		{ 
+	User.findOne({ "_id": o_id }, (err, user) => {
 		if (err) {
-			res.json( { 'status' : err } ); 
-		} 
-		else if (!user) { 
-			res.json( { 'status' : 'no person' } ); 
-		} 
+			res.json({ 'status': err });
+		}
+		else if (!user) {
+			res.json({ 'status': 'no person' });
+		}
 		else {
 			//res.json( { 'person' : person } ); 
 
@@ -409,17 +411,16 @@ app.use('/getUsernameById', (req, res) => {
 
 app.use('/getGenreNameById', (req, res) => {
 
-	var id = req.query.id; 
+	var id = req.query.id;
 	var o_id = new ObjectID(id);
 
-	Genre.findOne( {"_id":o_id}, (err, g) => 
-		{ 
+	Genre.findOne({ "_id": o_id }, (err, g) => {
 		if (err) {
-			res.json( { 'status' : err } ); 
-		} 
-		else if (!g) { 
-			res.json( { 'status' : 'no person' } ); 
-		} 
+			res.json({ 'status': err });
+		}
+		else if (!g) {
+			res.json({ 'status': 'no person' });
+		}
 		else {
 			//res.json( { 'person' : person } ); 
 
@@ -430,23 +431,22 @@ app.use('/getGenreNameById', (req, res) => {
 
 app.use('/getPostById', (req, res) => {
 
-	var id = req.query.id; 
+	var id = req.query.id;
 	var o_id = new ObjectID(id);
 
-	Post.findOne( {"_id":o_id}, (err, p) => 
-		{ 
+	Post.findOne({ "_id": o_id }, (err, p) => {
 		if (err) {
-			res.json( { 'status' : err } ); 
-		} 
-		else if (!p) { 
-			res.json( { 'status' : 'no person' } ); 
-		} 
+			res.json({ 'status': err });
+		}
+		else if (!p) {
+			res.json({ 'status': 'no person' });
+		}
 		else {
 			var ans = [];
 			ans.push(p);
-			res.json( { 'posts' : ans } ); 
+			res.json({ 'posts': ans });
 
-			
+
 		}
 	});
 });
@@ -457,13 +457,13 @@ app.use('/addFeedback', (req, res) => {
 	var newFeedback = new Feedback({
 		userId: req.query.userId,
 		content: req.query.content,
-		time: new Date((Number) (req.query.date)) // turns milliseconds into date format
+		time: new Date((Number)(req.query.date)) // turns milliseconds into date format
 	});
 
 	// save to the database
 	newFeedback.save((err) => {
 		if (err) {
-			res.json({status: 'Failed to add to database'});
+			res.json({ status: 'Failed to add to database' });
 		}
 		else {
 			// display the "successfull created" page using EJS
@@ -490,7 +490,7 @@ app.get("/getFeedback", (req, res) => {
 				return;
 			}
 			// use EJS to show all the feedback
-			res.render('feedback', {feedbacks: feedbacks.reverse()});
+			res.render('feedback', { feedbacks: feedbacks.reverse() });
 		}
 	});
 });
@@ -498,15 +498,14 @@ app.get("/getFeedback", (req, res) => {
 // route for banning a user from posting
 app.use('/ban_user', (req, res) => {
 	var alias = req.query.alias;
-	
-	User.updateOne({alias: alias}, {banned : true}, (err, p) =>
-	{
+
+	User.updateOne({ alias: alias }, { banned: true }, (err, p) => {
 		if (err) {
-			res.json( { 'status' : err } ); 
+			res.json({ 'status': err });
 		}
 	});
 
-	setTimeout(function() {
+	setTimeout(function () {
 		res.redirect('/');
 	}, 1000)
 });
@@ -514,15 +513,14 @@ app.use('/ban_user', (req, res) => {
 // route for unbanning a user from posting
 app.use('/unban_user', (req, res) => {
 	var alias = req.query.alias;
-	
-	User.updateOne({alias: alias}, {banned : false}, (err, p) =>
-	{
+
+	User.updateOne({ alias: alias }, { banned: false }, (err, p) => {
 		if (err) {
-			res.json( { 'status' : err } ); 
+			res.json({ 'status': err });
 		}
 	});
 
-	setTimeout(function() {
+	setTimeout(function () {
 		res.redirect('/');
 	}, 1000)
 });
@@ -593,7 +591,7 @@ app.get("/", (req, res) => {
 				return;
 			}
 			// use EJS to show all the users
-			res.render('splash', {users: users});
+			res.render('splash', { users: users });
 		}
 	});
 });
