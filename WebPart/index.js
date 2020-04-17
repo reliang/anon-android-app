@@ -490,7 +490,7 @@ app.get("/getFeedback", (req, res) => {
 				return;
 			}
 			// use EJS to show all the feedback
-			res.render('feedback', {feedbacks: feedbacks});
+			res.render('feedback', {feedbacks: feedbacks.reverse()});
 		}
 	});
 });
@@ -507,7 +507,7 @@ app.use('/ban_user', (req, res) => {
 	});
 
 	setTimeout(function() {
-		res.redirect('/users');
+		res.redirect('/');
 	}, 1000)
 });
 
@@ -523,7 +523,7 @@ app.use('/unban_user', (req, res) => {
 	});
 
 	setTimeout(function() {
-		res.redirect('/users');
+		res.redirect('/');
 	}, 1000)
 });
 
