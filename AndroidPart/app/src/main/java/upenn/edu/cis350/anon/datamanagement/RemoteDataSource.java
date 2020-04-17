@@ -240,8 +240,8 @@ public class RemoteDataSource {
     private static boolean isBanned(String userId) {
         URL url;
         try {
-            url = new URL("http://10.0.2.2:3000/getUser?"
-                    + "userId=" + userId);
+            url = new URL("http://10.0.2.2:3000/getUserById?"
+                    + "id=" + userId);
             AccessWebTask task = new AccessWebTask();
             task.execute(url);
             String str = task.get();
@@ -252,13 +252,13 @@ public class RemoteDataSource {
             String status = jo.getString("status");
             // give post its id
             if (status.equals("Success")) {
-                return true;
-                //return jo.getJSONObject("user").getBoolean("banned");
+                return jo.getJSONObject("user").getBoolean("banned");
             }
+            return false;
+
         } catch (Exception e) {
             return false;
         }
-        return false;
     }
 
     public static String addPostbyObject(Post post) {
@@ -376,7 +376,7 @@ public class RemoteDataSource {
         String password = user.getPassword();
 
         try {
-            URL url = new URL("http://10.0.2.2:3000/getUser?"
+            URL url = new URL("http://10.0.2.2:3000/getUserByName?"
                     + "alias=" + alias);
             AccessWebTask task = new AccessWebTask();
             task.execute(url);
