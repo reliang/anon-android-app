@@ -66,27 +66,33 @@ public class NotificationsFragment extends Fragment {
                     TextView follower_alias = getView().findViewById(R.id.follower_alias);
                     follower_alias.setText(displayFollowerAlias);
 
-                    String replierAlias = "";
+                    String replierAlias = "No one";
+                    String replyContent = "";
 
                     if (postsWritten.size() == 0) {
                         TextView replier_alias = getView().findViewById(R.id.replier_alias);
-                        replier_alias.setText("No one");
+                        replier_alias.setText(replierAlias);
                     } else {
                         replierAlias = "No one";
                         for (Post onePost: postsWritten) {
-                            for (Reply oneReply: onePost.getReplies()) {
-                                if (!oneReply.getReadOrNot()) {
-                                    unreadReply = oneReply;
-                                    replierAlias = oneReply.getUsername();
+                            if (onePost.getReplies() == null) {
+                                replierAlias = "No One";
+                                replyContent = "There're no replies of your posts. ";
+                            } else {
+                                for (Reply oneReply : onePost.getReplies()) {
+                                    if (!oneReply.getReadOrNot()) {
+                                        unreadReply = oneReply;
+                                        replierAlias = oneReply.getUsername();
+                                        replyContent = oneReply.getContent();
+                                    }
                                 }
                             }
                         }
                         TextView replier_alias = getView().findViewById(R.id.replier_alias);
                         replier_alias.setText(replierAlias);
                         TextView reply_stuff = getView().findViewById(R.id.reply_stuff);
-                        reply_stuff.setText(unreadReply.getContent());
+                        reply_stuff.setText(replyContent);
                     }
-
                 } else {
                     TextView follower_alias = getView().findViewById(R.id.follower_alias);
                     follower_alias.setText("");
