@@ -477,8 +477,8 @@ app.get("/users", (req, res) => {
 			// use EJS to show all the users
 			res.render('banningSystem', {users: users});
 		}
-	});
-});
+	})
+
 
 // route for banning a user from posting
 app.use('/ban_user', (req, res) => {
