@@ -10,8 +10,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
+import upenn.edu.cis350.anon.R;
+import upenn.edu.cis350.anon.User;
+import upenn.edu.cis350.anon.UserActivity;
 import java.util.Calendar;
 import java.util.Date;
+
 import java.util.GregorianCalendar;
 
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
@@ -40,10 +45,10 @@ public class MakePostActivity extends AppCompatActivity {
     }
 
     public void onPostButtonClick(View v) {
-        User user = ((UserActivity) getActivity()).user;
+        User user = UserActivity.user;
 
         String userId, genreId, title, content, username, genre;
-        userId = "5e854df97d58922d34b950cb"; // CHANGE TO CURRENT USER'S
+        userId = user.userId; // CHANGE TO CURRENT USER'S
         genreId = "5e863b135595fb1a089ef03e"; // CHANGE TO CURRENT GENRE'S
         username = "abc"; // CHANGE TO CURRENT USER'S
         genre = "Hazing"; // CHANGE TO CURRENT GENRE'S

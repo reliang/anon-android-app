@@ -34,7 +34,7 @@ public class UserActivity extends AppCompatActivity {
     //private DrawerLayout drawerLayout;
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    public User user;
+    static public User user;
     Fragment selectedFragment = null;
 
     @Override
