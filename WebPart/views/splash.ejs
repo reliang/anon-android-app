@@ -13,17 +13,29 @@
     </div>
 </nav>
 <div class="container">
-    <h2 style="margin:20px 0px;">Feedbacks</h2>
+    <h2 style="margin:20px 0px;">User List</h2>
     <table class="table">
         <tr>
-          <th>Content</th>
-          <th>Time</th>
+          <th>User</th>
+          <th>Status</th>
+          <th>Action</th>
         </tr>
-        <% feedbacks.forEach( (feedback) => { %>
-            <tr>
-                <td><%= feedback.content %></td>
-                <td><%= (feedback.time.getMonth() + 1) + "/" + feedback.time.getDate() + "/" + feedback.time.getFullYear() %></td>
-            </tr>
+        <% users.forEach( (user) => { %>
+            <% if (!user.banned) { %>
+                <tr>
+                    <td><%= user.alias %></td>
+                    <td>Normal</td>
+                    <td><a href="/ban_user?alias=<%= user.alias %>" >
+                        <button type="button" class="btn btn-danger">Ban</button></a></td>
+                </tr>
+            <% } else { %>
+                <tr>
+                    <td><%= user.alias %></td>
+                    <td>Banned</td>
+                    <td><a href="/unban_user?alias=<%= user.alias %>" >
+                        <button type="button" class="btn btn-primary">Unban</button></a></td>
+                </tr>
+            <% } %>
             <% }); %>
         
       </table>

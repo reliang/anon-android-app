@@ -12,8 +12,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+
+import upenn.edu.cis350.anon.R;
+import upenn.edu.cis350.anon.User;
+import upenn.edu.cis350.anon.UserActivity;
 import java.util.Calendar;
 import java.util.Date;
+
 import java.util.GregorianCalendar;
 
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;

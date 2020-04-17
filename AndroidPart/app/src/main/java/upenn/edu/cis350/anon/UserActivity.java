@@ -78,6 +78,11 @@ public class UserActivity extends AppCompatActivity {
         startActivityForResult(i, 1);
     }
 
+    public void onFeedbackButtonClick(View v) {
+        Intent i = new Intent(this, FeedbackActivity.class);
+        startActivityForResult(i, 1);
+    }
+
     public void onViewGenreButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
         ((HomeFragment)selectedFragment).fillPost(opt);

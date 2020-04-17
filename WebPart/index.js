@@ -52,13 +52,33 @@ app.use('/addUser', (req, res) => {
 }
 );
 
-// route for getting a user
-app.use('/getUser', (req, res) => {
+// route for getting a user by alias
+app.use('/getUserByName', (req, res) => {
 	// construct the Post from the input data
 
 	var username = req.query.alias
 
 	User.findOne({alias: username}, (err, user) => {
+		if (err) {
+			res.json({status: err});
+		}
+		else if (!user) {
+			res.json({status: 'no user'})
+		}
+		else {
+			res.json({status: 'success', user: user})
+		}
+	});
+}
+);
+
+// route for getting a user by id
+app.use('/getUserById', (req, res) => {
+	// construct the Post from the input data
+
+	var id = req.query.id
+
+	User.findOne({"_id": id}, (err, user) => {
 		if (err) {
 			res.json({status: err});
 		}
@@ -541,7 +561,28 @@ app.use('/api', (req, res) => {
 
 app.use('/public', express.static('public'));
 
-app.use('/', (req, res) => { res.redirect('/public/personform.html'); });
+
+app.get("/", (req, res) => {
+	// find all the User objects in the database
+	User.find((err, users) => {
+		if (err) {
+			res.type('html').status(200);
+			console.log('uh oh' + err);
+			res.write(err);
+		}
+		else {
+			if (users.length == 0) {
+				res.type('html').status(200);
+				res.write('There are no users');
+				res.end();
+				return;
+			}
+			// use EJS to show all the users
+			res.render('splash', {users: users});
+		}
+	});
+});
+
 
 app.listen(3000, () => {
 	console.log('Listening on port 3000');
