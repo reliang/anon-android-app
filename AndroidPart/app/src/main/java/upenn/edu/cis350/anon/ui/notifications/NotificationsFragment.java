@@ -32,9 +32,11 @@ public class NotificationsFragment extends Fragment {
 
     static Post[] posts;
     private User user = ((UserActivity) getActivity()).user;
+
     List<Post> postsWritten = user.getPostsWritten();
     List<User> followers = user.getFollowers();
     User unreadFollower;
+    Reply unreadReply;
 
     @Nullable
     @Override
@@ -42,7 +44,7 @@ public class NotificationsFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_notifications, container, false);
         String [] values =
-                {"Click to sort notifications", "followers", "Replies"};
+                {"Followers and Replies", "Replies"};
         Spinner spinner = (Spinner) view.findViewById(R.id.notifications_spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, values);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
@@ -53,9 +55,8 @@ public class NotificationsFragment extends Fragment {
                 String typeOfNotification;
                 CharSequence difficulty = (CharSequence) parent.getItemAtPosition(position);
                 typeOfNotification = difficulty.toString();
-                if (typeOfNotification.equals("followers")) {
-
-                    String displayFollowerAlias = "";
+                if (typeOfNotification.equals("Followers and Replies")) {
+                    String displayFollowerAlias = "No one";
                     for (User follower : followers) {
                         if (!follower.getIsReadOrNot()) {
                             unreadFollower = follower;
@@ -64,20 +65,36 @@ public class NotificationsFragment extends Fragment {
                     }
                     TextView follower_alias = getView().findViewById(R.id.follower_alias);
                     follower_alias.setText(displayFollowerAlias);
-                    LinearLayout ll = getView().findViewById(R.id.notification_everything);
-                    LinearLayout buffer = getView().findViewById(R.id.replies_buffer);
-                    ll.removeView(buffer);
-                    TextView replier_alias = getView().findViewById(R.id.replier_alias);
-                    replier_alias.setText("");
-                    TextView reply_stuff = getView().findViewById(R.id.reply_stuff);
-                    reply_stuff.setText("");
+
+                    String replierAlias = "";
+
+                    if (postsWritten.size() == 0) {
+                        TextView replier_alias = getView().findViewById(R.id.replier_alias);
+                        replier_alias.setText("No one");
+                    } else {
+                        replierAlias = "No one";
+                        for (Post onePost: postsWritten) {
+                            for (Reply oneReply: onePost.getReplies()) {
+                                if (!oneReply.getReadOrNot()) {
+                                    unreadReply = oneReply;
+                                    replierAlias = oneReply.getUsername();
+                                }
+                            }
+                        }
+                        TextView replier_alias = getView().findViewById(R.id.replier_alias);
+                        replier_alias.setText(replierAlias);
+                        TextView reply_stuff = getView().findViewById(R.id.reply_stuff);
+                        reply_stuff.setText(unreadReply.getContent());
+                    }
+
                 } else {
                     TextView follower_alias = getView().findViewById(R.id.follower_alias);
                     follower_alias.setText("");
-                    TextView replier_alias = getView().findViewById(R.id.replier_alias);
-                    replier_alias.setText("Someone");
-                    TextView reply_stuff = getView().findViewById(R.id.reply_stuff);
-                    reply_stuff.setText("Lorem ipsum phaowuefhawouehfou abgalngbvoewiugha oweuhfgoaurwhgoub");
+                    TextView tv = getView().findViewById(R.id.new_follower);
+                    tv.setText("");
+                    TextView textView = getView().findViewById(R.id.followed_you);
+                    textView.setText("");
+                    View button = getView().findViewById(R.id.see_profile_button);
                 }
             }
             @Override
@@ -85,13 +102,21 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+
+
+
         Button seePostButton = (Button) view.findViewById(R.id.see_post_button);
         seePostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), PostActivity.class);
-                i.putExtra("post", posts);
-                startActivity(i);
+                if (unreadReply == null) {
+                    Toast.makeText(getActivity(), "You don't have unread posts", Toast.LENGTH_LONG).show();
+                } else {
+                    String thatPost = unreadReply.getPostId();
+                    i.putExtra("post", posts);
+                    startActivity(i);
+                }
             }
         });
 
