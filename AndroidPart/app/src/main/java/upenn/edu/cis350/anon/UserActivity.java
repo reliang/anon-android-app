@@ -34,7 +34,7 @@ public class UserActivity extends AppCompatActivity {
     //private DrawerLayout drawerLayout;
     //private ActionBarDrawerToggle actionBarDrawerToggle;
 
-    static public User user;
+    public static User user;
     Fragment selectedFragment = null;
 
     @Override
@@ -69,6 +69,7 @@ public class UserActivity extends AppCompatActivity {
 
     public void onMakePostDemoClick(View v) {
         Intent i = new Intent(this, MakePostActivity.class);
+        i.putExtra("user", user);
         startActivityForResult(i, 1);
     }
 
@@ -100,6 +101,20 @@ public class UserActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 postFragment).commit();
         //GenrePostsFragment.fillPost(v);
+    }
+
+    public void onFollowingClick(View v) {
+        Intent i = new Intent(this, UserListActivity.class);
+        i.putExtra("following", true);
+        i.putExtra("user", user);
+        startActivity(i);
+    }
+
+    public void onFollowersClick(View v) {
+        Intent i = new Intent(this, UserListActivity.class);
+        i.putExtra("following", false);
+        i.putExtra("user", user);
+        startActivity(i);
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =

@@ -53,7 +53,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="39"
-                            android:textSize="60sp" />
+                            android:textSize="60sp"
+                            android:onClick="onFollowingClick"/>
                     </LinearLayout>
 
                     <View
@@ -79,7 +80,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:text="25"
-                            android:textSize="60sp" />
+                            android:textSize="60sp"
+                            android:onClick="onFollowersClick" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
@@ -122,7 +124,7 @@
             <ListView
                 android:id="@+id/profile_post_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="319dp" />
 
         </LinearLayout>
 
