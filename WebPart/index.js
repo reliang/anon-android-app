@@ -470,7 +470,7 @@ app.use('/ban_user', (req, res) => {
 	});
 
 	setTimeout(function() {
-		res.redirect('/users');
+		res.redirect('/');
 	}, 1000)
 });
 
@@ -486,7 +486,7 @@ app.use('/unban_user', (req, res) => {
 	});
 
 	setTimeout(function() {
-		res.redirect('/users');
+		res.redirect('/');
 	}, 1000)
 });
 
