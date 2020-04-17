@@ -33,26 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
             // set icon
             ImageView icon = (ImageView) findViewById(R.id.profile_icon);
             String iconLink = user.getIconLink();
-            if (iconLink != null) {
-                switch (iconLink) {
-                    case "Cat":
-                        icon.setImageResource(R.drawable.cat);
-                        break;
-                    case "Dog":
-                        icon.setImageResource(R.drawable.dog);
-                        break;
-                    case "Fish":
-                        icon.setImageResource(R.drawable.fish);
-                        break;
-                    case "Turtle":
-                        icon.setImageResource(R.drawable.turtle);
-                        break;
-                    case "Parrot":
-                        icon.setImageResource(R.drawable.parrot);
-                        break;
-                    default:
-                }
-            }
+            UserActivity.setIcon(iconLink, icon);
             // set following and follower number
             TextView following = (TextView) findViewById(R.id.profile_following);
             TextView followers = (TextView) findViewById(R.id.profile_followers);

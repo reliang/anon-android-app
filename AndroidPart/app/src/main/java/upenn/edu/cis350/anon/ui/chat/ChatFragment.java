@@ -35,35 +35,16 @@ public class ChatFragment extends Fragment {
             // set icon
             ImageView icon = (ImageView) view.findViewById(R.id.profile_icon);
             String iconLink = user.getIconLink();
-            if (iconLink != null) {
-                switch (iconLink) {
-                    case "Cat":
-                        icon.setImageResource(R.drawable.cat);
-                        break;
-                    case "Dog":
-                        icon.setImageResource(R.drawable.dog);
-                        break;
-                    case "Fish":
-                        icon.setImageResource(R.drawable.fish);
-                        break;
-                    case "Turtle":
-                        icon.setImageResource(R.drawable.turtle);
-                        break;
-                    case "Parrot":
-                        icon.setImageResource(R.drawable.parrot);
-                        break;
-                    default:
-                }
-                // set following and follower number
-                TextView following = (TextView) view.findViewById(R.id.profile_following);
-                TextView followers = (TextView) view.findViewById(R.id.profile_followers);
-                following.setText(Integer.toString(user.getNumFollowing()));
-                followers.setText(Integer.toString(user.getNumFollowers()));
-                // set post list
-                ListView postlist = (ListView) view.findViewById(R.id.profile_post_list);
-                adapter = new PostListAdapter(user.getPostsWritten());
-                postlist.setAdapter(adapter);
-            }
+            UserActivity.setIcon(iconLink, icon);
+            // set following and follower number
+            TextView following = (TextView) view.findViewById(R.id.profile_following);
+            TextView followers = (TextView) view.findViewById(R.id.profile_followers);
+            following.setText(Integer.toString(user.getNumFollowing()));
+            followers.setText(Integer.toString(user.getNumFollowers()));
+            // set post list
+            ListView postlist = (ListView) view.findViewById(R.id.profile_post_list);
+            adapter = new PostListAdapter(user.getPostsWritten());
+            postlist.setAdapter(adapter);
         }
 
         return view;

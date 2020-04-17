@@ -251,6 +251,17 @@ app.use('/addFollower', (req, res) => {
 }
 );
 
+app.use('/getAllGenres', (req, res) => {
+	Genre.find((err, genres) => {
+		if (err) {
+			res.json({ status: 'Error getting genres' });
+		} else {
+			res.json({ status: 'success', 'genres': genres});
+		}
+	})
+}
+);
+
 app.use('/getGenreByName', (req, res) => {
 	var searchName = req.query.name;
 	if (searchName) {

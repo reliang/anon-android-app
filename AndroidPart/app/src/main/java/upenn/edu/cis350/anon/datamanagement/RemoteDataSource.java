@@ -16,6 +16,7 @@ import java.util.Date;
 
 
 import upenn.edu.cis350.anon.Feedback;
+import upenn.edu.cis350.anon.Genre;
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.Reply;
 import upenn.edu.cis350.anon.User;
@@ -330,7 +331,7 @@ public class RemoteDataSource {
         }
     }
 
-    public static String populatePostReplies(Post post) {
+    public static String populatePostInfo(Post post) {
         String postId = post.getPostId();
         URL url;
 
@@ -347,6 +348,10 @@ public class RemoteDataSource {
             if (status.equals("success")) {
                 JSONArray postsJ = jo.getJSONArray("posts");
                 JSONObject postJ = postsJ.getJSONObject(0);
+                // set icon link
+                JSONObject userJ = postJ.getJSONObject("userId");
+                post.setIconLink(userJ.getString("iconLink"));
+                // add replies
                 JSONArray repliesJ = postJ.getJSONArray("replies");
                 for (int i = 0; i < repliesJ.length(); i++) {
                     JSONObject replyJ = repliesJ.getJSONObject(i);
@@ -482,6 +487,30 @@ public class RemoteDataSource {
         }
     }
 
+    public static String getAllGenres(ArrayList<Genre> genres) {
+        URL url;
+        try{
+            url = new URL("http://10.0.2.2:3000/getAllGenres");
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            if (status.equals("success")) {
+                JSONArray genresJ = jo.getJSONArray("genres");
+                for (int i = 0; i < genresJ.length(); i++) {
+                    JSONObject genreJ = genresJ.getJSONObject(i);
+                    genres.add(new Genre(genreJ.getString("_id"), genreJ.getString("name")));
+                }
+            }
+            return status;
+        } catch (Exception e) {
+            return "Error adding user";
+        }
+    }
         
     // gets following/followers/posts written
     public static String populateUserProfile(User user) {

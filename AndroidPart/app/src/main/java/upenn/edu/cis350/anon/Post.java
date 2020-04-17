@@ -9,10 +9,11 @@ import java.util.Calendar;
 public class Post implements Serializable {
 
     String userId, genreId, postId;
-    String title,username,genre,content;
+    String title,username, genre,content;
     Calendar date;
 
     ArrayList<Reply> replies;
+    String iconLink;
 
     public Post(String userId, String genreId,
                 String title, Calendar date, String username, String genre, String content)  {
@@ -74,7 +75,11 @@ public class Post implements Serializable {
         return content;
     }
 
+    public String getIconLink() { return iconLink; }
+
     public void setPostId(String id){
         this.postId = id;
     }
+
+    public void setIconLink(String iconLink) { this.iconLink = iconLink; }
 }
