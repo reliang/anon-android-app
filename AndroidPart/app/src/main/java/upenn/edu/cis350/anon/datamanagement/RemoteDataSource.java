@@ -76,8 +76,9 @@ public class RemoteDataSource {
             for (int i = 0; i < posts.length; i++) {
 
                 JSONObject postJ = postsJson.getJSONObject(i);
-                String title, date, userName, genre, content;
+                String postId, title, date, userName, genre, content;
 
+                postId = postJ.getString("_id");
                 title = postJ.getString("name");
                 date = postJ.getString("time");
                 // get user
@@ -91,6 +92,7 @@ public class RemoteDataSource {
                 content = postJ.getString("content");
 
                 Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
+                post.setPostId(postId);
 
                 posts[i] = post;
             }
@@ -328,6 +330,36 @@ public class RemoteDataSource {
         }
     }
 
+    public static String populatePostReplies(Post post) {
+        String postId = post.getPostId();
+        URL url;
+
+        try {
+            url = new URL("http://10.0.2.2:3000/getFullPostById?id=" + postId);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            if (status.equals("success")) {
+                JSONArray postsJ = jo.getJSONArray("posts");
+                JSONObject postJ = postsJ.getJSONObject(0);
+                JSONArray repliesJ = postJ.getJSONArray("replies");
+                for (int i = 0; i < repliesJ.length(); i++) {
+                    JSONObject replyJ = repliesJ.getJSONObject(i);
+                    Reply reply = getReplyFromJSON(replyJ);
+                    post.addReply(reply);
+                }
+            }
+            return status;
+        } catch (Exception e) {
+            return "Error getting replies";
+        }
+    }
+
 
     public static String addUserByObject(User user) {
         String alias = user.getAlias();
@@ -509,8 +541,9 @@ public class RemoteDataSource {
     public static Post getPostFromJSON(JSONObject postJ) {
         try {
             URL url;
-            String title, date, userName, genre, content;
+            String postId, title, date, userName, genre, content;
 
+            postId = postJ.getString("_id");
             title = postJ.getString("name");
             date = postJ.getString("time");
             // get user
@@ -524,6 +557,7 @@ public class RemoteDataSource {
             content = postJ.getString("content");
 
             Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
+            post.setPostId(postId);
             return post;
         } catch (Exception e) {
             return null;
@@ -544,6 +578,27 @@ public class RemoteDataSource {
             user.setUserStatus(userStatus);
             user.setContribution(contribution);
             return user;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static Reply getReplyFromJSON(JSONObject replyJ) {
+        try {
+            URL url;
+            String postId, userId, date, username, content;
+
+            postId = replyJ.getString("_id");
+            date = replyJ.getString("time");
+            // get user
+            userId = replyJ.getString("userId");
+            url = new URL("http://10.0.2.2:3000/getUsernameById?id=" + userId);
+            username= getStrByUrl(url);
+            content = replyJ.getString("content");
+
+            //Reply(String postId, String userId, String username, String content, Calendar date)
+            Reply reply = new Reply(postId, userId, username, content, Calendar.getInstance());
+            return reply;
         } catch (Exception e) {
             return null;
         }

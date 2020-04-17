@@ -451,6 +451,33 @@ app.use('/getPostById', (req, res) => {
 	});
 });
 
+// route for getting a post along with replies
+app.use('/getFullPostById', (req, res) => {
+
+	var id = req.query.id;
+	var o_id = new ObjectID(id);
+
+	Post.findOne({ "_id": o_id })
+	.populate("userId")
+	.populate("replies")
+	.populate("genre")
+	.exec(function (err, p) {
+		if (err) {
+			res.json({ 'status': err });
+		}
+		else if (!p) {
+			res.json({ 'status': 'no person' });
+		}
+		else {
+			var ans = [];
+			ans.push(p);
+			res.json({ 'status': 'success', 'posts': ans });
+
+
+		}
+	});
+});
+
 // route for adding a new feedback
 app.use('/addFeedback', (req, res) => {
 	// construct the Feedback from the input data
