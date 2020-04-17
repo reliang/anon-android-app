@@ -458,28 +458,6 @@ app.get("/getFeedback", (req, res) => {
 	});
 });
 
-// route for returning all the users
-app.get("/users", (req, res) => {
-	// find all the User objects in the database
-	User.find((err, users) => {
-		if (err) {
-			res.type('html').status(200);
-			console.log('uh oh' + err);
-			res.write(err);
-		}
-		else {
-			if (users.length == 0) {
-				res.type('html').status(200);
-				res.write('There are no users');
-				res.end();
-				return;
-			}
-			// use EJS to show all the users
-			res.render('banningSystem', {users: users});
-		}
-	});
-});
-
 // route for banning a user from posting
 app.use('/ban_user', (req, res) => {
 	var alias = req.query.alias;
@@ -561,7 +539,28 @@ app.use('/api', (req, res) => {
 
 app.use('/public', express.static('public'));
 
-app.use('/', (req, res) => { res.render('splash'); });
+
+app.get("/", (req, res) => {
+	// find all the User objects in the database
+	User.find((err, users) => {
+		if (err) {
+			res.type('html').status(200);
+			console.log('uh oh' + err);
+			res.write(err);
+		}
+		else {
+			if (users.length == 0) {
+				res.type('html').status(200);
+				res.write('There are no users');
+				res.end();
+				return;
+			}
+			// use EJS to show all the users
+			res.render('splash', {users: users});
+		}
+	});
+});
+
 
 app.listen(3000, () => {
 	console.log('Listening on port 3000');

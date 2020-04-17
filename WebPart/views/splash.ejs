@@ -1,11 +1,42 @@
-
-<ul>
-    <li> 
-    <a href="/users" >
-    <button> Ban Users</button></a></li>
-    <br>
-    <li> 
-        <a href="/getFeedback" >
-        <button> See Feedbacks</button></a></li>
-        <br>
-</ul>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="/getfeedback"> Feedback </a>
+          </div>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <h2 style="margin:20px 0px;">User List</h2>
+    <table class="table">
+        <tr>
+          <th>User</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        <% users.forEach( (user) => { %>
+            <% if (!user.banned) { %>
+                <tr>
+                    <td><%= user.alias %></td>
+                    <td>Normal</td>
+                    <td><a href="/ban_user?alias=<%= user.alias %>" >
+                        <button type="button" class="btn btn-danger">Ban</button></a></td>
+                </tr>
+            <% } else { %>
+                <tr>
+                    <td><%= user.alias %></td>
+                    <td>Banned</td>
+                    <td><a href="/unban_user?alias=<%= user.alias %>" >
+                        <button type="button" class="btn btn-primary">Unban</button></a></td>
+                </tr>
+            <% } %>
+            <% }); %>
+        
+      </table>
+</div>
