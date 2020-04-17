@@ -14,11 +14,14 @@
 </nav>
 <div class="container">
     <h2 style="margin:20px 0px;">Feedbacks</h2>
-    <table class="table">
+    <table class="table table-striped table-bordered">
+      <thead class="thead-dark">
         <tr>
           <th>Content</th>
           <th>Time</th>
         </tr>
+      </thead>
+        
         <% feedbacks.forEach( (feedback) => { %>
             <tr>
                 <td><%= feedback.content %></td>
