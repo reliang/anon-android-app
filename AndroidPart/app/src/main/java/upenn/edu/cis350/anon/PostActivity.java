@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -42,6 +43,53 @@ public class PostActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Couldn't get post :(", Toast.LENGTH_LONG).show();
         }
+
+        RemoteDataSource.populatePostReplies(post);
+        ArrayList<Reply> replies = post.getReplies();
+        for (int i = 0; i < replies.size(); i++) {
+            Reply reply = replies.get(i);
+            // construct reply
+            LinearLayout layout = (LinearLayout) findViewById(R.id.post_layout);
+
+            Calendar date = reply.getDate();
+            final String username = reply.getUsername();
+            String content = reply.getContent();
+
+            TextView username_view = new TextView(this);
+            LinearLayout.LayoutParams params =  new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(0, 45, 0, 0);
+            username_view.setLayoutParams(params);
+            username_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
+            username_view.setText(username);
+            username_view.setOnClickListener(new TextView.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                    User user = new User(username);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+            });
+            layout.addView(username_view);
+
+            TextView date_view = new TextView(this);
+            date_view.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            date_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            date_view.setText(dateFormat.format(date.getTime()));
+            layout.addView(date_view);
+
+            TextView content_view = new TextView(this);
+            content_view.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            content_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            content_view.setText(content);
+            layout.addView(content_view);
+        }
     }
 
     public void onReplyButtonClick(View v) {
@@ -62,6 +110,7 @@ public class PostActivity extends AppCompatActivity {
         Reply newReply = new Reply(postId, userId, username, content, date);
         String status = RemoteDataSource.addReplybyObject(newReply);
         if (status.equals("Success")) {
+            // construct reply
             LinearLayout layout = (LinearLayout) findViewById(R.id.post_layout);
 
             TextView username_view = new TextView(this);

@@ -1,6 +1,7 @@
 package upenn.edu.cis350.anon;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -22,12 +23,14 @@ public class Post implements Serializable {
         this.username = username;
         this.genre = genre;
         this.content = content;
+        this.replies = new ArrayList<>();
     }
 
 
     public Post (String username, String content) {
         this.username = username;
         this.content = content;
+        this.replies = new ArrayList<>();
     }
 
 
@@ -54,6 +57,8 @@ public class Post implements Serializable {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         return dateFormat.format(date.getTime());
     }
+
+    public void addReply(Reply reply) { replies.add(reply); }
 
     public ArrayList<Reply> getReplies() {return replies;}
 
