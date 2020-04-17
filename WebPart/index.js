@@ -490,7 +490,7 @@ app.get("/getFeedback", (req, res) => {
 				return;
 			}
 			// use EJS to show all the feedback
-			res.render('feedback', {feedbacks: feedbacks});
+			res.render('feedback', {feedbacks: feedbacks.reverse()});
 		}
 	});
 });

@@ -37,7 +37,7 @@ public class FeedbackActivity extends AppCompatActivity {
 
 
         if (status.equals("Success")) {
-            Toast.makeText(this, "Success! Please go back!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Your feedback is received", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Failed", Toast.LENGTH_LONG).show();
         }
