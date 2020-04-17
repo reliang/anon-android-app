@@ -49,6 +49,7 @@
                         android:id="@+id/profile_following"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onFollowingClick"
                         android:text="39"
                         android:textSize="60sp" />
                 </LinearLayout>
@@ -74,6 +75,7 @@
                         android:id="@+id/profile_followers"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:onClick="onFollowersClick"
                         android:text="25"
                         android:textSize="60sp" />
                 </LinearLayout>

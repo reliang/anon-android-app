@@ -102,10 +102,7 @@ public class PostActivity extends AppCompatActivity {
     public void onUsernameClick(View v) {
         Intent i = new Intent(this, ProfileActivity.class);
         User user = new User(post.getUserName());
-        String status = RemoteDataSource.getUserByObject(user);
-        if (status.equals("success")) {
-            i.putExtra("user", user);
-            startActivity(i);
-        }
+        i.putExtra("user", user);
+        startActivity(i);
     }
 }
