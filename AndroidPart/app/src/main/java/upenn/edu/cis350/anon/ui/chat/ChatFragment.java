@@ -1,9 +1,11 @@
 package upenn.edu.cis350.anon.ui.chat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -15,6 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import upenn.edu.cis350.anon.Post;
+import upenn.edu.cis350.anon.PostActivity;
+import upenn.edu.cis350.anon.ProfileActivity;
 import upenn.edu.cis350.anon.R;
 import upenn.edu.cis350.anon.User;
 import upenn.edu.cis350.anon.UserActivity;
@@ -45,8 +50,21 @@ public class ChatFragment extends Fragment {
             ListView postlist = (ListView) view.findViewById(R.id.profile_post_list);
             adapter = new PostListAdapter(user.getPostsWritten());
             postlist.setAdapter(adapter);
+            postlist.setOnItemClickListener(listClick);
         }
-
         return view;
     }
+
+    private AdapterView.OnItemClickListener listClick = new AdapterView.OnItemClickListener () {
+        @Override
+        public void onItemClick(AdapterView parent, View v, int position, long id) {
+            Intent i = new Intent(parent.getContext(), PostActivity.class);
+            Post postClicked = adapter.getItem( position );
+            if (postClicked != null) {
+                i.putExtra("post", postClicked);
+                startActivity(i);
+            }
+        }
+
+    };
 }

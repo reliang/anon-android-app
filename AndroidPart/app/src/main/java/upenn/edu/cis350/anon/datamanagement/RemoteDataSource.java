@@ -77,15 +77,24 @@ public class RemoteDataSource {
             for (int i = 0; i < posts.length; i++) {
 
                 JSONObject postJ = postsJson.getJSONObject(i);
-                String postId, title, date, userName, genre, content;
+                String postId, title, date, userName, iconLink, genre, content;
 
                 postId = postJ.getString("_id");
                 title = postJ.getString("name");
                 date = postJ.getString("time");
                 // get user
                 String userid = postJ.getString("userId");
-                URL url = new URL("http://10.0.2.2:3000/getUsernameById?id=" + userid);
-                userName= getStrByUrl(url);
+                URL url = new URL("http://10.0.2.2:3000/getUserById?id=" + userid);
+                JSONObject json = new JSONObject(getStrByUrl(url));
+                String status = json.getString("status");
+                if (status.equals("success")) { // if user found
+                    JSONObject userJ = json.getJSONObject("user");
+                    userName = userJ.getString("alias");
+                    iconLink = userJ.getString("iconLink");
+                } else { // if no user found
+                    userName = "[deleted user]";
+                    iconLink = null;
+                }
                 // need to populate "genreId" field first
                 String genreid = postJ.getString("genre");
                 url = new URL("http://10.0.2.2:3000/getGenreNameById?id=" + genreid);
@@ -94,6 +103,7 @@ public class RemoteDataSource {
 
                 Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
                 post.setPostId(postId);
+                post.setIconLink(iconLink);
 
                 posts[i] = post;
             }
@@ -570,15 +580,24 @@ public class RemoteDataSource {
     public static Post getPostFromJSON(JSONObject postJ) {
         try {
             URL url;
-            String postId, title, date, userName, genre, content;
+            String postId, title, date, userName, iconLink, genre, content;
 
             postId = postJ.getString("_id");
             title = postJ.getString("name");
             date = postJ.getString("time");
             // get user
             String userid = postJ.getString("userId");
-            url = new URL("http://10.0.2.2:3000/getUsernameById?id=" + userid);
-            userName= getStrByUrl(url);
+            url = new URL("http://10.0.2.2:3000/getUserById?id=" + userid);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
+            String status = jo.getString("status");
+            if (status.equals("success")) { // if user found
+                JSONObject userJ = jo.getJSONObject("user");
+                userName = userJ.getString("alias");
+                iconLink = userJ.getString("iconLink");
+            } else { // if no user found
+                userName = "[deleted user]";
+                iconLink = null;
+            }
             // need to populate "genreId" field first
             String genreid = postJ.getString("genre");
             url = new URL("http://10.0.2.2:3000/getGenreNameById?id=" + genreid);
@@ -587,6 +606,7 @@ public class RemoteDataSource {
 
             Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
             post.setPostId(postId);
+            post.setIconLink(iconLink);
             return post;
         } catch (Exception e) {
             return null;
@@ -615,18 +635,26 @@ public class RemoteDataSource {
     public static Reply getReplyFromJSON(JSONObject replyJ) {
         try {
             URL url;
-            String postId, userId, date, username, content;
+            String postId, userId, date, username, iconLink, content;
 
             postId = replyJ.getString("_id");
             date = replyJ.getString("time");
             // get user
             userId = replyJ.getString("userId");
-            url = new URL("http://10.0.2.2:3000/getUsernameById?id=" + userId);
-            username= getStrByUrl(url);
+            url = new URL("http://10.0.2.2:3000/getUserById?id=" + userId);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
+            String status = jo.getString("status");
+            if (status.equals("success")) { // if user found
+                JSONObject userJ = jo.getJSONObject("user");
+                username = userJ.getString("alias");
+                iconLink = userJ.getString("iconLink");
+            } else { // if no user found
+                username = "[deleted user]";
+                iconLink = null;
+            }
             content = replyJ.getString("content");
-
             //Reply(String postId, String userId, String username, String content, Calendar date)
-            Reply reply = new Reply(postId, userId, username, content, Calendar.getInstance());
+            Reply reply = new Reply(postId, userId, username, iconLink, content, Calendar.getInstance());
             return reply;
         } catch (Exception e) {
             return null;

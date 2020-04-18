@@ -6,14 +6,16 @@ public class Reply {
     String postId;
     String userId;
     String username;
+    String iconLink;
     String content;
     boolean read_in_notifications;
     Calendar date;
 
-    public Reply(String postId, String userId, String username, String content, Calendar date) {
+    public Reply(String postId, String userId, String username, String iconLink, String content, Calendar date) {
         this.postId = postId;
         this.userId = userId;
         this.username = username;
+        this.iconLink = iconLink;
         this.content = content;
         this.date = date;
         read_in_notifications = false;
@@ -35,6 +37,10 @@ public class Reply {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getIconLink() {
+        return iconLink;
     }
 
     public String getContent() {
