@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,6 +60,29 @@ public class UserActivity extends AppCompatActivity {
         selectedFragment = new ChatFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
+    }
+
+    public static void setIcon(String iconLink, ImageView icon) {
+        if (iconLink != null) {
+            switch (iconLink) {
+                case "Cat":
+                    icon.setImageResource(R.drawable.cat);
+                    break;
+                case "Dog":
+                    icon.setImageResource(R.drawable.dog);
+                    break;
+                case "Fish":
+                    icon.setImageResource(R.drawable.fish);
+                    break;
+                case "Turtle":
+                    icon.setImageResource(R.drawable.turtle);
+                    break;
+                case "Parrot":
+                    icon.setImageResource(R.drawable.parrot);
+                    break;
+                default:
+            }
+        }
     }
 
 

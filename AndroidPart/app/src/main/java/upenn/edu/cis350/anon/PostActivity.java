@@ -3,10 +3,15 @@ package upenn.edu.cis350.anon;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,67 +33,61 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
 
         post = (Post) getIntent().getSerializableExtra("post");
-        if (post != null) {
-            TextView username = (TextView) findViewById(R.id.post_username);
-            TextView genre = (TextView) findViewById(R.id.post_genre);
-            TextView title = (TextView) findViewById(R.id.post_title);
-            TextView content = (TextView) findViewById(R.id.post_content);
-            TextView date = (TextView) findViewById(R.id.post_date);
-            username.setText(post.getUserName());
-            genre.setText(post.getGenre());
-            title.setText(post.getTitle());
-            content.setText(post.getContent());
-            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-            date.setText(dateFormat.format(post.getDate().getTime()));
-        } else {
+        if (post == null) {
             Toast.makeText(this, "Couldn't get post :(", Toast.LENGTH_LONG).show();
+            return;
         }
 
-        RemoteDataSource.populatePostReplies(post);
+        String status = RemoteDataSource.populatePostInfo(post);
+
+        TextView username = (TextView) findViewById(R.id.post_username);
+        TextView genre = (TextView) findViewById(R.id.post_genre);
+        TextView title = (TextView) findViewById(R.id.post_title);
+        TextView content = (TextView) findViewById(R.id.post_content);
+        TextView date = (TextView) findViewById(R.id.post_date);
+        ImageView icon = (ImageView) findViewById(R.id.post_icon);
+        username.setText(post.getUserName());
+        genre.setText(post.getGenre());
+        title.setText(post.getTitle());
+        content.setText(post.getContent());
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        date.setText(dateFormat.format(post.getDate().getTime()));
+        String iconLink = post.getIconLink();
+        UserActivity.setIcon(iconLink, icon);
+
         ArrayList<Reply> replies = post.getReplies();
         for (int i = 0; i < replies.size(); i++) {
             Reply reply = replies.get(i);
             // construct reply
             LinearLayout layout = (LinearLayout) findViewById(R.id.post_layout);
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.reply_item, layout, false);
 
-            Calendar date = reply.getDate();
-            final String username = reply.getUsername();
-            String content = reply.getContent();
+            String replyIcon = reply.getIconLink();
+            Calendar replyDate = reply.getDate();
+            final String replyUsername = reply.getUsername();
+            String replyContent = reply.getContent();
 
-            TextView username_view = new TextView(this);
-            LinearLayout.LayoutParams params =  new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 45, 0, 0);
-            username_view.setLayoutParams(params);
-            username_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
-            username_view.setText(username);
-            username_view.setOnClickListener(new TextView.OnClickListener() {
+            ImageView iconView = (ImageView) view.findViewById(R.id.reply_icon);
+            TextView dateView = (TextView) view.findViewById(R.id.reply_date);
+            TextView usernameView = (TextView) view.findViewById(R.id.reply_username);
+            TextView contentView = (TextView) view.findViewById(R.id.reply_text);
+
+            UserActivity.setIcon(replyIcon, iconView);
+            dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            dateView.setText(dateFormat.format(replyDate.getTime()));
+            usernameView.setText(replyUsername);
+            usernameView.setOnClickListener(new TextView.OnClickListener() {
                 public void onClick(View v) {
                     Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
-                    User user = new User(username);
+                    User user = new User(replyUsername);
                     i.putExtra("user", user);
                     startActivity(i);
                 }
             });
-            layout.addView(username_view);
+            contentView.setText(replyContent);
 
-            TextView date_view = new TextView(this);
-            date_view.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            date_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-            date_view.setText(dateFormat.format(date.getTime()));
-            layout.addView(date_view);
-
-            TextView content_view = new TextView(this);
-            content_view.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            content_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            content_view.setText(content);
-            layout.addView(content_view);
+            layout.addView(view);
         }
     }
 
@@ -99,46 +98,43 @@ public class PostActivity extends AppCompatActivity {
         }
 
         User user = UserActivity.user;
-        String postId, userId, username, content;
+        String postId, userId, iconLink, content;
         Calendar date;
         postId = post.getPostId();
         userId = user.getUserId();
-        username = user.getAlias();
+        final String username = user.getAlias();
+        iconLink = user.getIconLink();
         content = ((TextView) findViewById(R.id.reply_content)).getText().toString();
         date = new GregorianCalendar();
 
-        Reply newReply = new Reply(postId, userId, username, content, date);
+        Reply newReply = new Reply(postId, userId, username, iconLink, content, date);
         String status = RemoteDataSource.addReplybyObject(newReply);
         if (status.equals("Success")) {
             // construct reply
             LinearLayout layout = (LinearLayout) findViewById(R.id.post_layout);
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.reply_item, layout, false);
 
-            TextView username_view = new TextView(this);
-            LinearLayout.LayoutParams params =  new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT);
-            params.setMargins(0, 45, 0, 0);
-            username_view.setLayoutParams(params);
-            username_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 21);
-            username_view.setText(username);
-            layout.addView(username_view);
+            ImageView iconView = (ImageView) view.findViewById(R.id.reply_icon);
+            TextView dateView = (TextView) view.findViewById(R.id.reply_date);
+            TextView usernameView = (TextView) view.findViewById(R.id.reply_username);
+            TextView contentView = (TextView) view.findViewById(R.id.reply_text);
 
-            TextView date_view = new TextView(this);
-            date_view.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            date_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+            UserActivity.setIcon(iconLink, iconView);
             DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-            date_view.setText(dateFormat.format(date.getTime()));
-            layout.addView(date_view);
+            dateView.setText(dateFormat.format(date.getTime()));
+            usernameView.setText(username);
+            usernameView.setOnClickListener(new TextView.OnClickListener() {
+                public void onClick(View v) {
+                    Intent i = new Intent(getApplicationContext(), ProfileActivity.class);
+                    User user = new User(username);
+                    i.putExtra("user", user);
+                    startActivity(i);
+                }
+            });
+            contentView.setText(content);
 
-            TextView content_view = new TextView(this);
-            content_view.setLayoutParams(new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            LinearLayout.LayoutParams.WRAP_CONTENT));
-            content_view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            content_view.setText(content);
-            layout.addView(content_view);
+            layout.addView(view);
 
             // clear text
 

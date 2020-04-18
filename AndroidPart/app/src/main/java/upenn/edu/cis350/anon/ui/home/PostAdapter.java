@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,6 +15,7 @@ import java.text.SimpleDateFormat;
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.R;
 import upenn.edu.cis350.anon.User;
+import upenn.edu.cis350.anon.UserActivity;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> {
     private Post[] mDataset;
@@ -24,6 +26,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private final TextView genre,date,user,content,title;
+        private final ImageView icon;
         OnPostListener onPostListener;
 
         public MyViewHolder(View v, OnPostListener onPostListener) {
@@ -33,6 +36,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
             user = (TextView) v.findViewById(R.id.post_username2 );
             genre = (TextView) v.findViewById(R.id.post_genre2);
             content = (TextView) v.findViewById(R.id.post_content2);
+            icon = (ImageView) v.findViewById(R.id.post_icon2);
             this.onPostListener = onPostListener;
             v.setOnClickListener(this);
 
@@ -79,6 +83,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.MyViewHolder> 
         holder.user.setText(post.getUserName());
         holder.genre.setText(post.getGenre());
         holder.content.setText(post.getContent());
+        UserActivity.setIcon(post.getIconLink(), holder.icon);
 
     }
 

@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -12,6 +13,7 @@ import java.util.List;
 
 import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.R;
+import upenn.edu.cis350.anon.UserActivity;
 
 public class PostListAdapter extends BaseAdapter {
 
@@ -53,12 +55,14 @@ public class PostListAdapter extends BaseAdapter {
         TextView user = (TextView) convertView.findViewById(R.id.post_username2 );
         TextView genre = (TextView) convertView.findViewById(R.id.post_genre2);
         TextView content = (TextView) convertView.findViewById(R.id.post_content2);
+        ImageView icon = (ImageView) convertView.findViewById(R.id.post_icon2);
         title.setText(post.getTitle());
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         date.setText(dateFormat.format(post.getDate().getTime()));
         user.setText(post.getUserName());
         genre.setText(post.getGenre());
         content.setText(post.getContent());
+        UserActivity.setIcon(post.getIconLink(), icon);
         return convertView;
     }
 }

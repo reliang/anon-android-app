@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 import upenn.edu.cis350.anon.R;
 import upenn.edu.cis350.anon.User;
 import upenn.edu.cis350.anon.UserActivity;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,37 +29,55 @@ import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 import upenn.edu.cis350.anon.ui.chat.ChatFragment;
 import upenn.edu.cis350.anon.ui.chat.PostListAdapter;
 
-public class MakePostActivity extends AppCompatActivity {
+public class MakePostActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    private String genre;
+    private Genre selectedGenre;
     private User user;
+    private ArrayList<Genre> allGenres;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_post);
 
-        genre = "Sexual Assault";
-        user = (User) getIntent().getSerializableExtra("user");
+        // get all genres
+        allGenres = new ArrayList<>();
+        String status = RemoteDataSource.getAllGenres(allGenres);
 
-        Spinner spinner = (Spinner) findViewById(R.id.genre_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.genre_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-        // Set spinner's listener
-        //spinner.setOnItemSelectedListener(this);
+        if (allGenres.size() != 0) {
+            selectedGenre = allGenres.get(0);
+            user = (User) getIntent().getSerializableExtra("user");
+
+            Spinner spinner = (Spinner) findViewById(R.id.genre_spinner);
+            // Create an ArrayAdapter using the string array and a default spinner layout
+            ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, R.layout.genre_spinner_item, allGenres);
+            spinner.setAdapter(adapter);
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            // Apply the adapter to the spinner
+            spinner.setAdapter(adapter);
+            // Set spinner's listener
+            spinner.setOnItemSelectedListener(this);
+        }
+
+
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+        selectedGenre = (Genre) parent.getItemAtPosition(pos);
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
     }
 
     public void onPostButtonClick(View v) {
         String userId, genreId, title, content, username, genre;
         userId = user.getUserId();
-        genreId = "5e863b135595fb1a089ef03e"; // CHANGE TO CURRENT GENRE'S
+        genreId = selectedGenre.getGenreId();
         username = user.getAlias();
-        genre = "Hazing"; // CHANGE TO CURRENT GENRE'S
+        genre = selectedGenre.getName();
         title  = ((EditText) findViewById(R.id.make_post_title)).getText().toString();
         content = ((EditText) findViewById(R.id.make_post_content)).getText().toString();
 

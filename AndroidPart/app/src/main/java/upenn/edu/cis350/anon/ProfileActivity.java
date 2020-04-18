@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -17,6 +18,7 @@ import upenn.edu.cis350.anon.ui.chat.PostListAdapter;
 public class ProfileActivity extends AppCompatActivity {
 
     User user;
+    public static PostListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,26 +35,7 @@ public class ProfileActivity extends AppCompatActivity {
             // set icon
             ImageView icon = (ImageView) findViewById(R.id.profile_icon);
             String iconLink = user.getIconLink();
-            if (iconLink != null) {
-                switch (iconLink) {
-                    case "Cat":
-                        icon.setImageResource(R.drawable.cat);
-                        break;
-                    case "Dog":
-                        icon.setImageResource(R.drawable.dog);
-                        break;
-                    case "Fish":
-                        icon.setImageResource(R.drawable.fish);
-                        break;
-                    case "Turtle":
-                        icon.setImageResource(R.drawable.turtle);
-                        break;
-                    case "Parrot":
-                        icon.setImageResource(R.drawable.parrot);
-                        break;
-                    default:
-                }
-            }
+            UserActivity.setIcon(iconLink, icon);
             // set following and follower number
             TextView following = (TextView) findViewById(R.id.profile_following);
             TextView followers = (TextView) findViewById(R.id.profile_followers);
@@ -60,11 +43,24 @@ public class ProfileActivity extends AppCompatActivity {
             followers.setText(Integer.toString(user.getNumFollowers()));
             // set post list
             ListView postlist = (ListView) findViewById(R.id.profile_post_list);
-            PostListAdapter adapter = new PostListAdapter(user.getPostsWritten());
+            adapter = new PostListAdapter(user.getPostsWritten());
             postlist.setAdapter(adapter);
-
+            postlist.setOnItemClickListener(listClick);
         }
     }
+
+    private AdapterView.OnItemClickListener listClick = new AdapterView.OnItemClickListener () {
+        @Override
+        public void onItemClick(AdapterView parent, View v, int position, long id) {
+            Intent i = new Intent(parent.getContext(), PostActivity.class);
+            Post postClicked = adapter.getItem( position );
+            if (postClicked != null) {
+                i.putExtra("post", postClicked);
+                startActivity(i);
+            }
+        }
+
+    };
 
     public void onFollowingClick(View v) {
         Intent i = new Intent(this, UserListActivity.class);
