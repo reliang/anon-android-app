@@ -23,47 +23,6 @@ import upenn.edu.cis350.anon.User;
 
 public class RemoteDataSource {
 
-    public static Post[] getPostsbyUrl( URL url) {
-
-        Post[] posts;
-        try {
-
-
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-
-            JSONObject jo = new JSONObject(str);
-            JSONArray postsJson = jo.getJSONArray("posts");
-
-            posts = new Post[postsJson.length()];
-
-            for (int i = 0; i < posts.length; i++) {
-
-                JSONObject postJ = postsJson.getJSONObject(i);
-                String title, date, userName, genre, content;
-
-                title = postJ.getString("title");
-                date = postJ.getString("date");
-                // need to populate "userId" field first!
-                userName = postJ.getJSONObject("user").getString("name");
-                // need to populate "genreId" field first
-                genre = postJ.getJSONObject("genre").getString("name");
-                content = postJ.getString("content");
-
-                //Post post = new Post(title, date, userName, genre, content);
-
-                //posts[i] = post;
-            }
-
-
-        } catch (Exception e) {
-            return null;
-        }
-
-        return posts;
-    }
-
     public static Post[] getPostsInJason(String str){
 
         Post[] posts;
@@ -196,11 +155,7 @@ public class RemoteDataSource {
 
         try {
             url = new URL("http://10.0.2.2:3000/getUserFallowedPost?id=" + userId);
-            String str = getStrByUrl(url);
-
-            Log.v("followed",str);
-
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             JSONArray followed = jo.getJSONArray("followed");
 
             for (int i = 0; i < followed.length(); i++) {
@@ -210,7 +165,7 @@ public class RemoteDataSource {
                 url = new URL("http://10.0.2.2:3000/getPostById?id=" + postId);
 
                 Log.v("postid",postId);
-                str = getStrByUrl(url);
+                String str = getStrByUrl(url);
 
                 Log.v("posts",str);
                 Post[] temp = getPostsInJason(str);
@@ -229,30 +184,11 @@ public class RemoteDataSource {
 
     }
 
-    public static Post[] testGetPost(User user) {
-
-        Post [] posts = new Post[5];
-        for (int i = 0; i < 5; i++) {
-            posts[i] = new Post("id","genreID"
-                    ,"Fallowed",Calendar.getInstance(),"b","c","d");
-        }
-
-        //Log.v("", "fallowed fill");
-        return posts;
-
-    }
-
     private static boolean isBanned(String userId) {
         URL url;
         try {
             url = new URL("http://10.0.2.2:3000/getUserById?id=" + userId);
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return true;
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             // give post its id
             return jo.getJSONObject("user").getBoolean("banned");
@@ -284,13 +220,7 @@ public class RemoteDataSource {
                     + "&content=" + content
                     + "&genreId=" + genreId
                     + "&date=" + date );
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             // give post its id
             if (status.equals("Success")) {
@@ -322,13 +252,7 @@ public class RemoteDataSource {
                     + "&postId=" + postId
                     + "&content=" + content
                     + "&date=" + date );
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             return status;
         } catch (Exception e) {
@@ -342,13 +266,7 @@ public class RemoteDataSource {
 
         try {
             url = new URL("http://10.0.2.2:3000/getFullPostById?id=" + postId);
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             if (status.equals("success")) {
                 JSONArray postsJ = jo.getJSONArray("posts");
@@ -388,13 +306,7 @@ public class RemoteDataSource {
                         + "alias=" + alias
                         + "&password=" + password);
             }
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             // give user its id
             if (status.equals("success")) {
@@ -413,13 +325,7 @@ public class RemoteDataSource {
         try {
             URL url = new URL("http://10.0.2.2:3000/getUserByName?"
                     + "alias=" + alias);
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             if (status.equals("success")) {
                 if (jo.getJSONObject("user").getString("password").equals(password)) {
@@ -454,19 +360,33 @@ public class RemoteDataSource {
         try {
             URL url = new URL("http://10.0.2.2:3000/addFeedback?"
                     + "content=" + content + "&date=" + date);
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
 
             return status;
         } catch (Exception e) {
             return "Error adding feedback";
         }
+    }
+
+    public static void login(User user) {
+        String alias = user.getAlias();
+
+        try {
+            URL url = new URL("http://10.0.2.2:3000/login?"
+                    + "alias=" + alias);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
+        } catch (Exception e) { }
+    }
+
+    public static void logout(User user) {
+        String alias = user.getAlias();
+
+        try {
+            URL url = new URL("http://10.0.2.2:3000/logout?"
+                    + "alias=" + alias);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
+        } catch (Exception e) { }
     }
 
     public static String addFollowerByObjects(User follower, User following) {
@@ -478,13 +398,7 @@ public class RemoteDataSource {
             url = new URL("http://10.0.2.2:3000/addFollower?"
                     + "followerId=" + followerId
                     + "&followingId=" + followingId);
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             return status;
         } catch (Exception e) {
@@ -496,13 +410,7 @@ public class RemoteDataSource {
         URL url;
         try{
             url = new URL("http://10.0.2.2:3000/getAllGenres");
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             if (status.equals("success")) {
                 JSONArray genresJ = jo.getJSONArray("genres");
@@ -524,13 +432,7 @@ public class RemoteDataSource {
         try {
             URL url = new URL("http://10.0.2.2:3000/getUserFullProfile?"
                     + "alias=" + alias);
-            AccessWebTask task = new AccessWebTask();
-            task.execute(url);
-            String str = task.get();
-            if (str == null) {
-                return "Error accessing web";
-            }
-            JSONObject jo = new JSONObject(str);
+            JSONObject jo = new JSONObject(getStrByUrl(url));
             String status = jo.getString("status");
             if (status.equals("success")) {
                 JSONObject userJSON = jo.getJSONObject("user");

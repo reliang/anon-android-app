@@ -98,6 +98,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void onLogoutButtonClick(View v) {
+        RemoteDataSource.logout(user);
         Intent i = new Intent(this, MainActivity.class);
         startActivityForResult(i, 1);
     }
