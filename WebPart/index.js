@@ -593,7 +593,7 @@ app.use('/ban_user', (req, res) => {
 	});
 
 	setTimeout(function () {
-		res.redirect('/');
+		res.redirect('/ban');
 	}, 1000)
 });
 
@@ -608,7 +608,7 @@ app.use('/unban_user', (req, res) => {
 	});
 
 	setTimeout(function () {
-		res.redirect('/');
+		res.redirect('/ban');
 	}, 1000)
 });
 
@@ -685,18 +685,19 @@ app.use('/api', (req, res) => {
 /***************** Front End *********************/
 
 app.get("/", (req, res) => {
-	var genres;
-
-	Post.aggregate([{$group: {_id: "$genre", 
-							   count: { $sum: 1 }}},
-					{$sort: {_id: -1}}],
+	Post.aggregate([{$group: {_id: "$genre", count: { $sum: 1 }}}, {$sort: {_id: -1}}],
 					 (err, genres) => {
 		if (err) {
-			console.log('uh oh' + err);
 			res.write(err);
-		}
-		else {
-			res.render('home', { genres: genres});
+		} else {
+			User.find({}, {_id: 0, alias: 1, online: 1, postsWritten: 1},
+					 (err, users) => {
+				if (err) {
+					res.write(err);
+				} else {
+					res.render('home', {genres: genres, users: users});
+				}
+			});
 		}
 	});
 
