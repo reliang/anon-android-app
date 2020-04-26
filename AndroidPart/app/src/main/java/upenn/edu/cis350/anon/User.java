@@ -15,6 +15,7 @@ public class User implements Serializable {
     boolean banned;
     boolean readByNotifications;
     int contribution;
+
     // implement using LinkedHashSet
     Set<Integer> genresFollowed; // genre ids
     Set<Integer> postsFollowed; // post ids
@@ -35,7 +36,8 @@ public class User implements Serializable {
         this.postsWritten = new ArrayList<>();
         this.following = new ArrayList<>();
         this.followers = new ArrayList<>();
-        readByNotifications = false;
+        this.contribution = postsWritten.size() * 5 + followers.size() * 10;
+        this.readByNotifications = false;
     }
 
     public void setRead() {
@@ -73,6 +75,8 @@ public class User implements Serializable {
     public int getNumFollowing() {
         return following.size();
     }
+
+    public int getContribution() { return contribution; }
 
     public List<User> getFollowers() {
         return followers;
