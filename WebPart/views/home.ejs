@@ -57,6 +57,58 @@
       padding-left: 0;
     }
     </style>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['bar', 'line']});
+      
+      google.charts.setOnLoadCallback(drawType);
+
+      var genreArray = [['Genre', 'Number']];
+      var genre = ['<%= genres[0]._id %>', <%= genres[0].count %>];
+      genreArray.push(genre);
+      var genre = ['<%= genres[1]._id %>', <%= genres[1].count %>];
+      genreArray.push(genre);
+      var genre = ['<%= genres[2]._id %>', <%= genres[2].count %>];
+      genreArray.push(genre);
+      var genre = ['<%= genres[3]._id %>', <%= genres[3].count %>];
+      genreArray.push(genre);
+
+      genreArray.forEach(genre => {
+        if (genre[0].localeCompare('5e854d357d58922d34b950ca') == 0) {
+          genre[0] = 'Sexual Assault';
+        }
+        
+        if (genre[0].localeCompare('5e86301f1c9d440000945f37') == 0) {
+          genre[0] = 'Violence';
+        } 
+        if (genre[0].localeCompare('5e863b135595fb1a089ef03e') == 0) {
+          genre[0] = 'Hazing';
+        } 
+        if (genre[0].localeCompare('5e865a7cd2d2645eb8118735') == 0) {
+          genre[0] = 'Greek Life';
+        } 
+      });
+
+      function drawType() {
+        var data = new google.visualization.arrayToDataTable(genreArray);
+
+        var options = {
+          width: 1000,
+          height: 500,
+          legend: { position: 'none' },
+          bars: 'horizontal',
+          axes: {
+            x: {
+              0: { side: 'top', label: 'Number'}
+            }
+          }
+        };
+
+        var chart = new google.charts.Bar(document.getElementById('genre_graph'));
+        chart.draw(data, options);
+      };
+    </script>
   </head>
     
   <body>
@@ -81,8 +133,8 @@
             <div class="col-md-12">
                 <nav>
                     <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
-                        <a class="nav-item nav-link active" id="nav-1-tab" data-toggle="tab" href="#nav-feature-1" role="tab" aria-controls="nav-feature-1" aria-selected="true">User Type Summary</a>
-                        <a class="nav-item nav-link" id="nav-2-tab" data-toggle="tab" href="#nav-feature-2" role="tab" aria-controls="nav-feature-2" aria-selected="false"> Montly Active User</a>
+                        <a class="nav-item nav-link active" id="nav-1-tab" data-toggle="tab" href="#nav-feature-1" role="tab" aria-controls="nav-feature-1" aria-selected="true">User Analysis</a>
+                        <a class="nav-item nav-link" id="nav-2-tab" data-toggle="tab" href="#nav-feature-2" role="tab" aria-controls="nav-feature-2" aria-selected="false"> Genre Analysis </a>
                     </div>
                 </nav>
                 <div class="tab-content" id="nav-tabContent">
@@ -92,7 +144,7 @@
                   </div>
                   <div class="tab-pane fade active" id="nav-feature-2" role="tabpanel" aria-labelledby="nav-feature-2">
                     <br></br>
-                    // graphs
+                    <div id="genre_graph" align="center"></div>
                   </div>
                 </div>
             </div>

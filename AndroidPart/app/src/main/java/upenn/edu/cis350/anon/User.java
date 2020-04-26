@@ -12,6 +12,7 @@ public class User implements Serializable {
     String password;
     String iconLink; // base64 string or link?
     int status; // 0 = user, 1 = admin, 2 = head admin
+    boolean online;
     boolean banned;
     boolean readByNotifications;
     int contribution;
@@ -29,6 +30,7 @@ public class User implements Serializable {
     public User(String alias, String password) {
         this.alias = alias;
         this.password = password;
+        this.online = true;
         this.banned = false;
         this.genresFollowed = new HashSet<>();
         this.postsFollowed = new HashSet<>();
@@ -56,10 +58,6 @@ public class User implements Serializable {
 
     public String getPassword() {
         return password;
-    }
-
-    public boolean isBanned() { 
-        return banned; 
     }
 
     public String getIconLink() {

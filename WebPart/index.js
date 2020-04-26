@@ -30,6 +30,7 @@ app.use('/addUser', (req, res) => {
 		password: req.query.password,
 		iconLink: req.query.iconLink,
 		status: 0, // 0 = us er, 1 = admin, 2 = head admin
+		online: true,
 		banned: false,
 		readByNotifications: false,
 		contribution: 0,
@@ -539,28 +540,6 @@ app.use('/addFeedback', (req, res) => {
 }
 );
 
-// route for returning all the feedbacks
-app.get("/getFeedback", (req, res) => {
-	// find all the Feedback objects in the database
-	Feedback.find((err, feedbacks) => {
-		if (err) {
-			res.type('html').status(200);
-			console.log('uh oh' + err);
-			res.write(err);
-		}
-		else {
-			if (feedbacks.length == 0) {
-				res.type('html').status(200);
-				res.write('There are no feedbacks');
-				res.end();
-				return;
-			}
-			// use EJS to show all the feedback
-			res.render('feedback', { feedbacks: feedbacks.reverse() });
-		}
-	});
-});
-
 // route for banning a user from posting
 app.use('/ban_user', (req, res) => {
 	var alias = req.query.alias;
@@ -589,6 +568,30 @@ app.use('/unban_user', (req, res) => {
 	setTimeout(function () {
 		res.redirect('/');
 	}, 1000)
+});
+
+app.use("/login", (req, res) => {
+	var alias = req.query.alias;
+
+	User.updateOne({ alias: alias }, { online: true }, (err, p) => {
+		if (err) {
+			res.json({ 'status': err });
+		}
+	});
+		
+	res.redirect('/');
+});
+
+app.use("/logout", (req, res) => {
+	var alias = req.query.alias;
+
+	User.updateOne({ alias: alias }, { online: false }, (err, p) => {
+		if (err) {
+			res.json({ 'status': err });
+		}
+	});
+		
+	res.redirect('/');
 });
 
 
@@ -634,6 +637,54 @@ app.use('/api', (req, res) => {
 	});
 });
 
+
+
+
+/***************** Front End *********************/
+
+app.get("/", (req, res) => {
+	var genres;
+
+	Post.aggregate([{$group: {_id: "$genre", 
+							   count: { $sum: 1 }}},
+					{$sort: {_id: -1}}],
+					 (err, genres) => {
+		if (err) {
+			console.log('uh oh' + err);
+			res.write(err);
+		}
+		else {
+			res.render('home', { genres: genres});
+		}
+	});
+
+
+
+	//res.render('home');
+});
+
+// route for returning all the feedbacks
+app.get("/getFeedback", (req, res) => {
+	// find all the Feedback objects in the database
+	Feedback.find((err, feedbacks) => {
+		if (err) {
+			res.type('html').status(200);
+			console.log('uh oh' + err);
+			res.write(err);
+		}
+		else {
+			if (feedbacks.length == 0) {
+				res.type('html').status(200);
+				res.write('There are no feedbacks');
+				res.end();
+				return;
+			}
+			// use EJS to show all the feedback
+			res.render('feedback', { feedbacks: feedbacks.reverse() });
+		}
+	});
+});
+
 app.get("/ban", (req, res) => {
 	// find all the User objects in the database
 	User.find((err, users) => {
@@ -654,18 +705,6 @@ app.get("/ban", (req, res) => {
 		}
 	});
 });
-
-
-
-/*************************************************/
-
-app.use('/public', express.static('public'));
-
-
-app.get("/", (req, res) => {
-	res.render('home');
-});
-
 
 app.listen(3000, () => {
 	console.log('Listening on port 3000');
