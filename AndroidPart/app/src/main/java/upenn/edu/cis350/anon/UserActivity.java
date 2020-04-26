@@ -57,7 +57,7 @@ public class UserActivity extends AppCompatActivity {
         user = (User) getIntent().getSerializableExtra("user");
         RemoteDataSource.populateUserProfile(user);
 
-        selectedFragment = new ChatFragment();
+        selectedFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
     }
@@ -140,6 +140,8 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
+
+
     public void onFollowingClick(View v) {
         Intent i = new Intent(this, UserListActivity.class);
         i.putExtra("following", true);
@@ -149,6 +151,8 @@ public class UserActivity extends AppCompatActivity {
 
     public void onFollowersClick(View v) {
         Intent i = new Intent(this, UserListActivity.class);
+
+
         i.putExtra("following", false);
         i.putExtra("user", user);
         startActivity(i);

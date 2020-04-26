@@ -148,7 +148,8 @@ app.use('/addPost', (req, res) => {
 		content: req.query.content,
 		replies: [],
 		genre: req.query.genreId,
-		time: new Date((Number)(req.query.date)) // turns milliseconds into date format
+		time: new Date((Number)(req.query.date)), // turns milliseconds into date format
+		likes: 0
 	});
 
 	// save to the database
@@ -262,7 +263,7 @@ app.use('/addFollowedGenre', (req, res) => {
 	User.updateOne(
 		{ _id: userId },
 		{
-			$push: { genresFollowed: genreId}
+			$addToSet: { genresFollowed: genreId}
 			//$set: {alias:'anne'}
 		},
 		(err, result) => {
@@ -277,6 +278,47 @@ app.use('/addFollowedGenre', (req, res) => {
 		
 });
 
+//add a genre followed by user
+app.use('/addLike', (req, res) => {
+	// construct the Post from the input data
+	var userId = req.query.userId;
+	var postId = req.query.postId;
+
+	// add like to user's liked
+	User.updateOne(
+		{ _id: userId },
+		{
+			$addToSet: { postsFollowed: postId}
+			//$set: {alias:'anne'}
+		},
+		(err, result) => {
+			if (err) {
+				//res.json({ status: 'Error updating followed' });
+				 console.warn(err.message);
+			} else {
+				//res.json({ status: 'Success'});
+			}
+		}
+	);
+
+	//add 1 to number of likes
+	Post.updateOne(
+		{ _id: postId },
+		{
+			$inc: { likes: 1}
+			//$set: {alias:'anne'}
+		},
+		(err, result) => {
+			if (err) {
+				//res.json({ status: 'Error updating followed' });
+				 console.warn(err.message);
+			} else {
+				res.json({ status: 'Success'});
+			}
+		}
+	);
+		
+});
 
 
 app.use('/getAllGenres', (req, res) => {

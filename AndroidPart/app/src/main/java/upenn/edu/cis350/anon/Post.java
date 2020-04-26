@@ -11,6 +11,7 @@ public class Post implements Serializable {
     String userId, genreId, postId;
     String title,username, genre,content;
     Calendar date;
+    int likes = 0;
 
     ArrayList<Reply> replies;
     String iconLink;
@@ -76,10 +77,17 @@ public class Post implements Serializable {
     }
 
     public String getIconLink() { return iconLink; }
+    public int getLikes(){
+        return likes;
+    }
 
     public void setPostId(String id){
         this.postId = id;
     }
 
     public void setIconLink(String iconLink) { this.iconLink = iconLink; }
+
+    public void setLikes(int l){
+        this.likes = l;
+    }
 }

@@ -56,6 +56,7 @@ public class PostListAdapter extends BaseAdapter {
         TextView genre = (TextView) convertView.findViewById(R.id.post_genre2);
         TextView content = (TextView) convertView.findViewById(R.id.post_content2);
         ImageView icon = (ImageView) convertView.findViewById(R.id.post_icon2);
+
         title.setText(post.getTitle());
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
         date.setText(dateFormat.format(post.getDate().getTime()));

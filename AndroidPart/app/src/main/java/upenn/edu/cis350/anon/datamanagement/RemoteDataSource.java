@@ -78,10 +78,17 @@ public class RemoteDataSource {
 
                 JSONObject postJ = postsJson.getJSONObject(i);
                 String postId, title, date, userName, iconLink, genre, content;
+                int likes = 0;
 
                 postId = postJ.getString("_id");
                 title = postJ.getString("name");
                 date = postJ.getString("time");
+
+                if (postJ.has("likes")) {
+                    likes = postJ.getInt("likes");
+                }
+
+                Log.v("a","get likes in json: "+likes);
                 // get user
                 String userid = postJ.getString("userId");
                 URL url = new URL("http://10.0.2.2:3000/getUserById?id=" + userid);
@@ -104,6 +111,7 @@ public class RemoteDataSource {
                 Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
                 post.setPostId(postId);
                 post.setIconLink(iconLink);
+                post.setLikes(likes);
 
                 posts[i] = post;
             }
@@ -568,10 +576,16 @@ public class RemoteDataSource {
         try {
             URL url;
             String postId, title, date, userName, iconLink, genre, content;
+            int likes = 0;
 
             postId = postJ.getString("_id");
             title = postJ.getString("name");
             date = postJ.getString("time");
+            if (postJ.has("likes")) {
+                likes = postJ.getInt("likes");
+            }
+
+
             // get user
             String userid = postJ.getString("userId");
             url = new URL("http://10.0.2.2:3000/getUserById?id=" + userid);
@@ -594,6 +608,7 @@ public class RemoteDataSource {
             Post post = new Post(userid, genreid, title, Calendar.getInstance(), userName, genre, content);
             post.setPostId(postId);
             post.setIconLink(iconLink);
+            post.setLikes(likes);
             return post;
         } catch (Exception e) {
             return null;
@@ -656,6 +671,21 @@ public class RemoteDataSource {
 
         try {
             url = new URL("http://10.0.2.2:3000/addFollowedGenre?userId=" + userId+"&genreId="+genre);
+            getStrByUrl(url);
+
+        } catch (Exception e) {
+            Log.v("error", e.getMessage());
+
+
+        }
+    }
+    public static void addLike(User user, String post) {
+
+        URL url;
+        String userId = user.getUserId();
+
+        try {
+            url = new URL("http://10.0.2.2:3000/addLike?userId=" + userId+"&postId="+post);
             getStrByUrl(url);
 
         } catch (Exception e) {

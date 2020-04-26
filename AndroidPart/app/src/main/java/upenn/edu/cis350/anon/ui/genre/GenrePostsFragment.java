@@ -121,7 +121,13 @@ public class GenrePostsFragment extends Fragment implements PostAdapter.OnPostLi
     public void onPostClick(int position) {
         Log.v("a", "post clicked");
         Intent i = new Intent(getActivity(), PostActivity.class);
-        i.putExtra("post", posts[position]);
+        Bundle extras = new Bundle();
+        extras.putSerializable("post", posts[position]);
+        extras.putSerializable("user", user);
+        i.putExtras(extras);
+
+        //i.putExtra("post", posts[position]);
+
         startActivity(i);
     }
 
