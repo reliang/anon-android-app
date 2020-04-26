@@ -138,7 +138,6 @@ public class UserActivity extends AppCompatActivity {
         String genreId = ((GenrePostsFragment)selectedFragment).genreId;
         Log.v("a", "follow genre clicked");
         RemoteDataSource.addUserFollowedGenre(user,genreId);
-
     }
 
 

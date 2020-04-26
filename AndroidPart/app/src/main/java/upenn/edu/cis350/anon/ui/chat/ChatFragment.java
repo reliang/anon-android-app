@@ -2,6 +2,7 @@ package upenn.edu.cis350.anon.ui.chat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import upenn.edu.cis350.anon.Post;
 import upenn.edu.cis350.anon.PostActivity;
 import upenn.edu.cis350.anon.ProfileActivity;
 import upenn.edu.cis350.anon.R;
+
 import upenn.edu.cis350.anon.User;
 import upenn.edu.cis350.anon.UserActivity;
 
@@ -37,6 +39,12 @@ public class ChatFragment extends Fragment {
             // set username
             TextView username = (TextView) view.findViewById(R.id.profile_username);
             username.setText(user.getAlias());
+            // set contribution point
+            TextView contribution = (TextView) view.findViewById(R.id.contribution_point);
+            int contributionPoint = user.getNumFollowers() * 10 + user.getNumPostsFollowed() + user.getNumPostsWritten() * 5;
+            user.setContribution(contributionPoint);
+            contribution.setText(Integer.toString(user.getContribution()));
+
             // set icon
             ImageView icon = (ImageView) view.findViewById(R.id.profile_icon);
             String iconLink = user.getIconLink();

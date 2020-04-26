@@ -38,7 +38,7 @@ public class User implements Serializable {
         this.postsWritten = new ArrayList<>();
         this.following = new ArrayList<>();
         this.followers = new ArrayList<>();
-        this.contribution = postsWritten.size() * 5 + followers.size() * 10;
+        this.contribution = 0;
         this.readByNotifications = false;
     }
 
@@ -64,6 +64,18 @@ public class User implements Serializable {
 
     public String getIconLink() {
         return iconLink;
+    }
+
+    public int getNumPostsWritten() {
+        return postsWritten.size();
+    }
+
+    public int getNumPostsFollowed() {
+        return postsFollowed.size();
+    }
+
+    public int getGenresFollowed() {
+        return genresFollowed.size();
     }
 
     public int getNumFollowers() {
