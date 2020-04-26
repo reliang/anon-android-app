@@ -179,19 +179,6 @@ public class RemoteDataSource {
         return ans;
     }
 
-    /*
-    public static Post[] getPostsbyUserGenre(User user) {
-        Post [] posts = new Post[5];
-        for (int i = 0; i < 5; i++) {
-            posts[i] = new Post("id","genreID"
-                    ,"Fallowed",Calendar.getInstance(),"b","c","d");
-        }
-
-        //Log.v("", "fallowed fill");
-        return posts;
-
-    }*/
-
 
     public static Post[] getPostsbyUserFallowed(User user) {
 
@@ -658,6 +645,23 @@ public class RemoteDataSource {
             return reply;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+
+    public static void addUserFollowedGenre(User user, String genre) {
+
+        URL url;
+        String userId = user.getUserId();
+
+        try {
+            url = new URL("http://10.0.2.2:3000/addFollowedGenre?userId=" + userId+"&genreId="+genre);
+            getStrByUrl(url);
+
+        } catch (Exception e) {
+            Log.v("error", e.getMessage());
+
+
         }
     }
 }

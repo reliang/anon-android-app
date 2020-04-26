@@ -77,7 +77,7 @@ public class NotificationsFragment extends Fragment {
                         replierAlias = "No one";
                         for (Post onePost: postsWritten) {
 
-                            RemoteDataSource.populatePostReplies(onePost);
+                            //RemoteDataSource.populatePostReplies(onePost);
                             ArrayList<Reply> replies = onePost.getReplies();
 
                             if (onePost.getReplies() == null) {

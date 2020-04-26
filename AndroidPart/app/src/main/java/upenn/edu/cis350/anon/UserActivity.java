@@ -126,10 +126,18 @@ public class UserActivity extends AppCompatActivity {
     public void genreClicked(View v) {
         Log.v("clicked","genrepost clicked");
         Fragment postFragment = new GenrePostsFragment(v);
-
+        selectedFragment = postFragment;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 postFragment).commit();
         //GenrePostsFragment.fillPost(v);
+    }
+
+
+    public void onFollowGenreClicked(View v) {
+        String genreId = ((GenrePostsFragment)selectedFragment).genreId;
+        Log.v("a", "follow genre clicked");
+        RemoteDataSource.addUserFollowedGenre(user,genreId);
+
     }
 
     public void onFollowingClick(View v) {
