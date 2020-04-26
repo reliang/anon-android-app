@@ -34,6 +34,7 @@ public class GenrePostsFragment extends Fragment implements PostAdapter.OnPostLi
     static Post[] posts ;
     //String genreId;
     View cardView;
+    public static String genreId = "";
 
     protected RecyclerView.LayoutManager mLayoutManager;
 
@@ -80,7 +81,7 @@ public class GenrePostsFragment extends Fragment implements PostAdapter.OnPostLi
 
     public static void fillPost(View v) {
         Log.v("fill","fill post in post fragment");
-        String genreId = "";
+
         //ROOT VIEW IS GENRE FRAGMENT
         View genresRoot = v.getRootView();
 
@@ -120,7 +121,16 @@ public class GenrePostsFragment extends Fragment implements PostAdapter.OnPostLi
     public void onPostClick(int position) {
         Log.v("a", "post clicked");
         Intent i = new Intent(getActivity(), PostActivity.class);
-        i.putExtra("post", posts[position]);
+        Bundle extras = new Bundle();
+        extras.putSerializable("post", posts[position]);
+        extras.putSerializable("user", user);
+        i.putExtras(extras);
+
+        //i.putExtra("post", posts[position]);
+
         startActivity(i);
     }
+
+
+
 }

@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 import upenn.edu.cis350.anon.ui.chat.ChatFragment;
 import upenn.edu.cis350.anon.ui.dashboard.DashBoardFragment;
 import upenn.edu.cis350.anon.ui.genre.GenreFragment;

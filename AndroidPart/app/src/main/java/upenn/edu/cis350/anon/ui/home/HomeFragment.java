@@ -28,7 +28,14 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostListener
     public void onPostClick(int position) {
         Log.v("a", "post clicked");
         Intent i = new Intent(getActivity(), PostActivity.class);
+/*
+        Bundle extras = new Bundle();
+        extras.putSerializable("post", posts[position]);
+        extras.putSerializable("user", user);
+        Log.v("a", "post clicked user id: "+user.getUserId());
+        i.putExtras(extras);*/
         i.putExtra("post", posts[position]);
+
         startActivity(i);
     }
 
@@ -94,12 +101,7 @@ public class HomeFragment extends Fragment implements PostAdapter.OnPostListener
         recyclerView.setAdapter(mAdapter);
     }
 
-    private void test() {
-        posts = new Post[5];
-        for (int i = 0; i < 5; i++) {
-            posts[i] = new Post("ANNE","content");
-        }
-    }
+
 
 
 }

@@ -30,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         User newUser = new User(username, password);
+        RemoteDataSource.login(newUser);
         String status = RemoteDataSource.getUserByObject(newUser);
         if (status.equals("success")) {
             Intent i = new Intent(this, UserActivity.class);
