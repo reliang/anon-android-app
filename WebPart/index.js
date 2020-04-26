@@ -606,14 +606,7 @@ app.use('/api', (req, res) => {
 	});
 });
 
-
-
-/*************************************************/
-
-app.use('/public', express.static('public'));
-
-
-app.get("/", (req, res) => {
+app.get("/ban", (req, res) => {
 	// find all the User objects in the database
 	User.find((err, users) => {
 		if (err) {
@@ -629,9 +622,20 @@ app.get("/", (req, res) => {
 				return;
 			}
 			// use EJS to show all the users
-			res.render('splash', { users: users });
+			res.render('ban', { users: users });
 		}
 	});
+});
+
+
+
+/*************************************************/
+
+app.use('/public', express.static('public'));
+
+
+app.get("/", (req, res) => {
+	res.render('home');
 });
 
 

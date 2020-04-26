@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+    <!-- Data Table Style >
+      .project-tab {
+        padding: 10%;
+        margin-top: -8%;
+    }
+    .project-tab #tabs{
+        background: #007b5e;
+        color: #eee;
+    }
+    .project-tab #tabs h6.section-title{
+        color: #eee;
+    }
+    .project-tab #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+        color: #000000;
+        background-color: transparent;
+        border-color: transparent transparent #f3f3f3;
+        border-bottom: 3px solid !important;
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .project-tab .nav-link {
+        border: 1px solid transparent;
+        border-top-left-radius: .25rem;
+        border-top-right-radius: .25rem;
+        color: #000000;
+        font-size: 16px;
+        font-weight: 600;
+    }
+    .project-tab .nav-link:hover {
+        border: none;
+    }
+    .project-tab thead{
+        background: #f3f3f3;
+        color: #333;
+    }
+    .project-tab a{
+        text-decoration: none;
+        color: #333;
+        font-weight: 600;
+    }
+    
+    
+    .form-control-underlined {
+      border-width: 0;
+      border-bottom-width: 1px;
+      border-radius: 0;
+      padding-left: 0;
+    }
+    </style>
+  </head>
+    
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+          <a class="navbar-brand" href="/">Home</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link active" href="/ban"> Ban </a>
+              <a class="nav-item nav-link active" href="/getfeedback"> Feedback </a>
+            </div>
+          </div>
+      </div>
+  </nav>
+  
+  <section id="tabs" class="project-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-1-tab" data-toggle="tab" href="#nav-feature-1" role="tab" aria-controls="nav-feature-1" aria-selected="true">User Type Summary</a>
+                        <a class="nav-item nav-link" id="nav-2-tab" data-toggle="tab" href="#nav-feature-2" role="tab" aria-controls="nav-feature-2" aria-selected="false"> Montly Active User</a>
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                  <div class="tab-pane fade show active" id="nav-feature-1" role="tabpanel" aria-labelledby="nav-feature-1"> 
+                    <br></br>
+                    // graphs
+                  </div>
+                  <div class="tab-pane fade active" id="nav-feature-2" role="tabpanel" aria-labelledby="nav-feature-2">
+                    <br></br>
+                    // graphs
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </section>
+  
+  </body>
+</html>  
