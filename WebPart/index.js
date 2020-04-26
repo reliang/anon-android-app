@@ -251,6 +251,34 @@ app.use('/addFollower', (req, res) => {
 }
 );
 
+
+//add a genre followed by user
+app.use('/addFollowedGenre', (req, res) => {
+	// construct the Post from the input data
+	var userId = req.query.userId;
+	var genreId = req.query.genreId;
+
+	// add replyId to post
+	User.updateOne(
+		{ _id: userId },
+		{
+			$push: { genresFollowed: genreId}
+			//$set: {alias:'anne'}
+		},
+		(err, result) => {
+			if (err) {
+				//res.json({ status: 'Error updating followed' });
+				 console.warn(err.message);
+			} else {
+				res.json({ status: 'Success'});
+			}
+		}
+	);
+		
+});
+
+
+
 app.use('/getAllGenres', (req, res) => {
 	Genre.find((err, genres) => {
 		if (err) {
