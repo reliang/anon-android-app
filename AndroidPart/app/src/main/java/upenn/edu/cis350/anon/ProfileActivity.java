@@ -90,7 +90,7 @@ public class ProfileActivity extends AppCompatActivity {
         // add follower to curr profile, add following to app user
         user.addFollower(UserActivity.user);
         UserActivity.user.addFollowing(user);
-        // refresh followers count
+        // refresh profile followers count
         TextView followers = (TextView) findViewById(R.id.profile_followers);
         followers.setText(Integer.toString(user.getNumFollowers()));
         Toast.makeText(this, status, Toast.LENGTH_LONG).show();

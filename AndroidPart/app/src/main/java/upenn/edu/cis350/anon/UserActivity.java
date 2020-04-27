@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,16 +47,19 @@ public class UserActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
 
-        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.side_drawer);
+        DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.side_drawer);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
-        View hView =  navigationView.getHeaderView(0);
+        View hView = navigationView.getHeaderView(0);
 
-        user = (User) getIntent().getSerializableExtra("user");
-        RemoteDataSource.populateUserProfile(user);
+        // makes sure user is not recreated
+        if (user == null) {
+            user = (User) getIntent().getSerializableExtra("user");
+            RemoteDataSource.populateUserProfile(user);
+        }
 
         selectedFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -85,6 +89,18 @@ public class UserActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        // refresh fragment if it's curr user's profile
+        Fragment currentFragment =  getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (currentFragment instanceof ChatFragment){
+            FragmentTransaction fragTransaction = getSupportFragmentManager().beginTransaction();
+            fragTransaction.detach(currentFragment);
+            fragTransaction.attach(currentFragment);
+            fragTransaction.commit();
+        }
+    }
 
     public void onPostDemoClick(View v) {
         Intent i = new Intent(this, PostActivity.class);
@@ -110,12 +126,12 @@ public class UserActivity extends AppCompatActivity {
 
     public void onViewGenreButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.GENRE;
-        ((HomeFragment)selectedFragment).fillPost(opt);
+        ((HomeFragment) selectedFragment).fillPost(opt);
     }
 
     public void onViewFallowButtonClick(View v) {
         HomeFragment.ViewOption opt = HomeFragment.ViewOption.FALLOWED;
-        ((HomeFragment)selectedFragment).fillPost(opt);
+        ((HomeFragment) selectedFragment).fillPost(opt);
     }
 
     public void showPostClicked(View v) {
@@ -125,7 +141,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void genreClicked(View v) {
-        Log.v("clicked","genrepost clicked");
+        Log.v("clicked", "genrepost clicked");
         Fragment postFragment = new GenrePostsFragment(v);
         selectedFragment = postFragment;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -135,11 +151,10 @@ public class UserActivity extends AppCompatActivity {
 
 
     public void onFollowGenreClicked(View v) {
-        String genreId = ((GenrePostsFragment)selectedFragment).genreId;
+        String genreId = ((GenrePostsFragment) selectedFragment).genreId;
         Log.v("a", "follow genre clicked");
-        RemoteDataSource.addUserFollowedGenre(user,genreId);
+        RemoteDataSource.addUserFollowedGenre(user, genreId);
     }
-
 
 
     public void onFollowingClick(View v) {
@@ -165,7 +180,7 @@ public class UserActivity extends AppCompatActivity {
 
                     switch (menuItem.getItemId()) {
                         case R.id.nav_dashboard:
-                            selectedFragment= new HomeFragment();
+                            selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_chat:
                             selectedFragment = new ChatFragment();
