@@ -288,6 +288,36 @@ public class RemoteDataSource {
         }
     }
 
+    public static String populatePostReplies(Post post) {
+        String postId = post.getPostId();
+        URL url;
+
+        try {
+            url = new URL("http://10.0.2.2:3000/getFullPostById?id=" + postId);
+            AccessWebTask task = new AccessWebTask();
+            task.execute(url);
+            String str = task.get();
+            if (str == null) {
+                return "Error accessing web";
+            }
+            JSONObject jo = new JSONObject(str);
+            String status = jo.getString("status");
+            if (status.equals("success")) {
+                JSONArray postsJ = jo.getJSONArray("posts");
+                JSONObject postJ = postsJ.getJSONObject(0);
+                JSONArray repliesJ = postJ.getJSONArray("replies");
+                for (int i = 0; i < repliesJ.length(); i++) {
+                    JSONObject replyJ = repliesJ.getJSONObject(i);
+                    Reply reply = getReplyFromJSON(replyJ);
+                    post.addReply(reply);
+                }
+            }
+            return status;
+        } catch (Exception e) {
+            return "Error getting replies";
+        }
+    }
+
 
     public static String addUserByObject(User user) {
         String alias = user.getAlias();

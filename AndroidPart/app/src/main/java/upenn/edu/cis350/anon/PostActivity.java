@@ -34,7 +34,7 @@ public class PostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post);
 
         //user = (User) (getIntent().getExtras()).getSerializable("user");
-        post = (Post) (getIntent().getExtras()).getSerializable("post");
+        post = (Post) (getIntent().getSerializableExtra("post"));
         //user = (User) getIntent().getSerializableExtra("user");
         //post = (Post) getIntent().getSerializableExtra("post");
         //Log.v("a", "on create get user: "+user.getUserId());

@@ -1,8 +1,9 @@
 package upenn.edu.cis350.anon;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
-public class Reply {
+public class Reply implements Serializable {
     String postId;
     String userId;
     String username;
