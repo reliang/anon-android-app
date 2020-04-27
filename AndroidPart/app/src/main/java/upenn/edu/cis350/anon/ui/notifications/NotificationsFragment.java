@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import upenn.edu.cis350.anon.Post;
@@ -30,13 +32,13 @@ import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 
 public class NotificationsFragment extends Fragment {
 
-    static Post[] posts;
     private User user = ((UserActivity) getActivity()).user;
-
     List<Post> postsWritten = user.getPostsWritten();
     List<User> followers = user.getFollowers();
     User unreadFollower;
     Reply unreadReply;
+
+    public static transient Post unreadPost;
 
     @Nullable
     @Override
@@ -75,12 +77,16 @@ public class NotificationsFragment extends Fragment {
                     } else {
                         replierAlias = "No one";
                         for (Post onePost: postsWritten) {
+                            RemoteDataSource.populatePostReplies(onePost);
+                            ArrayList<Reply> replies = onePost.getReplies();
+
                             if (onePost.getReplies() == null) {
                                 replierAlias = "No One";
                                 replyContent = "There're no replies of your posts. ";
                             } else {
-                                for (Reply oneReply : onePost.getReplies()) {
+                                for (Reply oneReply : replies) {
                                     if (!oneReply.getReadOrNot()) {
+                                        unreadPost = onePost;
                                         unreadReply = oneReply;
                                         replierAlias = oneReply.getUsername();
                                         replyContent = oneReply.getContent();
@@ -109,8 +115,6 @@ public class NotificationsFragment extends Fragment {
         });
 
 
-
-
         Button seePostButton = (Button) view.findViewById(R.id.see_post_button);
         seePostButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,8 +123,7 @@ public class NotificationsFragment extends Fragment {
                 if (unreadReply == null) {
                     Toast.makeText(getActivity(), "You don't have unread posts", Toast.LENGTH_LONG).show();
                 } else {
-                    String thatPost = unreadReply.getPostId();
-                    i.putExtra("post", posts);
+                    i.putExtra("post", unreadPost);
                     startActivity(i);
                 }
             }

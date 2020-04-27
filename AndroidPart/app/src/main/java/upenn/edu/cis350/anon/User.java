@@ -12,9 +12,11 @@ public class User implements Serializable {
     String password;
     String iconLink; // base64 string or link?
     int status; // 0 = user, 1 = admin, 2 = head admin
+    boolean online;
     boolean banned;
     boolean readByNotifications;
     int contribution;
+
     // implement using LinkedHashSet
     Set<Integer> genresFollowed; // genre ids
     Set<Integer> postsFollowed; // post ids
@@ -29,13 +31,15 @@ public class User implements Serializable {
     public User(String alias, String password) {
         this.alias = alias;
         this.password = password;
+        this.online = true;
         this.banned = false;
         this.genresFollowed = new HashSet<>();
         this.postsFollowed = new HashSet<>();
         this.postsWritten = new ArrayList<>();
         this.following = new ArrayList<>();
         this.followers = new ArrayList<>();
-        readByNotifications = false;
+        this.contribution = 0;
+        this.readByNotifications = false;
     }
 
     public void setRead() {
@@ -58,12 +62,20 @@ public class User implements Serializable {
         return password;
     }
 
-    public boolean isBanned() { 
-        return banned; 
-    }
-
     public String getIconLink() {
         return iconLink;
+    }
+
+    public int getNumPostsWritten() {
+        return postsWritten.size();
+    }
+
+    public int getNumPostsFollowed() {
+        return postsFollowed.size();
+    }
+
+    public int getGenresFollowed() {
+        return genresFollowed.size();
     }
 
     public int getNumFollowers() {
@@ -73,6 +85,8 @@ public class User implements Serializable {
     public int getNumFollowing() {
         return following.size();
     }
+
+    public int getContribution() { return contribution; }
 
     public List<User> getFollowers() {
         return followers;

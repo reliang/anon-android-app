@@ -23,6 +23,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
+import upenn.edu.cis350.anon.ui.genre.GenrePostsFragment;
 
 public class PostActivity extends AppCompatActivity {
     Post post;
@@ -32,7 +33,12 @@ public class PostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
 
-        post = (Post) getIntent().getSerializableExtra("post");
+        //user = (User) (getIntent().getExtras()).getSerializable("user");
+        post = (Post) (getIntent().getSerializableExtra("post"));
+        //user = (User) getIntent().getSerializableExtra("user");
+        //post = (Post) getIntent().getSerializableExtra("post");
+        //Log.v("a", "on create get user: "+user.getUserId());
+
         if (post == null) {
             Toast.makeText(this, "Couldn't get post :(", Toast.LENGTH_LONG).show();
             return;
@@ -46,6 +52,10 @@ public class PostActivity extends AppCompatActivity {
         TextView content = (TextView) findViewById(R.id.post_content);
         TextView date = (TextView) findViewById(R.id.post_date);
         ImageView icon = (ImageView) findViewById(R.id.post_icon);
+        TextView likes = (TextView) findViewById(R.id.likeAmount);
+
+
+
         username.setText(post.getUserName());
         genre.setText(post.getGenre());
         title.setText(post.getTitle());
@@ -54,6 +64,7 @@ public class PostActivity extends AppCompatActivity {
         date.setText(dateFormat.format(post.getDate().getTime()));
         String iconLink = post.getIconLink();
         UserActivity.setIcon(iconLink, icon);
+        likes.setText(""+post.likes);
 
         ArrayList<Reply> replies = post.getReplies();
         for (int i = 0; i < replies.size(); i++) {
@@ -149,5 +160,14 @@ public class PostActivity extends AppCompatActivity {
         User user = new User(post.getUserName());
         i.putExtra("user", user);
         startActivity(i);
+    }
+
+    public void onLikeClicked(View v) {
+        String postId =post.postId;
+        User user = UserActivity.user;
+        RemoteDataSource.addLike(user,postId);
+
+        TextView likes = (TextView) findViewById(R.id.likeAmount);
+        likes.setText(""+(post.likes+1));
     }
 }

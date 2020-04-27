@@ -13,7 +13,8 @@ var postSchema = new Schema({
     content: String,
     replies: [{type: Schema.Types.ObjectId, ref: 'Reply'}],
     genre: {type: Schema.Types.ObjectId, ref: 'Genre'},
-    time: Date
+    time: Date,
+    likes: Number
     });
 
 // export postSchema as a class called Post

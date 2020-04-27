@@ -57,7 +57,7 @@ public class UserActivity extends AppCompatActivity {
         user = (User) getIntent().getSerializableExtra("user");
         RemoteDataSource.populateUserProfile(user);
 
-        selectedFragment = new ChatFragment();
+        selectedFragment = new HomeFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 selectedFragment).commit();
     }
@@ -98,6 +98,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     public void onLogoutButtonClick(View v) {
+        RemoteDataSource.logout(user);
         Intent i = new Intent(this, MainActivity.class);
         startActivityForResult(i, 1);
     }
@@ -126,11 +127,20 @@ public class UserActivity extends AppCompatActivity {
     public void genreClicked(View v) {
         Log.v("clicked","genrepost clicked");
         Fragment postFragment = new GenrePostsFragment(v);
-
+        selectedFragment = postFragment;
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 postFragment).commit();
         //GenrePostsFragment.fillPost(v);
     }
+
+
+    public void onFollowGenreClicked(View v) {
+        String genreId = ((GenrePostsFragment)selectedFragment).genreId;
+        Log.v("a", "follow genre clicked");
+        RemoteDataSource.addUserFollowedGenre(user,genreId);
+    }
+
+
 
     public void onFollowingClick(View v) {
         Intent i = new Intent(this, UserListActivity.class);
@@ -141,6 +151,8 @@ public class UserActivity extends AppCompatActivity {
 
     public void onFollowersClick(View v) {
         Intent i = new Intent(this, UserListActivity.class);
+
+
         i.putExtra("following", false);
         i.putExtra("user", user);
         startActivity(i);

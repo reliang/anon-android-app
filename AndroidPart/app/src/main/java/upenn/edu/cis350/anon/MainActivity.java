@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 import upenn.edu.cis350.anon.ui.chat.ChatFragment;
 import upenn.edu.cis350.anon.ui.dashboard.DashBoardFragment;
 import upenn.edu.cis350.anon.ui.genre.GenreFragment;
@@ -19,6 +21,7 @@ import upenn.edu.cis350.anon.ui.notifications.NotificationsFragment;
 import upenn.edu.cis350.anon.ui.home.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

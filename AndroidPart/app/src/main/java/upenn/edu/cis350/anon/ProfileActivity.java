@@ -12,6 +12,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
 import upenn.edu.cis350.anon.ui.chat.ChatFragment;
 import upenn.edu.cis350.anon.ui.chat.PostListAdapter;
@@ -33,6 +35,12 @@ public class ProfileActivity extends AppCompatActivity {
             // set username
             TextView username = (TextView) findViewById(R.id.profile_username);
             username.setText(user.getAlias());
+            // set contribution point
+            TextView contribution = (TextView) findViewById(R.id.contribution_point);
+            int contributionPoint = user.genresFollowed.size() + user.postsFollowed.size() +
+                    user.postsWritten.size() * 5 + user.getNumFollowers() * 10;
+            user.setContribution(contributionPoint);
+            contribution.setText(Integer.toString(user.getContribution()));
             // set icon
             ImageView icon = (ImageView) findViewById(R.id.profile_icon);
             String iconLink = user.getIconLink();

@@ -24,7 +24,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:layout_marginBottom="20dp"
-    android:background="#DFDFDF">
+    android:background="#757575">
 
     <LinearLayout
         android:layout_width="match_parent"

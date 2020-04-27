@@ -7,6 +7,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
           <div class="navbar-nav">
+            <a class="nav-item nav-link active" href="/ban"> Ban </a>
             <a class="nav-item nav-link active" href="/getfeedback"> Feedback </a>
           </div>
         </div>
@@ -36,7 +37,7 @@
                     <td><%= user.alias %></td>
                     <td>Banned</td>
                     <td><a href="/unban_user?alias=<%= user.alias %>" >
-                        <button type="button" class="btn btn-primary">Unban</button></a></td>
+                        <button type="button" class="btn btn-dark">Unban</button></a></td>
                 </tr>
             <% } %>
             <% }); %>

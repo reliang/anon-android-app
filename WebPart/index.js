@@ -30,6 +30,7 @@ app.use('/addUser', (req, res) => {
 		password: req.query.password,
 		iconLink: req.query.iconLink,
 		status: 0, // 0 = us er, 1 = admin, 2 = head admin
+		online: true,
 		banned: false,
 		readByNotifications: false,
 		contribution: 0,
@@ -148,7 +149,8 @@ app.use('/addPost', (req, res) => {
 		content: req.query.content,
 		replies: [],
 		genre: req.query.genreId,
-		time: new Date((Number)(req.query.date)) // turns milliseconds into date format
+		time: new Date((Number)(req.query.date)), // turns milliseconds into date format
+		likes: 0
 	});
 
 	// save to the database
@@ -250,6 +252,75 @@ app.use('/addFollower', (req, res) => {
 
 }
 );
+
+
+//add a genre followed by user
+app.use('/addFollowedGenre', (req, res) => {
+	// construct the Post from the input data
+	var userId = req.query.userId;
+	var genreId = req.query.genreId;
+
+	// add replyId to post
+	User.updateOne(
+		{ _id: userId },
+		{
+			$addToSet: { genresFollowed: genreId}
+			//$set: {alias:'anne'}
+		},
+		(err, result) => {
+			if (err) {
+				//res.json({ status: 'Error updating followed' });
+				 console.warn(err.message);
+			} else {
+				res.json({ status: 'Success'});
+			}
+		}
+	);
+		
+});
+
+//add a genre followed by user
+app.use('/addLike', (req, res) => {
+	// construct the Post from the input data
+	var userId = req.query.userId;
+	var postId = req.query.postId;
+
+	// add like to user's liked
+	User.updateOne(
+		{ _id: userId },
+		{
+			$addToSet: { postsFollowed: postId}
+			//$set: {alias:'anne'}
+		},
+		(err, result) => {
+			if (err) {
+				//res.json({ status: 'Error updating followed' });
+				 console.warn(err.message);
+			} else {
+				//res.json({ status: 'Success'});
+			}
+		}
+	);
+
+	//add 1 to number of likes
+	Post.updateOne(
+		{ _id: postId },
+		{
+			$inc: { likes: 1}
+			//$set: {alias:'anne'}
+		},
+		(err, result) => {
+			if (err) {
+				//res.json({ status: 'Error updating followed' });
+				 console.warn(err.message);
+			} else {
+				res.json({ status: 'Success'});
+			}
+		}
+	);
+		
+});
+
 
 app.use('/getAllGenres', (req, res) => {
 	Genre.find((err, genres) => {
@@ -511,28 +582,6 @@ app.use('/addFeedback', (req, res) => {
 }
 );
 
-// route for returning all the feedbacks
-app.get("/getFeedback", (req, res) => {
-	// find all the Feedback objects in the database
-	Feedback.find((err, feedbacks) => {
-		if (err) {
-			res.type('html').status(200);
-			console.log('uh oh' + err);
-			res.write(err);
-		}
-		else {
-			if (feedbacks.length == 0) {
-				res.type('html').status(200);
-				res.write('There are no feedbacks');
-				res.end();
-				return;
-			}
-			// use EJS to show all the feedback
-			res.render('feedback', { feedbacks: feedbacks.reverse() });
-		}
-	});
-});
-
 // route for banning a user from posting
 app.use('/ban_user', (req, res) => {
 	var alias = req.query.alias;
@@ -544,7 +593,7 @@ app.use('/ban_user', (req, res) => {
 	});
 
 	setTimeout(function () {
-		res.redirect('/');
+		res.redirect('/ban');
 	}, 1000)
 });
 
@@ -559,8 +608,32 @@ app.use('/unban_user', (req, res) => {
 	});
 
 	setTimeout(function () {
-		res.redirect('/');
+		res.redirect('/ban');
 	}, 1000)
+});
+
+app.use("/login", (req, res) => {
+	var alias = req.query.alias;
+
+	User.updateOne({ alias: alias }, { online: true }, (err, p) => {
+		if (err) {
+			res.json({ 'status': err });
+		}
+	});
+		
+	res.redirect('/');
+});
+
+app.use("/logout", (req, res) => {
+	var alias = req.query.alias;
+
+	User.updateOne({ alias: alias }, { online: false }, (err, p) => {
+		if (err) {
+			res.json({ 'status': err });
+		}
+	});
+		
+	res.redirect('/');
 });
 
 
@@ -608,12 +681,54 @@ app.use('/api', (req, res) => {
 
 
 
-/*************************************************/
 
-app.use('/public', express.static('public'));
-
+/***************** Front End *********************/
 
 app.get("/", (req, res) => {
+	Post.aggregate([{$group: {_id: "$genre", count: { $sum: 1 }}}, {$sort: {_id: -1}}],
+					 (err, genres) => {
+		if (err) {
+			res.write(err);
+		} else {
+			User.find({}, {_id: 0, alias: 1, online: 1, postsWritten: 1},
+					 (err, users) => {
+				if (err) {
+					res.write(err);
+				} else {
+					res.render('home', {genres: genres, users: users});
+				}
+			});
+		}
+	});
+
+
+
+	//res.render('home');
+});
+
+// route for returning all the feedbacks
+app.get("/getFeedback", (req, res) => {
+	// find all the Feedback objects in the database
+	Feedback.find((err, feedbacks) => {
+		if (err) {
+			res.type('html').status(200);
+			console.log('uh oh' + err);
+			res.write(err);
+		}
+		else {
+			if (feedbacks.length == 0) {
+				res.type('html').status(200);
+				res.write('There are no feedbacks');
+				res.end();
+				return;
+			}
+			// use EJS to show all the feedback
+			res.render('feedback', { feedbacks: feedbacks.reverse() });
+		}
+	});
+});
+
+app.get("/ban", (req, res) => {
 	// find all the User objects in the database
 	User.find((err, users) => {
 		if (err) {
@@ -629,11 +744,10 @@ app.get("/", (req, res) => {
 				return;
 			}
 			// use EJS to show all the users
-			res.render('splash', { users: users });
+			res.render('ban', { users: users });
 		}
 	});
 });
-
 
 app.listen(3000, () => {
 	console.log('Listening on port 3000');

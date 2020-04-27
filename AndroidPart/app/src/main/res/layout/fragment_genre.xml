@@ -56,16 +56,19 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="18dp"
                     android:text="Violence"
                     android:textAlignment="center"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAppearance="?attr/textAppearanceHeadline6"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
-                    android:text="@string/lorem_ipsum_short"
+                    android:textSize="13dp"
+                    android:text="Nonviolence means avoiding not only external physical violence but also internal violence of spirit. You not only refuse to shoot a man, but you refuse to hate him."
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
@@ -92,15 +95,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Greek Life"
+                    android:textSize="18dp"
                     android:textAlignment="center"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
-                    android:text="@string/lorem_ipsum_short"
+                    android:textSize="15dp"
+                    android:text="No matter the Letters, we're all Greek together."
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
@@ -126,15 +132,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Hazing"
+                    android:textSize="18dp"
                     android:textAlignment="center"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
-                    android:text="@string/lorem_ipsum_short"
+                    android:textSize="15dp"
+                    android:text="Anything that looks, feels or acts like hazing, bullying and coercion is despicable and treacherous and should be avoided at all costs."
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
@@ -159,15 +168,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Sexual Assault"
+                    android:textSize="18dp"
                     android:textAlignment="center"
-                    android:textAppearance="?attr/textAppearanceHeadline6" />
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
-                    android:text="@string/lorem_ipsum_short"
+                    android:textSize="15dp"
+                    android:text="We must send a message across the world that there is no disgrace in being a survivor of sexual violence. The shame is on the aggressor. – Angelina Jolie"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
@@ -191,7 +203,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Polls"
+                    android:textSize="18dp"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
                 <TextView
@@ -199,7 +213,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
-                    android:text="@string/lorem_ipsum_short"
+                    android:textSize="15dp"
+                    android:text="Opinions matter."
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
@@ -223,7 +238,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Activities"
+                    android:textSize="18dp"
                     android:textAlignment="center"
+                    android:textColor="@color/colorPrimaryDark"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
                 <TextView
@@ -231,7 +248,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="20dp"
                     android:padding="10dp"
-                    android:text="@string/lorem_ipsum_short"
+                    android:textSize="15dp"
+                    android:text="Activities, workarounds"
                     android:textAlignment="center"
                     android:textAppearance="?attr/textAppearanceBody2"
                     android:textColor="?android:attr/textColorSecondary" />
