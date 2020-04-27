@@ -73,13 +73,14 @@ public class MakePostActivity extends AppCompatActivity implements AdapterView.O
     }
 
     public void onPostButtonClick(View v) {
-        String userId, genreId, title, content, username, genre;
+        String userId, genreId, title, content, username, genre, iconLink;
         userId = user.getUserId();
         genreId = selectedGenre.getGenreId();
         username = user.getAlias();
         genre = selectedGenre.getName();
         title  = ((EditText) findViewById(R.id.make_post_title)).getText().toString();
         content = ((EditText) findViewById(R.id.make_post_content)).getText().toString();
+        iconLink = user.getIconLink();
 
         if (title.isEmpty()) {
             Toast.makeText(this, "Make a title!", Toast.LENGTH_LONG).show();
@@ -97,7 +98,7 @@ public class MakePostActivity extends AppCompatActivity implements AdapterView.O
                 genre,
                 content
                 );
-
+        newPost.setIconLink(iconLink);
         String status = RemoteDataSource.addPostbyObject(newPost);
         if (status.equals("Success")) {
             // add post to current user's post written
@@ -105,11 +106,7 @@ public class MakePostActivity extends AppCompatActivity implements AdapterView.O
             // refresh user profile's post list (not working)
             final PostListAdapter adapter = ChatFragment.adapter;
             adapter.addPost(newPost);
-            runOnUiThread(new Runnable() {
-                public void run() {
-                    adapter.notifyDataSetChanged();
-                }
-            });
+            adapter.notifyDataSetChanged();
             Intent i = new Intent(this, PostActivity.class);
             i.putExtra("post", newPost);
             startActivity(i);

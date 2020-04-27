@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import upenn.edu.cis350.anon.datamanagement.RemoteDataSource;
+import upenn.edu.cis350.anon.ui.chat.ChatFragment;
 import upenn.edu.cis350.anon.ui.chat.PostListAdapter;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -78,7 +79,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void onFollowUserButtonClick(View v) {
         String status = RemoteDataSource.addFollowerByObjects(UserActivity.user, user);
+        // add follower to curr profile, add following to app user
         user.addFollower(UserActivity.user);
+        UserActivity.user.addFollowing(user);
+        // refresh followers count
         TextView followers = (TextView) findViewById(R.id.profile_followers);
         followers.setText(Integer.toString(user.getNumFollowers()));
         Toast.makeText(this, status, Toast.LENGTH_LONG).show();
